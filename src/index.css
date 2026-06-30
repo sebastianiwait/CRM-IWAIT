@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-iw-bg: #07091C;
+  --color-iw-sidebar: #090C20;
+  --color-iw-card: #0F1330;
+  --color-iw-card2: #131740;
+  --color-iw-border: #1C2248;
+  --color-iw-border2: #222850;
+  --color-iw-text: #E4EAFF;
+  --color-iw-muted: #6B7AAD;
+  --color-iw-muted2: #9AA3CC;
+  --color-iw-blue: #4F7EF8;
+  --color-iw-blue-light: #7AA4FA;
+  --color-iw-blue-dark: #2B56D6;
+  --color-iw-teal: #00C9A7;
+  --color-iw-purple: #8B63F5;
+  --color-iw-amber: #F5A623;
+  --color-iw-red: #F05252;
+  --color-iw-green: #10CC82;
+  --color-iw-pink: #E879A0;
+}
+
+/* Custom layout global resets just in case */
+body {
+  background-color: #07091C;
+  color: #E4EAFF;
+}

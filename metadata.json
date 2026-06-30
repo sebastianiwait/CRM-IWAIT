@@ -1,0 +1,6 @@
+{
+  "name": "IWAIT CRM",
+  "description": "Consola operativa de IWAIT que consolida la gestión de inversión, data room, tareas de aeropuerto, estados de productos, clientes de aerolínea, simulador de compensaciones y el módulo coordinador AI Airports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
