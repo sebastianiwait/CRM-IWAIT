@@ -19,21 +19,62 @@ import { ClientEntity } from '../data/iwaitData';
 interface ClientsViewProps {
   clients: ClientEntity[];
   onAddClient: (newClient: Omit<ClientEntity, 'id'>) => void;
+  onUpdateClientStatus?: (clientId: string, newStatus: ClientEntity['status']) => void;
   triggerToast: (msg: string) => void;
   initialViewMode?: 'all' | 'leads' | 'clientes';
   key?: string;
 }
 
-export default function ClientsView({ clients, onAddClient, triggerToast, initialViewMode = 'all' }: ClientsViewProps) {
+export default function ClientsView({ clients, onAddClient, onUpdateClientStatus, triggerToast, initialViewMode = 'all' }: ClientsViewProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState<ClientEntity | null>(null);
   const [subTab, setSubTab] = useState<'all' | 'leads' | 'clientes'>(initialViewMode);
-  const [viewLayout, setViewLayout] = useState<'list' | 'kanban'>('list');
+  const [viewLayout, setViewLayout] = useState<'list' | 'kanban'>(initialViewMode === 'leads' ? 'kanban' : 'list');
+
+  // Drag and drop state
+  const [draggingClientId, setDraggingClientId] = useState<string | null>(null);
+  const [activeOverStatus, setActiveOverStatus] = useState<string | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    e.dataTransfer.setData('text/plain', id);
+    setDraggingClientId(id);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent, status: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (activeOverStatus !== status) {
+      setActiveOverStatus(status);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setActiveOverStatus(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, status: ClientEntity['status']) => {
+    e.preventDefault();
+    setActiveOverStatus(null);
+    setDraggingClientId(null);
+    const id = e.dataTransfer.getData('text/plain');
+    if (id && onUpdateClientStatus) {
+      onUpdateClientStatus(id, status);
+      triggerToast(`Lead movido a ${status}`);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggingClientId(null);
+    setActiveOverStatus(null);
+  };
 
   // Sync subTab with initialViewMode when the prop changes
   useEffect(() => {
     setSubTab(initialViewMode);
+    setViewLayout(initialViewMode === 'leads' ? 'kanban' : 'list');
   }, [initialViewMode]);
 
   // Form states
@@ -331,10 +372,20 @@ export default function ClientsView({ clients, onAddClient, triggerToast, initia
         </div>
       ) : (
         <div className="flex gap-4 overflow-x-auto pb-4 snap-x animate-fade-in">
-          {['Lead', 'Negociando', 'Contrato', 'Operativo'].map((statusKey) => {
+          {(subTab === 'leads' ? ['Lead', 'Negociando'] : subTab === 'clientes' ? ['Contrato', 'Operativo'] : ['Lead', 'Negociando', 'Contrato', 'Operativo']).map((statusKey) => {
             const columnClients = filteredClients.filter(c => c.status === statusKey);
             return (
-              <div key={statusKey} className="flex-1 min-w-[280px] max-w-[320px] bg-[#0F1330] border border-[#1C2248] rounded-lg p-3 snap-start flex flex-col">
+              <div 
+                key={statusKey} 
+                onDragOver={(e) => handleDragOver(e, statusKey)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDrop(e, statusKey as any)}
+                className={`flex-1 min-w-[280px] max-w-[320px] bg-[#0F1330] border rounded-lg p-3 snap-start flex flex-col transition-all duration-200 ${
+                  activeOverStatus === statusKey 
+                    ? 'border-[#4F7EF8] bg-[#0F1330]/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
+                    : 'border-[#1C2248]'
+                }`}
+              >
                 <div className="flex justify-between items-center mb-3 px-1">
                   <h4 className="text-[13px] font-semibold text-[#E4EAFF] flex items-center gap-2">
                     {statusKey}
@@ -350,7 +401,14 @@ export default function ClientsView({ clients, onAddClient, triggerToast, initia
                   {columnClients.map(client => (
                     <div 
                       key={client.id} 
-                      className="bg-[#131740] border border-[#222850] p-3 rounded-md hover:border-[#4F7EF8]/50 transition-colors cursor-pointer group" 
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, client.id)}
+                      onDragEnd={handleDragEnd}
+                      className={`bg-[#131740] border p-3 rounded-md transition-all cursor-grab active:cursor-grabbing group ${
+                        draggingClientId === client.id 
+                          ? 'opacity-40 border-dashed border-[#4F7EF8]/60 bg-[#131740]/40 scale-95' 
+                          : 'border-[#222850] hover:border-[#4F7EF8]/50'
+                      }`}
                       onClick={() => setSelectedClient(client)}
                     >
                       <div className="flex justify-between items-start mb-2">
