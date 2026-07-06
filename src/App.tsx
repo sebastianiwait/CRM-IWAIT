@@ -28,6 +28,7 @@ import ProductView from './components/ProductView';
 import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
+import SprintBoardView from './components/SprintBoardView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
@@ -170,9 +171,13 @@ export default function App() {
             triggerToast={triggerToast}
           />
         );
+      case 'sprint-jd':
+        return (
+          <SprintBoardView triggerToast={triggerToast} />
+        );
       case 'producto':
         return (
-          <ProductView 
+          <ProductView
             triggerToast={triggerToast}
             tasks={tasks}
           />

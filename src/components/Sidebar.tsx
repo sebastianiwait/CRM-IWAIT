@@ -4,11 +4,12 @@ import {
   TrendingUp, 
   FolderLock, 
   Award, 
-  CheckSquare, 
-  Rocket, 
-  Users, 
+  CheckSquare,
+  Rocket,
+  Users,
   Plane,
-  Briefcase
+  Briefcase,
+  KanbanSquare
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -73,7 +74,8 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount }: Sidebar
         <div>
           <div className="px-3.5 py-1 text-[10px] uppercase font-semibold text-[#6B7AAD] tracking-wider">Producto</div>
           <div className="mt-1 space-y-0.5">
-            {renderItem('producto', 'Producto / Roadmap', <Rocket className="w-[17px] h-[17px]" />)}
+            {renderItem('producto', 'Seguimiento & Sprints', <Rocket className="w-[17px] h-[17px]" />)}
+            {renderItem('sprint-jd', 'Backlog · Juan Diego', <KanbanSquare className="w-[17px] h-[17px]" />)}
             {renderItem(
               'airports', 
               'AI Airports', 

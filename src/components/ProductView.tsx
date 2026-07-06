@@ -38,8 +38,8 @@ interface ProductModule {
   id: string;
   name: string;
   status: 'Producción' | 'Beta' | 'Desarrollo' | 'Roadmap';
-  clients: string;
-  version: string;
+  owner: string;
+  progress: number;
 }
 
 export default function ProductView({ triggerToast, tasks = [] }: ProductViewProps) {
@@ -61,12 +61,12 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
 
   // Product Modules state
   const [modules, setModules] = useState<ProductModule[]>([
-    { id: 'm-1', name: 'AI Queue Predictor', status: 'Producción', clients: '3', version: 'v2.1.4' },
-    { id: 'm-2', name: 'Live Dashboard', status: 'Beta', clients: '1', version: 'v0.8.2' },
-    { id: 'm-3', name: 'Passenger App', status: 'Desarrollo', clients: '0', version: 'v0.3.0' },
-    { id: 'm-4', name: 'API Pública', status: 'Desarrollo', clients: '0', version: 'v0.5.1' },
-    { id: 'm-5', name: 'BI Analytics', status: 'Roadmap', clients: '—', version: '—' },
-    { id: 'm-6', name: 'AI Baggage', status: 'Roadmap', clients: '—', version: '—' }
+    { id: 'm-1', name: 'AI Queue Predictor', status: 'Producción', owner: 'María R.', progress: 100 },
+    { id: 'm-2', name: 'Live Dashboard', status: 'Beta', owner: 'Alex V.', progress: 82 },
+    { id: 'm-3', name: 'Passenger App', status: 'Desarrollo', owner: 'Jorge L.', progress: 30 },
+    { id: 'm-4', name: 'API Pública', status: 'Desarrollo', owner: 'María R.', progress: 51 },
+    { id: 'm-5', name: 'BI Analytics', status: 'Roadmap', owner: 'Sin asignar', progress: 0 },
+    { id: 'm-6', name: 'AI Baggage', status: 'Roadmap', owner: 'Sin asignar', progress: 0 }
   ]);
 
   // Create feature states
@@ -98,8 +98,8 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
             id: `m-${Date.now()}`,
             name: modName,
             status: status === 'Completado' ? 'Producción' : 'Desarrollo',
-            clients: '0',
-            version: 'v0.1.0'
+            owner: 'Sin asignar',
+            progress: status === 'Completado' ? 100 : 10
           },
           ...modules
         ]);
@@ -141,8 +141,8 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
       {/* Page Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#1C2248] pb-5 gap-4">
         <div>
-          <h2 className="text-[20px] font-semibold text-[#E4EAFF] tracking-tight">Producto / Roadmap</h2>
-          <p className="text-[13px] text-[#6B7AAD] mt-0.5">Gestión estratégica, roadmap del producto, métricas de AI Airports e hitos de progreso</p>
+          <h2 className="text-[20px] font-bold text-[#E4EAFF] tracking-tight">Seguimiento · Sprints &amp; Progreso</h2>
+          <p className="text-[13px] text-[#6B7AAD] mt-0.5">Control interno del equipo — velocidad de sprints, avance de workstreams e hitos de progreso</p>
         </div>
 
         {/* View Switcher Tabs */}
@@ -256,19 +256,20 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
               })}
             </div>
 
-            {/* Modules section */}
+            {/* Workstreams section */}
             <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg">
               <div className="border-b border-[#1C2248] px-5 py-4">
-                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Módulos del producto</h3>
+                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Workstreams del equipo</h3>
+                <p className="text-[11.5px] text-[#6B7AAD] mt-0.5">Líneas de trabajo internas y su avance</p>
               </div>
-              
+
               <table className="w-full">
                 <thead>
                   <tr className="bg-white/[0.02]">
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Módulo</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Workstream</th>
                     <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Estado</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Clientes</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Versión</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Responsable</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Progreso</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#1C2248]">
@@ -280,8 +281,20 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
                           {mod.status}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-[#9AA3CC] text-[13.5px]">{mod.clients}</td>
-                      <td className="px-5 py-3 text-[#6B7AAD] text-[13px] font-mono">{mod.version}</td>
+                      <td className="px-5 py-3 text-[13px]">
+                        <span className={mod.owner === 'Sin asignar' ? 'text-[#6B7AAD] italic' : 'text-[#9AA3CC]'}>{mod.owner}</span>
+                      </td>
+                      <td className="px-5 py-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-[54px] bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${mod.progress === 100 ? 'bg-[#10CC82]' : mod.progress === 0 ? 'bg-[#6B7AAD]/30' : 'bg-[#4F7EF8]'}`}
+                              style={{ width: `${mod.progress}%` }}
+                            ></div>
+                          </div>
+                          <span className={`text-[11.5px] font-semibold font-mono ${mod.progress === 100 ? 'text-[#10CC82]' : mod.progress === 0 ? 'text-[#6B7AAD]' : 'text-[#7AA4FA]'}`}>{mod.progress}%</span>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
