@@ -1,24 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-iw-bg: #07091C;
-  --color-iw-sidebar: #090C20;
-  --color-iw-card: #0F1330;
-  --color-iw-card2: #131740;
-  --color-iw-border: #1C2248;
-  --color-iw-border2: #222850;
-  --color-iw-text: #E4EAFF;
-  --color-iw-muted: #6B7AAD;
-  --color-iw-muted2: #9AA3CC;
-  --color-iw-blue: #4F7EF8;
-  --color-iw-blue-light: #7AA4FA;
-  --color-iw-blue-dark: #2B56D6;
+  /* iwait brand palette — Deep Navy, Marine Blue, Sky Cyan */
+  --color-iw-bg: #0F1A2C;
+  --color-iw-sidebar: #0B1524;
+  --color-iw-card: #14243A;
+  --color-iw-card2: #1B2F49;
+  --color-iw-border: #22384F;
+  --color-iw-border2: #2A415A;
+  --color-iw-text: #EAF3F9;
+  --color-iw-muted: #64748B;
+  --color-iw-muted2: #8DA2B5;
+  --color-iw-blue: #0E457F;
+  --color-iw-blue-light: #47B6E6;
+  --color-iw-blue-dark: #0A365F;
   --color-iw-teal: #00C9A7;
-  --color-iw-purple: #8B63F5;
+  --color-iw-purple: #47B6E6;
   --color-iw-amber: #F5A623;
   --color-iw-red: #F05252;
   --color-iw-green: #10CC82;
@@ -27,6 +28,11 @@
 
 /* Custom layout global resets just in case */
 body {
-  background-color: #07091C;
-  color: #E4EAFF;
+  background-color: #0F1A2C;
+  color: #EAF3F9;
+}
+
+::selection {
+  background: #47B6E6;
+  color: #0F1A2C;
 }

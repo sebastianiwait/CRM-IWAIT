@@ -134,40 +134,40 @@ export default function TasksView({
       case 'Media':
         return <span className="bg-[#F5A623]/15 text-[#F5A623] text-[10px] font-bold px-2 py-0.5 rounded">Media prioridad</span>;
       case 'Baja':
-        return <span className="bg-[#6B7AAD]/15 text-[#9AA3CC]/90 text-[10px] font-bold px-2 py-0.5 rounded">Baja prioridad</span>;
+        return <span className="bg-[#64748B]/15 text-[#8DA2B5]/90 text-[10px] font-bold px-2 py-0.5 rounded">Baja prioridad</span>;
       default:
-        return <span className="bg-[#4F7EF8]/15 text-[#7AA4FA] text-[10px] font-bold px-2 py-0.5 rounded">Normal</span>;
+        return <span className="bg-[#0E457F]/15 text-[#47B6E6] text-[10px] font-bold px-2 py-0.5 rounded">Normal</span>;
     }
   };
 
   return (
     <div className="animate-fade-in space-y-7">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#1C2248] pb-5 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#c3dae4] pb-5 gap-4">
         <div>
-          <h2 className="text-[20px] font-semibold text-[#E4EAFF] tracking-tight">Tareas</h2>
-          <p className="text-[13px] text-[#6B7AAD] mt-0.5">Gestión de tareas del equipo</p>
+          <h2 className="text-[20px] font-semibold text-[#0F1A2C] tracking-tight">Tareas</h2>
+          <p className="text-[13px] text-[#64748B] mt-0.5">Gestión de tareas del equipo</p>
         </div>
         <div className="flex flex-wrap gap-2.5 items-center">
           {/* Search bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7AAD]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
             <input 
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por tarea o asignado..."
-              className="bg-[#0F1330] border border-[#222850] rounded-lg pl-9 pr-4 py-1.5 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-[13px] w-[200px] md:w-[220px]"
+              className="bg-[#14243A] border border-[#2A415A] rounded-lg pl-9 pr-4 py-1.5 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
             />
           </div>
 
           {/* Filter dropdown */}
-          <div className="relative flex items-center bg-[#0F1330] border border-[#222850] rounded-lg px-2.5 py-1.5 font-sans">
-            <Filter className="w-3.5 h-3.5 text-[#6B7AAD] mr-1.5" />
+          <div className="relative flex items-center bg-[#14243A] border border-[#2A415A] rounded-lg px-2.5 py-1.5 font-sans">
+            <Filter className="w-3.5 h-3.5 text-[#64748B] mr-1.5" />
             <select 
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
-              className="bg-[#0F1330] border-none text-[12px] text-[#E4EAFF] focus:outline-none focus:ring-0 pr-1 cursor-pointer font-medium"
+              className="bg-[#14243A] border-none text-[12px] text-[#EAF3F9] focus:outline-none focus:ring-0 pr-1 cursor-pointer font-medium"
             >
               <option value="Todos">Todas las prioridades</option>
               <option value="Alta">Prioridad Alta</option>
@@ -178,7 +178,7 @@ export default function TasksView({
           <button 
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-1.8 bg-[#4F7EF8] hover:bg-[#2B56D6] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva tarea
           </button>
@@ -190,16 +190,16 @@ export default function TasksView({
           onDragOver={(e) => handleDragOver(e, 'Por Hacer')}
           onDragLeave={handleDragLeave}
           onDrop={(e) => handleDrop(e, 'Por Hacer')}
-          className={`bg-[#0F1330] border rounded-lg p-4 min-h-[500px] transition-all duration-200 ${
+          className={`bg-[#14243A] border rounded-lg p-4 min-h-[500px] transition-all duration-200 ${
             activeOverColumn === 'Por Hacer' 
-              ? 'border-[#4F7EF8] bg-[#0F1330]/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
-              : 'border-[#1C2248]'
+              ? 'border-[#0E457F] bg-[#14243A]/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
+              : 'border-[#22384F]'
           }`}
         >
-          <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#6B7AAD] uppercase tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-[#6B7AAD]"></span>
+          <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-[#64748B]"></span>
             <span>Pendiente</span>
-            <span className="ml-1 bg-[#222850] text-[#9AA3CC] px-2 py-0.5 rounded-full text-[10px] font-bold">{todoTasks.length}</span>
+            <span className="ml-1 bg-[#2A415A] text-[#8DA2B5] px-2 py-0.5 rounded-full text-[10px] font-bold">{todoTasks.length}</span>
           </div>
 
           <div className="space-y-3">
@@ -209,16 +209,16 @@ export default function TasksView({
                 draggable
                 onDragStart={(e) => handleDragStart(e, task.id)}
                 onDragEnd={handleDragEnd}
-                className={`bg-[#131740] border rounded-lg p-3.5 hover:border-[#4F7EF8] transition-all relative group cursor-grab active:cursor-grabbing ${
+                className={`bg-[#1B2F49] border rounded-lg p-3.5 hover:border-[#0E457F] transition-all relative group cursor-grab active:cursor-grabbing ${
                   draggingTaskId === task.id 
-                    ? 'opacity-40 border-dashed border-[#4F7EF8]/60 bg-[#131740]/40 scale-95' 
-                    : 'border-[#222850]'
+                    ? 'opacity-40 border-dashed border-[#0E457F]/60 bg-[#1B2F49]/40 scale-95' 
+                    : 'border-[#2A415A]'
                 }`}
               >
-                <div className="text-[13px] font-medium text-[#E4EAFF] mb-2">{task.title}</div>
+                <div className="text-[13px] font-medium text-[#EAF3F9] mb-2">{task.title}</div>
                 <div className="mb-3">{getPriorityBadge(task.priority)}</div>
                 
-                <div className="flex items-center justify-between text-[11px] text-[#6B7AAD]">
+                <div className="flex items-center justify-between text-[11px] text-[#64748B]">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" /> {task.dueDate}
                   </div>
@@ -233,7 +233,7 @@ export default function TasksView({
                     onUpdateTaskColumn(task.id, 'En Progreso');
                     triggerToast(`"${task.title}" iniciada! Se movió a 'En progreso'`);
                   }}
-                  className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#4F7EF8]/10 hover:bg-[#4F7EF8] hover:text-white rounded text-[#7AA4FA] transition-all cursor-pointer"
+                  className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#0E457F]/10 hover:bg-[#0E457F] hover:text-white rounded text-[#47B6E6] transition-all cursor-pointer"
                   title="Comenzar Tarea"
                 >
                   <Play className="w-3 h-3" />
@@ -241,7 +241,7 @@ export default function TasksView({
               </div>
             ))}
             {todoTasks.length === 0 && (
-              <div className="text-center py-10 border border-dashed border-[#1C2248] rounded-lg text-[#6B7AAD] text-xs">
+              <div className="text-center py-10 border border-dashed border-[#22384F] rounded-lg text-[#64748B] text-xs">
                 No hay tareas pendientes.
               </div>
             )}
@@ -253,16 +253,16 @@ export default function TasksView({
           onDragOver={(e) => handleDragOver(e, 'En Progreso')}
           onDragLeave={handleDragLeave}
           onDrop={(e) => handleDrop(e, 'En Progreso')}
-          className={`bg-[#0F1330] border rounded-lg p-4 min-h-[500px] transition-all duration-200 ${
+          className={`bg-[#14243A] border rounded-lg p-4 min-h-[500px] transition-all duration-200 ${
             activeOverColumn === 'En Progreso' 
-              ? 'border-[#4F7EF8] bg-[#0F1330]/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
-              : 'border-[#1C2248]'
+              ? 'border-[#0E457F] bg-[#14243A]/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
+              : 'border-[#22384F]'
           }`}
         >
-          <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#6B7AAD] uppercase tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-[#4F7EF8]"></span>
+          <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-[#0E457F]"></span>
             <span>En progreso</span>
-            <span className="ml-1 bg-[#222850] text-[#9AA3CC] px-2 py-0.5 rounded-full text-[10px] font-bold">{progressTasks.length}</span>
+            <span className="ml-1 bg-[#2A415A] text-[#8DA2B5] px-2 py-0.5 rounded-full text-[10px] font-bold">{progressTasks.length}</span>
           </div>
 
           <div className="space-y-3">
@@ -272,23 +272,23 @@ export default function TasksView({
                 draggable
                 onDragStart={(e) => handleDragStart(e, task.id)}
                 onDragEnd={handleDragEnd}
-                className={`bg-[#131740] border rounded-lg p-3.5 hover:border-[#4F7EF8] transition-all relative group cursor-grab active:cursor-grabbing ${
+                className={`bg-[#1B2F49] border rounded-lg p-3.5 hover:border-[#0E457F] transition-all relative group cursor-grab active:cursor-grabbing ${
                   draggingTaskId === task.id 
-                    ? 'opacity-40 border-dashed border-[#4F7EF8]/60 bg-[#131740]/40 scale-95' 
-                    : 'border-[#4F7EF8]/40'
+                    ? 'opacity-40 border-dashed border-[#0E457F]/60 bg-[#1B2F49]/40 scale-95' 
+                    : 'border-[#0E457F]/40'
                 }`}
               >
-                <div className="text-[13px] font-medium text-[#E4EAFF] mb-2">{task.title}</div>
+                <div className="text-[13px] font-medium text-[#EAF3F9] mb-2">{task.title}</div>
                 <div className="mb-3">{getPriorityBadge(task.priority)}</div>
                 
                 {/* Simulated progress slider/indicator */}
                 <div className="mb-3 space-y-1">
-                  <div className="w-full bg-[#222850] h-1 rounded-full overflow-hidden">
-                    <div className="bg-[#4F7EF8] h-full rounded-full transition-all duration-300" style={{ width: task.priority === 'Alta' ? '70%' : '45%' }}></div>
+                  <div className="w-full bg-[#2A415A] h-1 rounded-full overflow-hidden">
+                    <div className="bg-[#0E457F] h-full rounded-full transition-all duration-300" style={{ width: task.priority === 'Alta' ? '70%' : '45%' }}></div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-[#6B7AAD]">
+                <div className="flex items-center justify-between text-[11px] text-[#64748B]">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" /> {task.dueDate}
                   </div>
@@ -304,7 +304,7 @@ export default function TasksView({
                       onUpdateTaskColumn(task.id, 'Por Hacer');
                       triggerToast(`"${task.title}" pausada y devuelta a Pendiente`);
                     }}
-                    className="p-1 bg-[#1C2248] hover:bg-[#222850] rounded text-[#9AA3CC] transition-all cursor-pointer"
+                    className="p-1 bg-[#22384F] hover:bg-[#2A415A] rounded text-[#8DA2B5] transition-all cursor-pointer"
                     title="Pausar Tarea"
                   >
                     <Undo className="w-3 h-3" />
@@ -323,7 +323,7 @@ export default function TasksView({
               </div>
             ))}
             {progressTasks.length === 0 && (
-              <div className="text-center py-10 border border-dashed border-[#1C2248] rounded-lg text-[#6B7AAD] text-xs">
+              <div className="text-center py-10 border border-dashed border-[#22384F] rounded-lg text-[#64748B] text-xs">
                 Ninguna tarea activa por el momento.
               </div>
             )}
@@ -335,16 +335,16 @@ export default function TasksView({
           onDragOver={(e) => handleDragOver(e, 'Hecho')}
           onDragLeave={handleDragLeave}
           onDrop={(e) => handleDrop(e, 'Hecho')}
-          className={`bg-[#0F1330] border rounded-lg p-4 min-h-[500px] transition-all duration-200 ${
+          className={`bg-[#14243A] border rounded-lg p-4 min-h-[500px] transition-all duration-200 ${
             activeOverColumn === 'Hecho' 
-              ? 'border-[#10CC82] bg-[#0F1330]/80 shadow-[0_0_15px_rgba(16,204,130,0.15)] scale-[1.01]' 
-              : 'border-[#1C2248]'
+              ? 'border-[#10CC82] bg-[#14243A]/80 shadow-[0_0_15px_rgba(16,204,130,0.15)] scale-[1.01]' 
+              : 'border-[#22384F]'
           }`}
         >
-          <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#6B7AAD] uppercase tracking-wider">
+          <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
             <span className="w-2 h-2 rounded-full bg-[#10CC82]"></span>
             <span>Completado</span>
-            <span className="ml-1 bg-[#222850] text-[#9AA3CC] px-2 py-0.5 rounded-full text-[10px] font-bold">{doneTasks.length}</span>
+            <span className="ml-1 bg-[#2A415A] text-[#8DA2B5] px-2 py-0.5 rounded-full text-[10px] font-bold">{doneTasks.length}</span>
           </div>
 
           <div className="space-y-3">
@@ -354,18 +354,18 @@ export default function TasksView({
                 draggable
                 onDragStart={(e) => handleDragStart(e, task.id)}
                 onDragEnd={handleDragEnd}
-                className={`bg-[#131740]/60 border rounded-lg p-3.5 opacity-70 hover:opacity-100 transition-all relative group cursor-grab active:cursor-grabbing ${
+                className={`bg-[#1B2F49]/60 border rounded-lg p-3.5 opacity-70 hover:opacity-100 transition-all relative group cursor-grab active:cursor-grabbing ${
                   draggingTaskId === task.id 
-                    ? 'opacity-40 border-dashed border-[#10CC82]/60 bg-[#131740]/40 scale-95' 
-                    : 'border-[#222850]'
+                    ? 'opacity-40 border-dashed border-[#10CC82]/60 bg-[#1B2F49]/40 scale-95' 
+                    : 'border-[#2A415A]'
                 }`}
               >
-                <div className="text-[13px] font-medium text-[#E4EAFF] line-through mb-2">{task.title}</div>
+                <div className="text-[13px] font-medium text-[#EAF3F9] line-through mb-2">{task.title}</div>
                 <div className="mb-3">
                   <span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] font-bold px-2 py-0.5 rounded">✓ Completado</span>
                 </div>
                 
-                <div className="flex items-center justify-between text-[11px] text-[#6B7AAD]">
+                <div className="flex items-center justify-between text-[11px] text-[#64748B]">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" /> {task.dueDate}
                   </div>
@@ -380,7 +380,7 @@ export default function TasksView({
                     onUpdateTaskColumn(task.id, 'En Progreso');
                     triggerToast(`"${task.title}" reasentada a 'En progreso'`);
                   }}
-                  className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#1C2248] hover:bg-[#222850] rounded text-[#9AA3CC] transition-all cursor-pointer"
+                  className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#22384F] hover:bg-[#2A415A] rounded text-[#8DA2B5] transition-all cursor-pointer"
                   title="Reabrir Tarea"
                 >
                   <Undo className="w-3 h-3" />
@@ -388,7 +388,7 @@ export default function TasksView({
               </div>
             ))}
             {doneTasks.length === 0 && (
-              <div className="text-center py-10 border border-dashed border-[#1C2248] rounded-lg text-[#6B7AAD] text-xs">
+              <div className="text-center py-10 border border-dashed border-[#22384F] rounded-lg text-[#64748B] text-xs">
                 No hay tareas completadas aún.
               </div>
             )}
@@ -398,69 +398,69 @@ export default function TasksView({
 
       {/* New task Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#07091C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#E4EAFF]">Crear Nueva Tarea</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#6B7AAD] hover:text-[#E4EAFF] transition-colors p-1">
+        <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#EAF3F9]">Crear Nueva Tarea</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <form onSubmit={handleSubmit} className="p-5 space-y-4">
               <div>
-                <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Título de la Tarea</label>
+                <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Título de la Tarea</label>
                 <input 
                   type="text" 
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ej. Rediseño del Apple Wallet Pass"
-                  className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Descripción</label>
+                <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Descripción</label>
                 <textarea 
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   placeholder="Instrucciones detalladas o anotaciones"
                   rows={2}
-                  className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm resize-none"
+                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5 font-mono">Asignado a</label>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5 font-mono">Asignado a</label>
                   <input 
                     type="text" 
                     value={assigned}
                     onChange={(e) => setAssigned(e.target.value)}
                     placeholder="Ej. Sebastian, CTO"
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Fecha Límite</label>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Fecha Límite</label>
                   <input 
                     type="text" 
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                     placeholder="Ej. 28 Jun 2026"
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2.5">
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1">Columna</label>
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1">Columna</label>
                   <select 
                     value={column}
                     onChange={(e: any) => setColumn(e.target.value)}
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]"
                   >
                     <option value="Por Hacer">Pendiente</option>
                     <option value="En Progreso">En proceso</option>
@@ -468,11 +468,11 @@ export default function TasksView({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1">Prioridad</label>
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1">Prioridad</label>
                   <select 
                     value={priority}
                     onChange={(e: any) => setPriority(e.target.value)}
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]"
                   >
                     <option value="Alta">Alta</option>
                     <option value="Media">Media</option>
@@ -480,11 +480,11 @@ export default function TasksView({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1 font-mono">Dpto</label>
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1 font-mono">Dpto</label>
                   <select 
                     value={dept}
                     onChange={(e: any) => setDept(e.target.value)}
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]"
                   >
                     <option value="Producto">Producto</option>
                     <option value="Clientes">Clientes</option>
@@ -495,17 +495,17 @@ export default function TasksView({
                 </div>
               </div>
 
-              <div className="border-t border-[#1C2248] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#222850] text-[#6B7AAD] hover:text-[#E4EAFF] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#4F7EF8] hover:bg-[#2B56D6] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
                 >
                   Asignar Tarea
                 </button>

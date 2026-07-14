@@ -45,9 +45,9 @@ const INITIAL_SPRINT_TASKS: SprintTask[] = [
 ];
 
 const COLUMNS: { key: SprintColumn; label: string; dot: string; glow: string; icon: React.ReactNode }[] = [
-  { key: 'Backlog', label: 'Backlog', dot: 'bg-[#8B63F5]', glow: 'rgba(139,99,245,0.15)', icon: <Inbox className="w-3.5 h-3.5 text-[#8B63F5]" /> },
-  { key: 'Por Hacer', label: 'Por hacer', dot: 'bg-[#6B7AAD]', glow: 'rgba(79,126,248,0.15)', icon: <Circle className="w-3.5 h-3.5 text-[#6B7AAD]" /> },
-  { key: 'En Progreso', label: 'En progreso', dot: 'bg-[#4F7EF8]', glow: 'rgba(79,126,248,0.15)', icon: <Timer className="w-3.5 h-3.5 text-[#4F7EF8]" /> },
+  { key: 'Backlog', label: 'Backlog', dot: 'bg-[#47B6E6]', glow: 'rgba(139,99,245,0.15)', icon: <Inbox className="w-3.5 h-3.5 text-[#47B6E6]" /> },
+  { key: 'Por Hacer', label: 'Por hacer', dot: 'bg-[#64748B]', glow: 'rgba(79,126,248,0.15)', icon: <Circle className="w-3.5 h-3.5 text-[#64748B]" /> },
+  { key: 'En Progreso', label: 'En progreso', dot: 'bg-[#0E457F]', glow: 'rgba(79,126,248,0.15)', icon: <Timer className="w-3.5 h-3.5 text-[#0E457F]" /> },
   { key: 'Hecho', label: 'Hecho', dot: 'bg-[#10CC82]', glow: 'rgba(16,204,130,0.15)', icon: <CheckCircle2 className="w-3.5 h-3.5 text-[#10CC82]" /> }
 ];
 
@@ -115,36 +115,36 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
     switch (prio) {
       case 'Alta': return <span className="bg-[#F05252]/15 text-[#F05252] text-[10px] font-bold px-2 py-0.5 rounded">Alta</span>;
       case 'Media': return <span className="bg-[#F5A623]/15 text-[#F5A623] text-[10px] font-bold px-2 py-0.5 rounded">Media</span>;
-      default: return <span className="bg-[#6B7AAD]/15 text-[#9AA3CC]/90 text-[10px] font-bold px-2 py-0.5 rounded">Baja</span>;
+      default: return <span className="bg-[#64748B]/15 text-[#8DA2B5]/90 text-[10px] font-bold px-2 py-0.5 rounded">Baja</span>;
     }
   };
 
   return (
     <div className="animate-fade-in space-y-7">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#1C2248] pb-5 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#c3dae4] pb-5 gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#4F7EF8] to-[#8B63F5] flex items-center justify-center text-white font-bold text-[14px]">JD</div>
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0E457F] to-[#47B6E6] flex items-center justify-center text-white font-bold text-[14px]">JD</div>
           <div>
-            <h2 className="text-[20px] font-bold text-[#E4EAFF] tracking-tight">Backlog &amp; Sprints — Juan Diego</h2>
-            <p className="text-[13px] text-[#6B7AAD] mt-0.5">Seguimiento de todo el trabajo de Juan Diego por sprint</p>
+            <h2 className="text-[20px] font-bold text-[#0F1A2C] tracking-tight">Backlog &amp; Sprints — Juan Diego</h2>
+            <p className="text-[13px] text-[#64748B] mt-0.5">Seguimiento de todo el trabajo de Juan Diego por sprint</p>
           </div>
         </div>
         <div className="flex flex-wrap gap-2.5 items-center">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7AAD]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar tarjeta o sprint..."
-              className="bg-[#0F1330] border border-[#222850] rounded-lg pl-9 pr-4 py-1.5 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-[13px] w-[190px] md:w-[220px]"
+              className="bg-[#14243A] border border-[#2A415A] rounded-lg pl-9 pr-4 py-1.5 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[190px] md:w-[220px]"
             />
           </div>
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="px-3.5 py-1.5 bg-[#4F7EF8] hover:bg-[#2B56D6] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
+            className="px-3.5 py-1.5 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva tarjeta
           </button>
@@ -152,35 +152,35 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
       </div>
 
       {/* Active sprint summary */}
-      <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1C2248]/60 pb-4">
+      <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#22384F]/60 pb-4">
           <div className="flex items-center gap-2">
             <Flame className="w-4 h-4 text-[#F5A623]" />
-            <h3 className="text-[14px] font-semibold text-[#E4EAFF]">{ACTIVE_SPRINT} — activo</h3>
-            <span className="text-[11px] text-[#6B7AAD] font-mono ml-2">19 Jun — 2 Jul 2026</span>
+            <h3 className="text-[14px] font-semibold text-[#EAF3F9]">{ACTIVE_SPRINT} — activo</h3>
+            <span className="text-[11px] text-[#64748B] font-mono ml-2">19 Jun — 2 Jul 2026</span>
           </div>
           <span className="bg-[#F5A623]/15 text-[#F5A623] text-[11px] font-bold px-2.5 py-0.5 rounded-full">{pct}% completado</span>
         </div>
         <div className="mt-4 space-y-4">
-          <div className="w-full bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
-            <div className="bg-[#4F7EF8] h-full rounded-full transition-all duration-300" style={{ width: `${pct}%` }}></div>
+          <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
+            <div className="bg-[#0E457F] h-full rounded-full transition-all duration-300" style={{ width: `${pct}%` }}></div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-[#8B63F5]/8 border border-[#8B63F5]/20 rounded-lg p-3">
-              <div className="text-[18px] font-bold text-[#8B63F5]">{tasks.filter(t => t.column === 'Backlog').length}</div>
-              <div className="text-[11px] text-[#6B7AAD] mt-0.5">En backlog</div>
+            <div className="bg-[#47B6E6]/8 border border-[#47B6E6]/20 rounded-lg p-3">
+              <div className="text-[18px] font-bold text-[#47B6E6]">{tasks.filter(t => t.column === 'Backlog').length}</div>
+              <div className="text-[11px] text-[#64748B] mt-0.5">En backlog</div>
             </div>
-            <div className="bg-[#4F7EF8]/8 border border-[#4F7EF8]/20 rounded-lg p-3">
-              <div className="text-[18px] font-bold text-[#7AA4FA]">{activeTasks.filter(t => t.column === 'En Progreso').length}</div>
-              <div className="text-[11px] text-[#6B7AAD] mt-0.5">En progreso</div>
+            <div className="bg-[#0E457F]/8 border border-[#0E457F]/20 rounded-lg p-3">
+              <div className="text-[18px] font-bold text-[#47B6E6]">{activeTasks.filter(t => t.column === 'En Progreso').length}</div>
+              <div className="text-[11px] text-[#64748B] mt-0.5">En progreso</div>
             </div>
             <div className="bg-[#10CC82]/8 border border-[#10CC82]/20 rounded-lg p-3">
               <div className="text-[18px] font-bold text-[#10CC82]">{doneActive.length}</div>
-              <div className="text-[11px] text-[#6B7AAD] mt-0.5">Completadas</div>
+              <div className="text-[11px] text-[#64748B] mt-0.5">Completadas</div>
             </div>
-            <div className="bg-[#6B7AAD]/8 border border-[#6B7AAD]/20 rounded-lg p-3">
-              <div className="text-[18px] font-bold text-[#9AA3CC]">{donePoints}/{totalPoints}</div>
-              <div className="text-[11px] text-[#6B7AAD] mt-0.5">Story points</div>
+            <div className="bg-[#64748B]/8 border border-[#64748B]/20 rounded-lg p-3">
+              <div className="text-[18px] font-bold text-[#8DA2B5]">{donePoints}/{totalPoints}</div>
+              <div className="text-[11px] text-[#64748B] mt-0.5">Story points</div>
             </div>
           </div>
         </div>
@@ -202,17 +202,17 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
                 setDraggingId(null);
                 setOverColumn(null);
               }}
-              className={`bg-[#0F1330] border rounded-lg p-4 min-h-[420px] transition-all duration-200 ${
+              className={`bg-[#14243A] border rounded-lg p-4 min-h-[420px] transition-all duration-200 ${
                 overColumn === col.key
-                  ? 'border-[#4F7EF8] scale-[1.01]'
-                  : 'border-[#1C2248]'
+                  ? 'border-[#0E457F] scale-[1.01]'
+                  : 'border-[#22384F]'
               }`}
               style={overColumn === col.key ? { boxShadow: `0 0 15px ${col.glow}` } : undefined}
             >
-              <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#6B7AAD] uppercase tracking-wider">
+              <div className="flex items-center gap-2 mb-4 text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">
                 {col.icon}
                 <span>{col.label}</span>
-                <span className="ml-auto bg-[#222850] text-[#9AA3CC] px-2 py-0.5 rounded-full text-[10px] font-bold">{colTasks.length}</span>
+                <span className="ml-auto bg-[#2A415A] text-[#8DA2B5] px-2 py-0.5 rounded-full text-[10px] font-bold">{colTasks.length}</span>
               </div>
 
               <div className="space-y-3">
@@ -224,21 +224,21 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
                       draggable
                       onDragStart={(e) => { setDraggingId(task.id); e.dataTransfer.setData('text/plain', task.id); e.dataTransfer.effectAllowed = 'move'; }}
                       onDragEnd={() => { setDraggingId(null); setOverColumn(null); }}
-                      className={`bg-[#131740] border rounded-lg p-3.5 hover:border-[#4F7EF8] transition-all relative group cursor-grab active:cursor-grabbing ${
+                      className={`bg-[#1B2F49] border rounded-lg p-3.5 hover:border-[#0E457F] transition-all relative group cursor-grab active:cursor-grabbing ${
                         draggingId === task.id
-                          ? 'opacity-40 border-dashed border-[#4F7EF8]/60 scale-95'
-                          : col.key === 'En Progreso' ? 'border-[#4F7EF8]/40' : 'border-[#222850]'
+                          ? 'opacity-40 border-dashed border-[#0E457F]/60 scale-95'
+                          : col.key === 'En Progreso' ? 'border-[#0E457F]/40' : 'border-[#2A415A]'
                       } ${col.key === 'Hecho' ? 'opacity-70 hover:opacity-100' : ''}`}
                     >
-                      <div className={`text-[13px] font-medium text-[#E4EAFF] mb-2 pr-6 ${col.key === 'Hecho' ? 'line-through' : ''}`}>{task.title}</div>
+                      <div className={`text-[13px] font-medium text-[#EAF3F9] mb-2 pr-6 ${col.key === 'Hecho' ? 'line-through' : ''}`}>{task.title}</div>
                       {task.description && (
-                        <div className="text-[11.5px] text-[#6B7AAD] mb-2.5 leading-normal">{task.description}</div>
+                        <div className="text-[11.5px] text-[#64748B] mb-2.5 leading-normal">{task.description}</div>
                       )}
                       <div className="flex items-center gap-2 mb-3">
                         {priorityBadge(task.priority)}
-                        <span className="text-[10px] font-mono text-[#7AA4FA] bg-[#4F7EF8]/10 px-1.5 py-0.5 rounded">{task.points} pts</span>
+                        <span className="text-[10px] font-mono text-[#47B6E6] bg-[#0E457F]/10 px-1.5 py-0.5 rounded">{task.points} pts</span>
                       </div>
-                      <div className="flex items-center justify-between text-[11px] text-[#6B7AAD]">
+                      <div className="flex items-center justify-between text-[11px] text-[#64748B]">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" /> {task.sprint}
                         </div>
@@ -247,7 +247,7 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
                       {next && (
                         <button
                           onClick={() => moveTask(task.id, next)}
-                          className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#4F7EF8]/10 hover:bg-[#4F7EF8] hover:text-white rounded text-[#7AA4FA] transition-all cursor-pointer"
+                          className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#0E457F]/10 hover:bg-[#0E457F] hover:text-white rounded text-[#47B6E6] transition-all cursor-pointer"
                           title={`Mover a ${COLUMNS.find(c => c.key === next)?.label}`}
                         >
                           <ArrowRight className="w-3 h-3" />
@@ -257,7 +257,7 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
                   );
                 })}
                 {colTasks.length === 0 && (
-                  <div className="text-center py-10 border border-dashed border-[#1C2248] rounded-lg text-[#6B7AAD] text-xs">
+                  <div className="text-center py-10 border border-dashed border-[#22384F] rounded-lg text-[#64748B] text-xs">
                     Sin tarjetas aquí.
                   </div>
                 )}
@@ -269,41 +269,41 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
 
       {/* New card modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#07091C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#E4EAFF]">Nueva tarjeta — {OWNER}</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#6B7AAD] hover:text-[#E4EAFF] transition-colors p-1">
+        <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#EAF3F9]">Nueva tarjeta — {OWNER}</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-5 space-y-4">
               <div>
-                <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Título</label>
+                <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Título</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ej. Optimizar query del predictor"
-                  className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Descripción</label>
+                <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Descripción</label>
                 <textarea
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   placeholder="Detalle de la tarea"
                   rows={2}
-                  className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm resize-none"
+                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1">Columna</label>
-                  <select value={column} onChange={(e: any) => setColumn(e.target.value)} className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]">
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1">Columna</label>
+                  <select value={column} onChange={(e: any) => setColumn(e.target.value)} className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]">
                     <option value="Backlog">Backlog</option>
                     <option value="Por Hacer">Por hacer</option>
                     <option value="En Progreso">En progreso</option>
@@ -311,31 +311,31 @@ export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) 
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1">Prioridad</label>
-                  <select value={priority} onChange={(e: any) => setPriority(e.target.value)} className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]">
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1">Prioridad</label>
+                  <select value={priority} onChange={(e: any) => setPriority(e.target.value)} className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]">
                     <option value="Alta">Alta</option>
                     <option value="Media">Media</option>
                     <option value="Baja">Baja</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1">Sprint</label>
-                  <select value={sprint} onChange={(e: any) => setSprint(e.target.value)} className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]">
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1">Sprint</label>
+                  <select value={sprint} onChange={(e: any) => setSprint(e.target.value)} className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]">
                     <option value="Sprint 12">Sprint 12</option>
                     <option value="Sprint 13">Sprint 13</option>
                     <option value="Backlog">Backlog</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-[#6B7AAD] uppercase mb-1">Story points</label>
-                  <select value={points} onChange={(e: any) => setPoints(Number(e.target.value))} className="w-full bg-[#131740] border border-[#222850] rounded-lg px-2 py-1.5 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-[12px]">
+                  <label className="block text-[11px] font-medium text-[#64748B] uppercase mb-1">Story points</label>
+                  <select value={points} onChange={(e: any) => setPoints(Number(e.target.value))} className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-2 py-1.5 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-[12px]">
                     {[1, 2, 3, 5, 8, 13].map(p => <option key={p} value={p}>{p} pts</option>)}
                   </select>
                 </div>
               </div>
-              <div className="border-t border-[#1C2248] pt-4 flex justify-end gap-2.5">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg bg-transparent border border-[#222850] text-[#6B7AAD] hover:text-[#E4EAFF] text-sm cursor-pointer">Cancelar</button>
-                <button type="submit" className="px-4 py-2 bg-[#4F7EF8] hover:bg-[#2B56D6] text-white rounded-lg font-medium text-sm cursor-pointer">Añadir tarjeta</button>
+              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer">Cancelar</button>
+                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer">Añadir tarjeta</button>
               </div>
             </form>
           </div>

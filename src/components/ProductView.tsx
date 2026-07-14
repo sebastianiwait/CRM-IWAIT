@@ -115,10 +115,10 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
   const getDotColor = (stat: string) => {
     switch (stat) {
       case 'Completado': return 'bg-[#10CC82]';
-      case 'En desarrollo': return 'bg-[#4F7EF8]';
-      case 'Planificado': return 'bg-[#6B7AAD]';
-      case 'R&D': return 'bg-[#8B63F5]';
-      default: return 'bg-[#9AA3CC]';
+      case 'En desarrollo': return 'bg-[#0E457F]';
+      case 'Planificado': return 'bg-[#64748B]';
+      case 'R&D': return 'bg-[#47B6E6]';
+      default: return 'bg-[#8DA2B5]';
     }
   };
 
@@ -127,33 +127,33 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
       case 'Producción':
         return 'bg-[#10CC82]/15 text-[#10CC82]';
       case 'Beta':
-        return 'bg-[#4F7EF8]/15 text-[#7AA4FA]';
+        return 'bg-[#0E457F]/15 text-[#47B6E6]';
       case 'Desarrollo':
         return 'bg-[#F5A623]/15 text-[#F5A623]';
       case 'Roadmap':
       default:
-        return 'bg-[#8B63F5]/10 text-[#8B63F5]';
+        return 'bg-[#47B6E6]/10 text-[#47B6E6]';
     }
   };
 
   return (
     <div className="animate-fade-in space-y-7">
       {/* Page Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#1C2248] pb-5 gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#c3dae4] pb-5 gap-4">
         <div>
-          <h2 className="text-[20px] font-bold text-[#E4EAFF] tracking-tight">Seguimiento · Sprints &amp; Progreso</h2>
-          <p className="text-[13px] text-[#6B7AAD] mt-0.5">Control interno del equipo — velocidad de sprints, avance de workstreams e hitos de progreso</p>
+          <h2 className="text-[20px] font-bold text-[#0F1A2C] tracking-tight">Seguimiento · Sprints &amp; Progreso</h2>
+          <p className="text-[13px] text-[#64748B] mt-0.5">Control interno del equipo — velocidad de sprints, avance de workstreams e hitos de progreso</p>
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex bg-[#090C20] border border-[#1C2248] rounded-lg p-1">
+        <div className="flex bg-[#0B1524] border border-[#22384F] rounded-lg p-1">
           <button
             type="button"
             onClick={() => setActiveSubView('roadmap')}
             className={`px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
               activeSubView === 'roadmap'
-                ? 'bg-[#4F7EF8] text-white'
-                : 'text-[#6B7AAD] hover:text-[#E4EAFF]'
+                ? 'bg-[#0E457F] text-white'
+                : 'text-[#64748B] hover:text-[#EAF3F9]'
             }`}
           >
             <Compass className="w-3.5 h-3.5" /> Roadmap &amp; Sprints
@@ -163,8 +163,8 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
             onClick={() => setActiveSubView('consolidated')}
             className={`px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
               activeSubView === 'consolidated'
-                ? 'bg-[#4F7EF8] text-white'
-                : 'text-[#6B7AAD] hover:text-[#E4EAFF]'
+                ? 'bg-[#0E457F] text-white'
+                : 'text-[#64748B] hover:text-[#EAF3F9]'
             }`}
           >
             <Activity className="w-3.5 h-3.5" /> Consolidado de Progreso
@@ -175,14 +175,14 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
           <button 
             type="button"
             onClick={() => setIsBacklogOpen(true)}
-            className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-[#0F1330] rounded-lg border border-[#222850] text-[#9AA3CC] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
+            className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-[#14243A] rounded-lg border border-[#2A415A] text-[#8DA2B5] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
           >
             <List className="w-[15px] h-[15px]" /> Ver backlog
           </button>
           <button 
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-1.8 bg-[#4F7EF8] hover:bg-[#2B56D6] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva feature
           </button>
@@ -192,33 +192,33 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
       {activeSubView === 'roadmap' ? (
         <>
           {/* active Sprint Status Box */}
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg p-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1C2248]/60 pb-4">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#22384F]/60 pb-4">
               <div className="flex items-center gap-2">
                 <Flame className="w-4 h-4 text-[#F5A623]" />
-                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Sprint 12 — activo</h3>
-                <span className="text-[11px] text-[#6B7AAD] font-mono ml-2">19 Jun — 2 Jul 2026</span>
+                <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Sprint 12 — activo</h3>
+                <span className="text-[11px] text-[#64748B] font-mono ml-2">19 Jun — 2 Jul 2026</span>
               </div>
               <span className="bg-[#F5A623]/15 text-[#F5A623] text-[11px] font-bold px-2.5 py-0.5 rounded-full">75% completado</span>
             </div>
             
             <div className="mt-4 space-y-4">
-              <div className="w-full bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#4F7EF8] h-full rounded-full transition-all duration-300" style={{ width: '75%' }}></div>
+              <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
+                <div className="bg-[#0E457F] h-full rounded-full transition-all duration-300" style={{ width: '75%' }}></div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-[#10CC82]/8 border border-[#10CC82]/20 rounded-lg p-3">
                   <div className="text-[18px] font-bold text-[#10CC82]">6</div>
-                  <div className="text-[11px] text-[#6B7AAD] mt-0.5">Stories completadas</div>
+                  <div className="text-[11px] text-[#64748B] mt-0.5">Stories completadas</div>
                 </div>
-                <div className="bg-[#4F7EF8]/8 border border-[#4F7EF8]/20 rounded-lg p-3">
-                  <div className="text-[18px] font-bold text-[#7AA4FA]">2</div>
-                  <div className="text-[11px] text-[#6B7AAD] mt-0.5">En progreso</div>
+                <div className="bg-[#0E457F]/8 border border-[#0E457F]/20 rounded-lg p-3">
+                  <div className="text-[18px] font-bold text-[#47B6E6]">2</div>
+                  <div className="text-[11px] text-[#64748B] mt-0.5">En progreso</div>
                 </div>
-                <div className="bg-[#6B7AAD]/8 border border-[#6B7AAD]/20 rounded-lg p-3">
-                  <div className="text-[18px] font-bold text-[#9AA3CC]">2</div>
-                  <div className="text-[11px] text-[#6B7AAD] mt-0.5">Pendientes</div>
+                <div className="bg-[#64748B]/8 border border-[#64748B]/20 rounded-lg p-3">
+                  <div className="text-[18px] font-bold text-[#8DA2B5]">2</div>
+                  <div className="text-[11px] text-[#64748B] mt-0.5">Pendientes</div>
                 </div>
               </div>
             </div>
@@ -234,18 +234,18 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
                 if (items.length === 0) return null;
                 return (
                   <div key={q} className="space-y-2.5">
-                    <div className="text-[12px] font-bold text-[#7AA4FA] uppercase tracking-wider pl-1">{q} · {q === 'Q2 2026' ? 'En curso' : q === 'Q3 2026' ? 'Planificado' : 'Futuro'}</div>
+                    <div className="text-[12px] font-bold text-[#47B6E6] uppercase tracking-wider pl-1">{q} · {q === 'Q2 2026' ? 'En curso' : q === 'Q3 2026' ? 'Planificado' : 'Futuro'}</div>
                     <div className="space-y-2">
                       {items.map(item => (
                         <div 
                           key={item.id} 
-                          className="flex items-start gap-3 p-3.5 bg-[#0F1330] border border-[#1C2248] rounded-lg hover:border-[#4F7EF8]/50 transition-all"
+                          className="flex items-start gap-3 p-3.5 bg-[#14243A] border border-[#22384F] rounded-lg hover:border-[#0E457F]/50 transition-all"
                         >
                           <div className={`w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0 ${getDotColor(item.status)}`}></div>
                           <div>
-                            <div className="text-[13.5px] font-medium text-[#E4EAFF]">{item.title}</div>
-                            <div className="text-[12px] text-[#6B7AAD] mt-1 leading-normal">
-                              {item.description} · <span className="font-semibold text-[11px] text-[#9AA3CC]/90">{item.status}</span>
+                            <div className="text-[13.5px] font-medium text-[#EAF3F9]">{item.title}</div>
+                            <div className="text-[12px] text-[#64748B] mt-1 leading-normal">
+                              {item.description} · <span className="font-semibold text-[11px] text-[#8DA2B5]/90">{item.status}</span>
                             </div>
                           </div>
                         </div>
@@ -257,42 +257,42 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
             </div>
 
             {/* Workstreams section */}
-            <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg">
-              <div className="border-b border-[#1C2248] px-5 py-4">
-                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Workstreams del equipo</h3>
-                <p className="text-[11.5px] text-[#6B7AAD] mt-0.5">Líneas de trabajo internas y su avance</p>
+            <div className="bg-[#14243A] border border-[#22384F] rounded-lg">
+              <div className="border-b border-[#22384F] px-5 py-4">
+                <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Workstreams del equipo</h3>
+                <p className="text-[11.5px] text-[#64748B] mt-0.5">Líneas de trabajo internas y su avance</p>
               </div>
 
               <table className="w-full">
                 <thead>
                   <tr className="bg-white/[0.02]">
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Workstream</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Estado</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Responsable</th>
-                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider border-b border-[#1C2248]">Progreso</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Workstream</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Estado</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Responsable</th>
+                    <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Progreso</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1C2248]">
+                <tbody className="divide-y divide-[#22384F]">
                   {modules.map((mod) => (
-                    <tr key={mod.id} className="hover:bg-[#4F7EF8]/4 transition-colors">
-                      <td className="px-5 py-3 font-medium text-[#E4EAFF] text-[13.5px]">{mod.name}</td>
+                    <tr key={mod.id} className="hover:bg-[#0E457F]/4 transition-colors">
+                      <td className="px-5 py-3 font-medium text-[#EAF3F9] text-[13.5px]">{mod.name}</td>
                       <td className="px-5 py-3">
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${getBadgeStyle(mod.status)}`}>
                           {mod.status}
                         </span>
                       </td>
                       <td className="px-5 py-3 text-[13px]">
-                        <span className={mod.owner === 'Sin asignar' ? 'text-[#6B7AAD] italic' : 'text-[#9AA3CC]'}>{mod.owner}</span>
+                        <span className={mod.owner === 'Sin asignar' ? 'text-[#64748B] italic' : 'text-[#8DA2B5]'}>{mod.owner}</span>
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-[54px] bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
+                          <div className="w-[54px] bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                             <div
-                              className={`h-full rounded-full ${mod.progress === 100 ? 'bg-[#10CC82]' : mod.progress === 0 ? 'bg-[#6B7AAD]/30' : 'bg-[#4F7EF8]'}`}
+                              className={`h-full rounded-full ${mod.progress === 100 ? 'bg-[#10CC82]' : mod.progress === 0 ? 'bg-[#64748B]/30' : 'bg-[#0E457F]'}`}
                               style={{ width: `${mod.progress}%` }}
                             ></div>
                           </div>
-                          <span className={`text-[11.5px] font-semibold font-mono ${mod.progress === 100 ? 'text-[#10CC82]' : mod.progress === 0 ? 'text-[#6B7AAD]' : 'text-[#7AA4FA]'}`}>{mod.progress}%</span>
+                          <span className={`text-[11.5px] font-semibold font-mono ${mod.progress === 100 ? 'text-[#10CC82]' : mod.progress === 0 ? 'text-[#64748B]' : 'text-[#47B6E6]'}`}>{mod.progress}%</span>
                         </div>
                       </td>
                     </tr>
@@ -307,33 +307,33 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
         <div className="space-y-6 animate-fade-in">
           {/* Consolidated Quick Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#00C9A7]">
-              <div className="text-[11px] text-[#6B7AAD] font-semibold uppercase tracking-wider">AI Airports Activos</div>
-              <div className="text-[24px] font-bold text-[#E4EAFF] mt-1 tracking-tight leading-none">3 Nodos (BCN, MAD, LIS)</div>
+            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#00C9A7]">
+              <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">AI Airports Activos</div>
+              <div className="text-[24px] font-bold text-[#EAF3F9] mt-1 tracking-tight leading-none">3 Nodos (BCN, MAD, LIS)</div>
               <div className="text-[11px] text-[#00C9A7] flex items-center gap-1 mt-3">
                 <Sparkles className="w-3 h-3" /> Precisión Promedio: 94.2%
               </div>
             </div>
 
-            <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#4F7EF8]">
-              <div className="text-[11px] text-[#6B7AAD] font-semibold uppercase tracking-wider">Hito de Progreso Actual</div>
-              <div className="text-[24px] font-bold text-[#E4EAFF] mt-1 tracking-tight leading-none">Fase 2 (En Curso)</div>
-              <div className="text-[11px] text-[#7AA4FA] flex items-center gap-1 mt-3">
+            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
+              <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Hito de Progreso Actual</div>
+              <div className="text-[24px] font-bold text-[#EAF3F9] mt-1 tracking-tight leading-none">Fase 2 (En Curso)</div>
+              <div className="text-[11px] text-[#47B6E6] flex items-center gap-1 mt-3">
                 <Activity className="w-3 h-3" /> Hitos de Fase 2: 70%
               </div>
             </div>
 
-            <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#8B63F5]">
-              <div className="text-[11px] text-[#6B7AAD] font-semibold uppercase tracking-wider">Runway Disponible</div>
-              <div className="text-[24px] font-bold text-[#E4EAFF] mt-1 tracking-tight leading-none">16.5 Meses</div>
-              <div className="text-[11px] text-[#8B63F5] flex items-center gap-1 mt-3">
+            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
+              <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Runway Disponible</div>
+              <div className="text-[24px] font-bold text-[#EAF3F9] mt-1 tracking-tight leading-none">16.5 Meses</div>
+              <div className="text-[11px] text-[#47B6E6] flex items-center gap-1 mt-3">
                 <TrendingUp className="w-3 h-3" /> Caja: €504K restante
               </div>
             </div>
 
-            <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
-              <div className="text-[11px] text-[#6B7AAD] font-semibold uppercase tracking-wider">Masa Salarial / Mes</div>
-              <div className="text-[24px] font-bold text-[#E4EAFF] mt-1 tracking-tight leading-none">€35.5K /mes</div>
+            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
+              <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Masa Salarial / Mes</div>
+              <div className="text-[24px] font-bold text-[#EAF3F9] mt-1 tracking-tight leading-none">€35.5K /mes</div>
               <div className="text-[11px] text-[#F5A623] flex items-center gap-1 mt-3">
                 <Users className="w-3 h-3" /> 5 personas + Hiring
               </div>
@@ -341,63 +341,63 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
           </div>
 
           {/* Table: AI Airports Deployments */}
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-lg">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Plane className="w-4 h-4 text-[#00C9A7]" />
-                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Estado de Despliegue de AI Airports</h3>
+                <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Estado de Despliegue de AI Airports</h3>
               </div>
               <span className="text-[10.5px] bg-[#00C9A7]/15 text-[#00C9A7] font-mono px-2 py-0.5 rounded font-bold uppercase">3 nodos activos</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="bg-white/[0.02] border-b border-[#1C2248]">
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">IATA</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Aeropuerto</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Ubicación</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Precisión IA</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Pasajeros/Día</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Reducción Espera</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Módulos Activos</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Estado</th>
+                  <tr className="bg-white/[0.02] border-b border-[#22384F]">
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">IATA</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Aeropuerto</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Ubicación</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Precisión IA</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Pasajeros/Día</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Reducción Espera</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Módulos Activos</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Estado</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1C2248]">
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-mono font-bold text-[#7AA4FA]">BCN</td>
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Aeropuerto El Prat</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD]">Barcelona · España</td>
+                <tbody className="divide-y divide-[#22384F]">
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-mono font-bold text-[#47B6E6]">BCN</td>
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Aeropuerto El Prat</td>
+                    <td className="px-5 py-3.5 text-[#64748B]">Barcelona · España</td>
                     <td className="px-5 py-3.5 text-[#00C9A7] font-mono font-bold">98.1%</td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC]">52K</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5]">52K</td>
                     <td className="px-5 py-3.5 text-[#10CC82] font-semibold">-41%</td>
-                    <td className="px-5 py-3.5 text-[12.5px] text-[#9AA3CC]">AI Queue Predictor · Live Dashboard</td>
+                    <td className="px-5 py-3.5 text-[12.5px] text-[#8DA2B5]">AI Queue Predictor · Live Dashboard</td>
                     <td className="px-5 py-3.5">
                       <span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] font-bold px-2 py-0.5 rounded">Activo</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-mono font-bold text-[#7AA4FA]">MAD</td>
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Aeropuerto Barajas</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD]">Madrid · España</td>
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-mono font-bold text-[#47B6E6]">MAD</td>
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Aeropuerto Barajas</td>
+                    <td className="px-5 py-3.5 text-[#64748B]">Madrid · España</td>
                     <td className="px-5 py-3.5 text-[#00C9A7] font-mono font-bold">93.4%</td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC]">74K</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5]">74K</td>
                     <td className="px-5 py-3.5 text-[#10CC82] font-semibold">-35%</td>
-                    <td className="px-5 py-3.5 text-[12.5px] text-[#9AA3CC]">AI Queue Predictor</td>
+                    <td className="px-5 py-3.5 text-[12.5px] text-[#8DA2B5]">AI Queue Predictor</td>
                     <td className="px-5 py-3.5">
                       <span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] font-bold px-2 py-0.5 rounded">Activo</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-mono font-bold text-[#7AA4FA]">LIS</td>
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Aeroporto de Lisboa</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD]">Lisboa · Portugal</td>
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-mono font-bold text-[#47B6E6]">LIS</td>
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Aeroporto de Lisboa</td>
+                    <td className="px-5 py-3.5 text-[#64748B]">Lisboa · Portugal</td>
                     <td className="px-5 py-3.5 text-[#00C9A7] font-mono font-bold">91.2%</td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC]">16K</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5]">16K</td>
                     <td className="px-5 py-3.5 text-[#10CC82] font-semibold">-38%</td>
-                    <td className="px-5 py-3.5 text-[12.5px] text-[#9AA3CC]">AI Queue Predictor · Piloto</td>
+                    <td className="px-5 py-3.5 text-[12.5px] text-[#8DA2B5]">AI Queue Predictor · Piloto</td>
                     <td className="px-5 py-3.5">
-                      <span className="bg-[#4F7EF8]/15 text-[#7AA4FA] text-[10px] font-bold px-2 py-0.5 rounded">Beta</span>
+                      <span className="bg-[#0E457F]/15 text-[#47B6E6] text-[10px] font-bold px-2 py-0.5 rounded">Beta</span>
                     </td>
                   </tr>
                 </tbody>
@@ -406,40 +406,40 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
           </div>
 
           {/* Table: Project Milestones & Progress */}
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-lg">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#8B63F5]" />
-                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Hitos Estratégicos &amp; Financieros (Compensaciones de Progreso)</h3>
+                <Award className="w-4 h-4 text-[#47B6E6]" />
+                <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Hitos Estratégicos &amp; Financieros (Compensaciones de Progreso)</h3>
               </div>
-              <span className="text-[10.5px] bg-[#8B63F5]/15 text-[#8B63F5] font-mono px-2 py-0.5 rounded font-bold uppercase">Consolidado fases 1-4</span>
+              <span className="text-[10.5px] bg-[#47B6E6]/15 text-[#47B6E6] font-mono px-2 py-0.5 rounded font-bold uppercase">Consolidado fases 1-4</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="bg-white/[0.02] border-b border-[#1C2248]">
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Fase</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Descripción</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Financiación</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Fecha Objetivo</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Hito Crítico</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Progreso</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Estado</th>
+                  <tr className="bg-white/[0.02] border-b border-[#22384F]">
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Fase</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Descripción</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Financiación</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Fecha Objetivo</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Hito Crítico</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Progreso</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Estado</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1C2248]">
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
+                <tbody className="divide-y divide-[#22384F]">
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
                     <td className="px-5 py-3.5 font-bold text-white text-[13px]">Fase 1</td>
                     <td className="px-5 py-3.5">
-                      <div className="font-medium text-[#E4EAFF]">Validación y MVP</div>
-                      <div className="text-[11.5px] text-[#6B7AAD]">Lanzamiento en Barajas con Iberia</div>
+                      <div className="font-medium text-[#EAF3F9]">Validación y MVP</div>
+                      <div className="text-[11.5px] text-[#64748B]">Lanzamiento en Barajas con Iberia</div>
                     </td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC] font-mono text-[12.5px]">Fundadores (€400K)</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD] text-[12.5px]">Q1 2026</td>
-                    <td className="px-5 py-3.5 text-[#E4EAFF] text-[12.5px]">Firma de acuerdo con Iberia T4</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5] font-mono text-[12.5px]">Fundadores (€400K)</td>
+                    <td className="px-5 py-3.5 text-[#64748B] text-[12.5px]">Q1 2026</td>
+                    <td className="px-5 py-3.5 text-[#EAF3F9] text-[12.5px]">Firma de acuerdo con Iberia T4</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-[60px] bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
+                        <div className="w-[60px] bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                           <div className="bg-[#10CC82] h-full" style={{ width: '100%' }}></div>
                         </div>
                         <span className="text-[11.5px] font-semibold text-[#10CC82]">100%</span>
@@ -449,67 +449,67 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
                       <span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] font-bold px-2 py-0.5 rounded">Completado</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
                     <td className="px-5 py-3.5 font-bold text-white text-[13px]">Fase 2</td>
                     <td className="px-5 py-3.5">
-                      <div className="font-medium text-[#E4EAFF]">Escalamiento Local</div>
-                      <div className="text-[11.5px] text-[#6B7AAD]">Sincronización de vouchers comercios</div>
+                      <div className="font-medium text-[#EAF3F9]">Escalamiento Local</div>
+                      <div className="text-[11.5px] text-[#64748B]">Sincronización de vouchers comercios</div>
                     </td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC] font-mono text-[12.5px]">SAFE Semilla ($180K)</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD] text-[12.5px]">Q3 2026</td>
-                    <td className="px-5 py-3.5 text-[#E4EAFF] text-[12.5px]">SAFE Clara Ortiz &amp; Air Europa</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5] font-mono text-[12.5px]">SAFE Semilla ($180K)</td>
+                    <td className="px-5 py-3.5 text-[#64748B] text-[12.5px]">Q3 2026</td>
+                    <td className="px-5 py-3.5 text-[#EAF3F9] text-[12.5px]">SAFE Clara Ortiz &amp; Air Europa</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-[60px] bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
-                          <div className="bg-[#4F7EF8] h-full" style={{ width: '70%' }}></div>
+                        <div className="w-[60px] bg-[#22384F] h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-[#0E457F] h-full" style={{ width: '70%' }}></div>
                         </div>
-                        <span className="text-[11.5px] font-semibold text-[#7AA4FA]">70%</span>
+                        <span className="text-[11.5px] font-semibold text-[#47B6E6]">70%</span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="bg-[#4F7EF8]/15 text-[#7AA4FA] text-[10px] font-bold px-2 py-0.5 rounded">En Curso</span>
+                      <span className="bg-[#0E457F]/15 text-[#47B6E6] text-[10px] font-bold px-2 py-0.5 rounded">En Curso</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
                     <td className="px-5 py-3.5 font-bold text-white text-[13px]">Fase 3</td>
                     <td className="px-5 py-3.5">
-                      <div className="font-medium text-[#E4EAFF]">Expansión Europea</div>
-                      <div className="text-[11.5px] text-[#6B7AAD]">App nativa &amp; aeropuertos EMEA</div>
+                      <div className="font-medium text-[#EAF3F9]">Expansión Europea</div>
+                      <div className="text-[11.5px] text-[#64748B]">App nativa &amp; aeropuertos EMEA</div>
                     </td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC] font-mono text-[12.5px]">Semilla (€1.2M)</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD] text-[12.5px]">Q4 2026</td>
-                    <td className="px-5 py-3.5 text-[#E4EAFF] text-[12.5px]">Levantar €1.2M con Andes Ventures</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5] font-mono text-[12.5px]">Semilla (€1.2M)</td>
+                    <td className="px-5 py-3.5 text-[#64748B] text-[12.5px]">Q4 2026</td>
+                    <td className="px-5 py-3.5 text-[#EAF3F9] text-[12.5px]">Levantar €1.2M con Andes Ventures</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-[60px] bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
-                          <div className="bg-[#6B7AAD]/30 h-full" style={{ width: '0%' }}></div>
+                        <div className="w-[60px] bg-[#22384F] h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-[#64748B]/30 h-full" style={{ width: '0%' }}></div>
                         </div>
-                        <span className="text-[11.5px] font-semibold text-[#6B7AAD]">0%</span>
+                        <span className="text-[11.5px] font-semibold text-[#64748B]">0%</span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="bg-[#6B7AAD]/10 text-[#6B7AAD] text-[10px] font-bold px-2 py-0.5 rounded">Planificado</span>
+                      <span className="bg-[#64748B]/10 text-[#64748B] text-[10px] font-bold px-2 py-0.5 rounded">Planificado</span>
                     </td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
                     <td className="px-5 py-3.5 font-bold text-white text-[13px]">Fase 4</td>
                     <td className="px-5 py-3.5">
-                      <div className="font-medium text-[#E4EAFF]">Serie A &amp; Global</div>
-                      <div className="text-[11.5px] text-[#6B7AAD]">Módulo AI Baggage Tracking</div>
+                      <div className="font-medium text-[#EAF3F9]">Serie A &amp; Global</div>
+                      <div className="text-[11.5px] text-[#64748B]">Módulo AI Baggage Tracking</div>
                     </td>
-                    <td className="px-5 py-3.5 text-[#9AA3CC] font-mono text-[12.5px]">Serie A (€5.0M)</td>
-                    <td className="px-5 py-3.5 text-[#6B7AAD] text-[12.5px]">Q3 2027</td>
-                    <td className="px-5 py-3.5 text-[#E4EAFF] text-[12.5px]">Predictor inteligente de pérdida de equipaje</td>
+                    <td className="px-5 py-3.5 text-[#8DA2B5] font-mono text-[12.5px]">Serie A (€5.0M)</td>
+                    <td className="px-5 py-3.5 text-[#64748B] text-[12.5px]">Q3 2027</td>
+                    <td className="px-5 py-3.5 text-[#EAF3F9] text-[12.5px]">Predictor inteligente de pérdida de equipaje</td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-[60px] bg-[#1C2248] h-1.5 rounded-full overflow-hidden">
-                          <div className="bg-[#6B7AAD]/30 h-full" style={{ width: '0%' }}></div>
+                        <div className="w-[60px] bg-[#22384F] h-1.5 rounded-full overflow-hidden">
+                          <div className="bg-[#64748B]/30 h-full" style={{ width: '0%' }}></div>
                         </div>
-                        <span className="text-[11.5px] font-semibold text-[#6B7AAD]">0%</span>
+                        <span className="text-[11.5px] font-semibold text-[#64748B]">0%</span>
                       </div>
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="bg-[#8B63F5]/10 text-[#8B63F5] text-[10px] font-bold px-2 py-0.5 rounded">I+D</span>
+                      <span className="bg-[#47B6E6]/10 text-[#47B6E6] text-[10px] font-bold px-2 py-0.5 rounded">I+D</span>
                     </td>
                   </tr>
                 </tbody>
@@ -518,60 +518,60 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
           </div>
 
           {/* Table: Team Compensation Summary */}
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-lg">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-lg">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#4F7EF8]" />
-                <h3 className="text-[14px] font-semibold text-[#E4EAFF]">Compensaciones y Estructura Salarial de Equipo</h3>
+                <Users className="w-4 h-4 text-[#0E457F]" />
+                <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Compensaciones y Estructura Salarial de Equipo</h3>
               </div>
-              <span className="text-[10.5px] bg-[#4F7EF8]/15 text-[#7AA4FA] font-mono px-2 py-0.5 rounded font-bold uppercase">5 integrantes clave</span>
+              <span className="text-[10.5px] bg-[#0E457F]/15 text-[#47B6E6] font-mono px-2 py-0.5 rounded font-bold uppercase">5 integrantes clave</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="bg-white/[0.02] border-b border-[#1C2248]">
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Persona</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Rol / Cargo</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Salario Mensual</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Equity (Acciones)</th>
-                    <th className="px-5 py-3 text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider">Vesting / Permanencia</th>
+                  <tr className="bg-white/[0.02] border-b border-[#22384F]">
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Persona</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Rol / Cargo</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Salario Mensual</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Equity (Acciones)</th>
+                    <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Vesting / Permanencia</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1C2248]">
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Sebastian M.</td>
-                    <td className="px-5 py-3.5 text-[#7AA4FA] font-medium">Founder (CEO)</td>
+                <tbody className="divide-y divide-[#22384F]">
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Sebastian M.</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-medium">Founder (CEO)</td>
                     <td className="px-5 py-3.5 font-mono">€4,500 /mes</td>
-                    <td className="px-5 py-3.5 text-[#8B63F5] font-bold">45.0%</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-bold">45.0%</td>
                     <td className="px-5 py-3.5 text-xs text-[#10CC82] font-semibold">Founder (Totalmente Adquirido)</td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Alex V.</td>
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Alex V.</td>
                     <td className="px-5 py-3.5 text-[#00C9A7] font-medium">Co-founder (CTO)</td>
                     <td className="px-5 py-3.5 font-mono">€4,500 /mes</td>
-                    <td className="px-5 py-3.5 text-[#8B63F5] font-bold">30.5%</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-bold">30.5%</td>
                     <td className="px-5 py-3.5 text-xs text-[#10CC82] font-semibold">Founder (Totalmente Adquirido)</td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">María R.</td>
-                    <td className="px-5 py-3.5 text-[#8B63F5] font-medium">Senior Engineer</td>
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">María R.</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-medium">Senior Engineer</td>
                     <td className="px-5 py-3.5 font-mono">€9,000 /mes</td>
-                    <td className="px-5 py-3.5 text-[#8B63F5] font-bold">0.8%</td>
-                    <td className="px-5 py-3.5 text-xs text-[#9AA3CC]">Año 2 de 4 (40%)</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-bold">0.8%</td>
+                    <td className="px-5 py-3.5 text-xs text-[#8DA2B5]">Año 2 de 4 (40%)</td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Jorge L.</td>
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Jorge L.</td>
                     <td className="px-5 py-3.5 text-[#F5A623] font-medium">Senior ML Engineer</td>
                     <td className="px-5 py-3.5 font-mono">€10,000 /mes</td>
-                    <td className="px-5 py-3.5 text-[#8B63F5] font-bold">0.7%</td>
-                    <td className="px-5 py-3.5 text-xs text-[#9AA3CC]">Año 1 de 4 (25%)</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-bold">0.7%</td>
+                    <td className="px-5 py-3.5 text-xs text-[#8DA2B5]">Año 1 de 4 (25%)</td>
                   </tr>
-                  <tr className="hover:bg-[#4F7EF8]/4 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-[#E4EAFF]">Laura C.</td>
+                  <tr className="hover:bg-[#0E457F]/4 transition-colors">
+                    <td className="px-5 py-3.5 font-medium text-[#EAF3F9]">Laura C.</td>
                     <td className="px-5 py-3.5 text-[#10CC82] font-medium">Sales AE</td>
                     <td className="px-5 py-3.5 font-mono">€7,500 /mes</td>
-                    <td className="px-5 py-3.5 text-[#8B63F5] font-bold">0.4%</td>
-                    <td className="px-5 py-3.5 text-xs text-[#9AA3CC]">Mes 6 de 48 (15%)</td>
+                    <td className="px-5 py-3.5 text-[#47B6E6] font-bold">0.4%</td>
+                    <td className="px-5 py-3.5 text-xs text-[#8DA2B5]">Mes 6 de 48 (15%)</td>
                   </tr>
                 </tbody>
               </table>
@@ -582,35 +582,35 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
 
       {/* Detail Backlog Modal */}
       {isBacklogOpen && (
-        <div className="fixed inset-0 z-50 bg-[#07091C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-xl w-full max-w-lg shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#E4EAFF] flex items-center gap-1.5"><List className="w-4 h-4 text-[#4F7EF8]" /> Backlog de Requerimientos</h3>
-              <button onClick={() => setIsBacklogOpen(false)} className="text-[#6B7AAD] hover:text-[#E4EAFF] transition-colors p-1">
+        <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-lg shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#EAF3F9] flex items-center gap-1.5"><List className="w-4 h-4 text-[#0E457F]" /> Backlog de Requerimientos</h3>
+              <button onClick={() => setIsBacklogOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-5 max-h-[400px] overflow-y-auto space-y-3 divide-y divide-[#1C2248]/60">
+            <div className="p-5 max-h-[400px] overflow-y-auto space-y-3 divide-y divide-[#22384F]/60">
               <div className="pt-2 first:pt-0">
                 <div className="flex justify-between items-start text-[13px]">
-                  <span className="font-semibold text-[#7AA4FA]">#IW-192 Redirección de contingencias</span>
-                  <span className="text-[10px] bg-[#222850] px-1.5 py-0.5 text-[#9AA3CC] rounded">Alta</span>
+                  <span className="font-semibold text-[#47B6E6]">#IW-192 Redirección de contingencias</span>
+                  <span className="text-[10px] bg-[#2A415A] px-1.5 py-0.5 text-[#8DA2B5] rounded">Alta</span>
                 </div>
-                <p className="text-[11.5px] text-[#6B7AAD] mt-1">Automatización de triggers de cupones digitales mediante integraciones con el API de OPAIN.</p>
+                <p className="text-[11.5px] text-[#64748B] mt-1">Automatización de triggers de cupones digitales mediante integraciones con el API de OPAIN.</p>
               </div>
               <div className="pt-3">
                 <div className="flex justify-between items-start text-[13px]">
-                  <span className="font-semibold text-[#E4EAFF]">#IW-113 Validación de pasaportes vía OCR</span>
-                  <span className="text-[10px] bg-[#222850] px-1.5 py-0.5 text-[#9AA3CC] rounded">Media</span>
+                  <span className="font-semibold text-[#EAF3F9]">#IW-113 Validación de pasaportes vía OCR</span>
+                  <span className="text-[10px] bg-[#2A415A] px-1.5 py-0.5 text-[#8DA2B5] rounded">Media</span>
                 </div>
-                <p className="text-[11.5px] text-[#6B7AAD] mt-1">Módulo para que el pasajero escanee su ID nacional en WhatsApp y se asiente su cupón de alimentación.</p>
+                <p className="text-[11.5px] text-[#64748B] mt-1">Módulo para que el pasajero escanee su ID nacional en WhatsApp y se asiente su cupón de alimentación.</p>
               </div>
               <div className="pt-3">
                 <div className="flex justify-between items-start text-[13px]">
-                  <span className="font-semibold text-[#E4EAFF]">#IW-88 Compensaciones automáticas SEPA</span>
-                  <span className="text-[10px] bg-[#222850] px-1.5 py-0.5 text-[#9AA3CC] rounded font-mono">Baja</span>
+                  <span className="font-semibold text-[#EAF3F9]">#IW-88 Compensaciones automáticas SEPA</span>
+                  <span className="text-[10px] bg-[#2A415A] px-1.5 py-0.5 text-[#8DA2B5] rounded font-mono">Baja</span>
                 </div>
-                <p className="text-[11.5px] text-[#6B7AAD] mt-1">Sincronización con bancos locales europeos para realizar pagos automáticos instantáneos.</p>
+                <p className="text-[11.5px] text-[#64748B] mt-1">Sincronización con bancos locales europeos para realizar pagos automáticos instantáneos.</p>
               </div>
             </div>
           </div>
@@ -619,46 +619,46 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
 
       {/* New Feature Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#07091C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0F1330] border border-[#1C2248] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#1C2248] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#E4EAFF]">Añadir Nueva Feature</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#6B7AAD] hover:text-[#E4EAFF] transition-colors p-1">
+        <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#EAF3F9]">Añadir Nueva Feature</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <form onSubmit={handleCreateFeature} className="p-5 space-y-4">
               <div>
-                <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Título / Módulo</label>
+                <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Título / Módulo</label>
                 <input 
                   type="text" 
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ej. Notificaciones push en tiempo real v1"
-                  className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Descripción</label>
+                <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Descripción</label>
                 <textarea 
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
                   placeholder="Objetivo e impacto de la feature"
                   rows={2}
-                  className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] placeholder-[#6B7AAD] focus:outline-none focus:border-[#4F7EF8] text-sm resize-none"
+                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Trimestre Objetivo</label>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Trimestre Objetivo</label>
                   <select 
                     value={quarter}
                     onChange={(e: any) => setQuarter(e.target.value)}
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Q2 2026">Q2 2026</option>
                     <option value="Q3 2026">Q3 2026</option>
@@ -666,11 +666,11 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium text-[#6B7AAD] uppercase tracking-wider mb-1.5">Estado Inicial</label>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Estado Inicial</label>
                   <select 
                     value={status}
                     onChange={(e: any) => setStatus(e.target.value)}
-                    className="w-full bg-[#131740] border border-[#222850] rounded-lg px-3 py-2 text-[#E4EAFF] focus:outline-none focus:border-[#4F7EF8] text-sm"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Planificado">Planificado</option>
                     <option value="En desarrollo">En desarrollo</option>
@@ -680,17 +680,17 @@ export default function ProductView({ triggerToast, tasks = [] }: ProductViewPro
                 </div>
               </div>
 
-              <div className="border-t border-[#1C2248] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#222850] text-[#6B7AAD] hover:text-[#E4EAFF] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#4F7EF8] hover:bg-[#2B56D6] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
                 >
                   Publicar Feature
                 </button>

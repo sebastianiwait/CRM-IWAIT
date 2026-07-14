@@ -219,8 +219,8 @@ export default function App() {
         );
       default:
         return (
-          <div className="p-8 text-center bg-[#0F1330] rounded-xl border border-[#1C2248]">
-            <Info className="w-8 h-8 text-[#4F7EF8] mx-auto mb-2" />
+          <div className="p-8 text-center bg-[#14243A] rounded-xl border border-[#22384F]">
+            <Info className="w-8 h-8 text-[#0E457F] mx-auto mb-2" />
             <h3 className="text-lg font-bold">Sección en construcción</h3>
           </div>
         );
@@ -228,7 +228,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07091C] text-[#E4EAFF] font-sans antialiased flex">
+    <div className="min-h-screen bg-[#0F1A2C] text-[#EAF3F9] font-sans antialiased flex">
       
       {/* Sidebar navigation */}
       <Sidebar 
@@ -238,11 +238,11 @@ export default function App() {
       />
 
       {/* Main content stage */}
-      <main className="flex-1 ml-[230px] min-h-screen flex flex-col relative">
-        <div className="sticky top-0 z-40 bg-[#07091C]/90 backdrop-blur-md border-b border-[#1C2248] px-8 py-4">
+      <main className="flex-1 ml-[230px] min-h-screen flex flex-col relative bg-gradient-to-br from-[#cde4ed] via-[#f5fcfd] to-white">
+        <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#c3dae4] px-8 py-4">
           <div className="max-w-3xl mx-auto relative">
-            <div className={`relative flex items-center bg-[#0F1330] border ${isSearchFocused ? 'border-[#4F7EF8] ring-1 ring-[#4F7EF8]/50' : 'border-[#1C2248]'} rounded-xl transition-all duration-200`}>
-              <Search className={`absolute left-4 w-5 h-5 ${isSearchFocused ? 'text-[#4F7EF8]' : 'text-[#6B7AAD]'}`} />
+            <div className={`relative flex items-center bg-white border ${isSearchFocused ? 'border-[#0E457F] ring-1 ring-[#0E457F]/40' : 'border-[#c3dae4]'} rounded-xl transition-all duration-200 shadow-sm`}>
+              <Search className={`absolute left-4 w-5 h-5 ${isSearchFocused ? 'text-[#0E457F]' : 'text-[#64748B]'}`} />
               <input
                 type="text"
                 placeholder="Buscar inversores, clientes o tareas..."
@@ -250,7 +250,7 @@ export default function App() {
                 onChange={(e) => handleGlobalSearch(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
                 onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)} // delay to allow clicking results
-                className="w-full bg-transparent border-none text-[#E4EAFF] placeholder-[#6B7AAD] pl-12 pr-4 py-3 focus:outline-none rounded-xl text-[14px]"
+                className="w-full bg-transparent border-none text-[#0F1A2C] placeholder-[#64748B] pl-12 pr-4 py-3 focus:outline-none rounded-xl text-[14px]"
               />
               {globalSearchTerm && (
                 <button
@@ -258,7 +258,7 @@ export default function App() {
                     setGlobalSearchTerm('');
                     setIsSearchFocused(false);
                   }}
-                  className="absolute right-4 text-[#6B7AAD] hover:text-[#E4EAFF] text-[12px] font-medium"
+                  className="absolute right-4 text-[#64748B] hover:text-[#EAF3F9] text-[12px] font-medium"
                 >
                   ESC
                 </button>
@@ -267,12 +267,12 @@ export default function App() {
 
             {/* Search Results Dropdown */}
             {isSearchFocused && globalSearchTerm && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-[#0F1330] border border-[#1C2248] rounded-xl shadow-2xl overflow-hidden z-50 max-h-[70vh] overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-[#14243A] border border-[#22384F] rounded-xl shadow-2xl overflow-hidden z-50 max-h-[70vh] overflow-y-auto">
                 {hasResults ? (
                   <div className="py-2">
                     {searchResults.investors.length > 0 && (
                       <div className="px-3 py-2">
-                        <h4 className="text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider mb-2 px-3">Inversores</h4>
+                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Inversores</h4>
                         {searchResults.investors.map(inv => (
                           <button
                             key={inv.id}
@@ -280,26 +280,26 @@ export default function App() {
                               setActiveTab('inversionstas');
                               setGlobalSearchTerm('');
                             }}
-                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#131740] group transition-colors"
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#1B2F49] group transition-colors"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-[#8B63F5]/10 text-[#8B63F5] flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-full bg-[#47B6E6]/10 text-[#47B6E6] flex items-center justify-center">
                                 <Building2 className="w-4 h-4" />
                               </div>
                               <div>
-                                <div className="text-[13px] font-semibold text-[#E4EAFF] group-hover:text-[#4F7EF8] transition-colors">{inv.name}</div>
-                                <div className="text-[11px] text-[#6B7AAD]">{inv.type}</div>
+                                <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors">{inv.name}</div>
+                                <div className="text-[11px] text-[#64748B]">{inv.type}</div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#1C2248] text-[#9AA3CC]">{inv.status}</span>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5]">{inv.status}</span>
                           </button>
                         ))}
                       </div>
                     )}
 
                     {searchResults.clients.length > 0 && (
-                      <div className="px-3 py-2 border-t border-[#1C2248]">
-                        <h4 className="text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider mb-2 px-3">Cuentas y Leads</h4>
+                      <div className="px-3 py-2 border-t border-[#22384F]">
+                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Cuentas y Leads</h4>
                         {searchResults.clients.map(cli => (
                           <button
                             key={cli.id}
@@ -307,26 +307,26 @@ export default function App() {
                               setActiveTab(cli.status === 'Lead' || cli.status === 'Negociando' ? 'leads' : 'clientes');
                               setGlobalSearchTerm('');
                             }}
-                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#131740] group transition-colors"
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#1B2F49] group transition-colors"
                           >
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-[#10CC82]/10 text-[#10CC82] flex items-center justify-center">
                                 <Briefcase className="w-4 h-4" />
                               </div>
                               <div>
-                                <div className="text-[13px] font-semibold text-[#E4EAFF] group-hover:text-[#4F7EF8] transition-colors">{cli.name}</div>
-                                <div className="text-[11px] text-[#6B7AAD]">{cli.type}</div>
+                                <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors">{cli.name}</div>
+                                <div className="text-[11px] text-[#64748B]">{cli.type}</div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#1C2248] text-[#9AA3CC]">{cli.status}</span>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5]">{cli.status}</span>
                           </button>
                         ))}
                       </div>
                     )}
 
                     {searchResults.tasks.length > 0 && (
-                      <div className="px-3 py-2 border-t border-[#1C2248]">
-                        <h4 className="text-[11px] font-semibold text-[#6B7AAD] uppercase tracking-wider mb-2 px-3">Tareas</h4>
+                      <div className="px-3 py-2 border-t border-[#22384F]">
+                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Tareas</h4>
                         {searchResults.tasks.map(task => (
                           <button
                             key={task.id}
@@ -334,18 +334,18 @@ export default function App() {
                               setActiveTab('tareas');
                               setGlobalSearchTerm('');
                             }}
-                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#131740] group transition-colors"
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#1B2F49] group transition-colors"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-[#4F7EF8]/10 text-[#4F7EF8] flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-full bg-[#0E457F]/10 text-[#0E457F] flex items-center justify-center">
                                 <CheckCircle2 className="w-4 h-4" />
                               </div>
                               <div>
-                                <div className="text-[13px] font-semibold text-[#E4EAFF] group-hover:text-[#4F7EF8] transition-colors line-clamp-1">{task.title}</div>
-                                <div className="text-[11px] text-[#6B7AAD]">Asignado: {task.assignedTo}</div>
+                                <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors line-clamp-1">{task.title}</div>
+                                <div className="text-[11px] text-[#64748B]">Asignado: {task.assignedTo}</div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#1C2248] text-[#9AA3CC] whitespace-nowrap">{task.column}</span>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5] whitespace-nowrap">{task.column}</span>
                           </button>
                         ))}
                       </div>
@@ -353,8 +353,8 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="p-8 text-center">
-                    <Search className="w-8 h-8 text-[#1C2248] mx-auto mb-3" />
-                    <p className="text-[13px] text-[#6B7AAD]">No se encontraron resultados para "{globalSearchTerm}"</p>
+                    <Search className="w-8 h-8 text-[#22384F] mx-auto mb-3" />
+                    <p className="text-[13px] text-[#64748B]">No se encontraron resultados para "{globalSearchTerm}"</p>
                   </div>
                 )}
               </div>
@@ -368,8 +368,8 @@ export default function App() {
 
       {/* Premium custom alert messages / Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#131740] border border-[#4F7EF8] text-[#E4EAFF] px-4 py-3 rounded-lg shadow-2xl flex items-center gap-2.5 animate-slide-up">
-          <Sparkles className="w-4 h-4 text-[#7AA4FA] flex-shrink-0" />
+        <div className="fixed bottom-6 right-6 z-50 bg-[#1B2F49] border border-[#0E457F] text-[#EAF3F9] px-4 py-3 rounded-lg shadow-2xl flex items-center gap-2.5 animate-slide-up">
+          <Sparkles className="w-4 h-4 text-[#47B6E6] flex-shrink-0" />
           <span className="text-[13px] font-medium">{toastMessage}</span>
         </div>
       )}
