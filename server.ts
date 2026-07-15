@@ -14,6 +14,46 @@ async function startServer() {
   const app = express();
   app.use(express.json());
 
+  app.post('/api/notifications/task-assigned', async (req, res) => {
+    const { task } = req.body ?? {};
+    if (!task?.title || !task?.assignedTo || !task?.assigneeEmail) {
+      return res.status(400).json({ error: 'Faltan datos de la tarea o del destinatario.' });
+    }
+
+    const apiKey = process.env.RESEND_API_KEY;
+    const from = process.env.NOTIFICATIONS_FROM;
+    if (!apiKey || !from) {
+      return res.status(503).json({
+        error: 'Correo no configurado. Define RESEND_API_KEY y NOTIFICATIONS_FROM para activar notificaciones.'
+      });
+    }
+
+    try {
+      const emailResponse = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from,
+          to: [task.assigneeEmail],
+          subject: `Nueva tarea iwait: ${task.title}`,
+          html: `<h2>Nueva tarea asignada</h2><p>Hola ${task.assignedTo},</p><p>Se te asignó <strong>${task.title}</strong>.</p><p>${task.description || ''}</p><p><strong>Prioridad:</strong> ${task.priority} &nbsp; <strong>Fecha límite:</strong> ${task.dueDate || 'Por definir'}</p><p>Gestiona esta tarea desde el CRM de iwait.</p>`
+        })
+      });
+
+      if (!emailResponse.ok) {
+        const detail = await emailResponse.text();
+        return res.status(502).json({ error: `No se pudo enviar el correo: ${detail}` });
+      }
+      return res.status(200).json({ sent: true });
+    } catch (error) {
+      console.error('Task notification failed:', error);
+      return res.status(500).json({ error: 'Error al conectar con el servicio de correo.' });
+    }
+  });
+
   // Safe API route for Gemini generations
   app.post('/api/generate', async (req, res) => {
     try {

@@ -52,11 +52,12 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
       if (!invName) return;
       onAddInvestor({
         name: invName,
-        type: 'Angel Investor',
-        status: 'Lead',
+        firm: 'Angel Investor',
+        status: 'Pendiente',
         committedAmount: Number(invAmount) || 0,
-        contactPerson: 'Por definir',
-        notes: ''
+        email: '',
+        round: 'Por definir',
+        sharesPercent: 0
       });
       triggerToast('Inversor creado (Acción Rápida)');
       if (navigate) navigate('inversionstas');
@@ -77,11 +78,12 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
       if (!taskTitle) return;
       onAddTask({
         title: taskTitle,
-        desc: 'Tarea generada desde Quick Actions',
-        date: new Date().toISOString().split('T')[0],
+        description: 'Tarea generada desde Quick Actions',
+        dueDate: new Date().toISOString().split('T')[0],
         priority: 'Media',
-        column: 'Pendiente',
-        assignedTo: taskAssigned || 'Sin asignar'
+        column: 'Por Hacer',
+        assignedTo: taskAssigned || 'Sin asignar',
+        department: 'Producto'
       });
       triggerToast('Tarea creada (Acción Rápida)');
       if (navigate) navigate('tareas');

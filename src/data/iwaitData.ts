@@ -29,6 +29,9 @@ export interface KanbanTask {
   department: 'Producto' | 'Clientes' | 'Inversionistas' | 'Aeropuerto' | 'Legal';
   assignedTo: string;
   dueDate: string;
+  assigneeEmail?: string;
+  reminderAt?: string;
+  notificationSentAt?: string;
 }
 
 export interface ClientEntity {

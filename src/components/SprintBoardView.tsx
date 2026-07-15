@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Search
 } from 'lucide-react';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
 type SprintColumn = 'Backlog' | 'Por Hacer' | 'En Progreso' | 'Hecho';
 
@@ -59,7 +60,7 @@ const NEXT_COLUMN: Record<SprintColumn, SprintColumn | null> = {
 };
 
 export default function SprintBoardView({ triggerToast }: SprintBoardViewProps) {
-  const [tasks, setTasks] = useState<SprintTask[]>(INITIAL_SPRINT_TASKS);
+  const [tasks, setTasks] = useLocalStorageState<SprintTask[]>('iwait.crm.sprints.juan-diego', INITIAL_SPRINT_TASKS);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
