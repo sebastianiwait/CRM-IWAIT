@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocalStorageState } from './hooks/useLocalStorageState';
 import { 
   Sparkles,
   Info,
@@ -34,10 +35,10 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
   
   // State management
-  const [investors, setInvestors] = useState<Investor[]>(INITIAL_INVESTORS);
-  const [dataRoomFiles, setDataRoomFiles] = useState<DataRoomFile[]>(INITIAL_DATA_ROOM);
-  const [tasks, setTasks] = useState<KanbanTask[]>(INITIAL_TASKS);
-  const [clients, setClients] = useState<ClientEntity[]>(INITIAL_CLIENTS);
+  const [investors, setInvestors] = useLocalStorageState<Investor[]>('iwait.crm.investors', INITIAL_INVESTORS);
+  const [dataRoomFiles, setDataRoomFiles] = useLocalStorageState<DataRoomFile[]>('iwait.crm.data-room', INITIAL_DATA_ROOM);
+  const [tasks, setTasks] = useLocalStorageState<KanbanTask[]>('iwait.crm.tasks', INITIAL_TASKS);
+  const [clients, setClients] = useLocalStorageState<ClientEntity[]>('iwait.crm.clients', INITIAL_CLIENTS);
 
   // Global search state
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
