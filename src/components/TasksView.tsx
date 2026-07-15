@@ -81,7 +81,9 @@ export default function TasksView({
   const [priority, setPriority] = useState<'Alta' | 'Media' | 'Baja'>('Media');
   const [dept, setDept] = useState<'Producto' | 'Clientes' | 'Inversionistas' | 'Aeropuerto' | 'Legal'>('Producto');
   const [assigned, setAssigned] = useState('');
+  const [assigneeEmail, setAssigneeEmail] = useState('');
   const [dueDate, setDueDate] = useState('30 Jun 2026');
+  const [reminderAt, setReminderAt] = useState('');
 
   // Process task filtering
   const filteredTasks = useMemo(() => {
@@ -118,12 +120,16 @@ export default function TasksView({
       priority,
       department: dept,
       assignedTo: assigned || 'Sebastian',
-      dueDate: dueDate || 'A convenir'
+      dueDate: dueDate || 'A convenir',
+      assigneeEmail: assigneeEmail.trim() || undefined,
+      reminderAt: reminderAt || undefined
     });
 
     setTitle('');
     setDesc('');
     setAssigned('');
+    setAssigneeEmail('');
+    setReminderAt('');
     setIsModalOpen(false);
   };
 
@@ -438,9 +444,15 @@ export default function TasksView({
                     type="text" 
                     value={assigned}
                     onChange={(e) => setAssigned(e.target.value)}
-                    placeholder="Ej. Sebastian, CTO"
+                    list="team-members"
+                    placeholder="Ej. Juan Diego"
                     className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
+                  <datalist id="team-members">
+                    <option value="Juan Diego">Producto</option>
+                    <option value="Sebastian Mazorra">Founder & CEO</option>
+                    <option value="Laura Diaz">Producto</option>
+                  </datalist>
                 </div>
                 <div>
                   <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Fecha Límite</label>
@@ -450,6 +462,28 @@ export default function TasksView({
                     onChange={(e) => setDueDate(e.target.value)}
                     placeholder="Ej. 28 Jun 2026"
                     className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Correo del responsable</label>
+                  <input
+                    type="email"
+                    value={assigneeEmail}
+                    onChange={(e) => setAssigneeEmail(e.target.value)}
+                    placeholder="juan@iwait.io"
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Recordatorio por correo</label>
+                  <input
+                    type="datetime-local"
+                    value={reminderAt}
+                    onChange={(e) => setReminderAt(e.target.value)}
+                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>

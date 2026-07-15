@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocalStorageState } from './hooks/useLocalStorageState';
 import { 
   Sparkles,
@@ -30,6 +30,7 @@ import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
 import SprintBoardView from './components/SprintBoardView';
+import { notifyTaskAssignee } from './lib/notifications';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
@@ -53,6 +54,31 @@ export default function App() {
       setToastMessage(current => current === msg ? null : current);
     }, 4500);
   };
+
+  useEffect(() => {
+    const dispatchDueReminders = async () => {
+      const dueReminders = tasks.filter(task =>
+        task.assigneeEmail && task.reminderAt && !task.notificationSentAt &&
+        new Date(task.reminderAt).getTime() <= Date.now()
+      );
+
+      for (const task of dueReminders) {
+        try {
+          await notifyTaskAssignee({ ...task, title: `Recordatorio: ${task.title}` });
+          setTasks(current => current.map(item =>
+            item.id === task.id ? { ...item, notificationSentAt: new Date().toISOString() } : item
+          ));
+          triggerToast(`Recordatorio enviado a ${task.assignedTo}`);
+        } catch {
+          // Keep the reminder pending so it can retry on the next pass.
+        }
+      }
+    };
+
+    void dispatchDueReminders();
+    const intervalId = window.setInterval(() => void dispatchDueReminders(), 60_000);
+    return () => window.clearInterval(intervalId);
+  }, [tasks]);
 
   const handleGlobalSearch = (term: string) => {
     setGlobalSearchTerm(term);
@@ -105,6 +131,12 @@ export default function App() {
     };
     setTasks(current => [t, ...current]);
     triggerToast(`Nueva tarea asignada a: ${newTask.assignedTo}`);
+
+    if (t.assigneeEmail) {
+      notifyTaskAssignee(t)
+        .then(() => triggerToast(`Notificación enviada a ${t.assigneeEmail}`))
+        .catch((error: Error) => triggerToast(error.message));
+    }
   };
 
   const handleUpdateTaskColumn = (id: string, newColumn: 'Por Hacer' | 'En Progreso' | 'Hecho') => {
@@ -289,7 +321,7 @@ export default function App() {
                               </div>
                               <div>
                                 <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors">{inv.name}</div>
-                                <div className="text-[11px] text-[#64748B]">{inv.type}</div>
+                                <div className="text-[11px] text-[#64748B]">{inv.firm}</div>
                               </div>
                             </div>
                             <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5]">{inv.status}</span>
