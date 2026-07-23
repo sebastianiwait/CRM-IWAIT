@@ -226,13 +226,13 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
         </div>
         
         {/* Sub-tab Toggle */}
-        <div className="bg-[#0B1524] border border-[#22384F] rounded-lg p-1 flex">
+        <div className="bg-[#eef2f6] border border-[#e6eef4] rounded-lg p-1 flex">
           <button
             onClick={() => setActiveSubTab('roadmap')}
             className={`px-4 py-1.5 rounded-md text-[13px] font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
               activeSubTab === 'roadmap'
                 ? 'bg-[#0E457F] text-white'
-                : 'text-[#64748B] hover:text-[#EAF3F9]'
+                : 'text-[#64748B] hover:text-[#0F1A2C]'
             }`}
           >
             <Compass className="w-3.5 h-3.5" /> Cómo Vamos
@@ -242,7 +242,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
             className={`px-4 py-1.5 rounded-md text-[13px] font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
               activeSubTab === 'compensations'
                 ? 'bg-[#0E457F] text-white'
-                : 'text-[#64748B] hover:text-[#EAF3F9]'
+                : 'text-[#64748B] hover:text-[#0F1A2C]'
             }`}
           >
             <Award className="w-3.5 h-3.5" /> Finanzas &amp; Equipo
@@ -257,17 +257,17 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
         <div className="space-y-6">
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
               <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Fase Actual</div>
-              <div className="text-[20px] font-bold text-[#EAF3F9] mt-1.5 tracking-tight leading-none">Fase 2: Escalamiento</div>
+              <div className="text-[20px] font-bold text-[#0F1A2C] mt-1.5 tracking-tight leading-none">Fase 2: Escalamiento</div>
               <div className="text-[11px] text-[#47B6E6] flex items-center gap-1 mt-3">
                 <Activity className="w-3 h-3 animate-pulse" /> {phase2Progress}% completado
               </div>
             </div>
 
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#10CC82]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#10CC82]">
               <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Hitos Estratégicos</div>
-              <div className="text-[20px] font-bold text-[#EAF3F9] mt-1.5 tracking-tight leading-none">
+              <div className="text-[20px] font-bold text-[#0F1A2C] mt-1.5 tracking-tight leading-none">
                 {4 + completedCurrentPhaseMilestones} / 15
               </div>
               <div className="text-[11px] text-[#10CC82] flex items-center gap-1 mt-3">
@@ -275,17 +275,17 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
               </div>
             </div>
 
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
               <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Siguiente Hito Clave</div>
-              <div className="text-[20px] font-bold text-[#EAF3F9] mt-1.5 tracking-tight leading-none truncate">SAFE Clara Ortiz</div>
+              <div className="text-[20px] font-bold text-[#0F1A2C] mt-1.5 tracking-tight leading-none truncate">SAFE Clara Ortiz</div>
               <div className="text-[11px] text-[#F5A623] flex items-center gap-1 mt-3">
                 <Clock className="w-3 h-3" /> Cierre planeado en 5 días
               </div>
             </div>
 
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
               <div className="text-[11px] text-[#64748B] font-semibold uppercase tracking-wider">Runway &amp; Finanzas</div>
-              <div className="text-[20px] font-bold text-[#EAF3F9] mt-1.5 tracking-tight leading-none">{customRunway} meses</div>
+              <div className="text-[20px] font-bold text-[#0F1A2C] mt-1.5 tracking-tight leading-none">{customRunway} meses</div>
               <div className="text-[11px] text-[#47B6E6] flex items-center gap-1 mt-3">
                 <TrendingUp className="w-3 h-3" /> Fondo disponible: €504K
               </div>
@@ -296,17 +296,17 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
             
             {/* Left: The Roadmap Visual Stepper */}
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 lg:col-span-7 space-y-5">
-              <div className="flex items-center justify-between border-b border-[#22384F] pb-3">
-                <h3 className="text-[14px] font-semibold text-[#EAF3F9] flex items-center gap-2">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 lg:col-span-7 space-y-5">
+              <div className="flex items-center justify-between border-b border-[#e6eef4] pb-3">
+                <h3 className="text-[14px] font-semibold text-[#0F1A2C] flex items-center gap-2">
                   <Milestone className="w-4 h-4 text-[#0E457F]" />
                   Etapas corporativas del Roadmap
                 </h3>
-                <span className="text-[10px] bg-[#22384F] text-[#8DA2B5] px-2 py-0.5 rounded font-mono uppercase">Línea de tiempo</span>
+                <span className="text-[10px] bg-[#22384F] text-[#64748B] px-2 py-0.5 rounded font-mono uppercase">Línea de tiempo</span>
               </div>
 
               {/* Steps Timeline Wrapper */}
-              <div className="relative border-l-2 border-[#22384F] ml-4 pl-6 space-y-7 py-2">
+              <div className="relative border-l-2 border-[#e6eef4] ml-4 pl-6 space-y-7 py-2">
                 
                 {corporateStages.map((stage) => {
                   const isSelected = selectedPhase === stage.number;
@@ -322,12 +322,12 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                       }`}
                     >
                       {/* Left Dot Indicator */}
-                      <span className={`absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 bg-[#14243A] flex items-center justify-center transition-all ${
+                      <span className={`absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 bg-white flex items-center justify-center transition-all ${
                         isCompleted 
                           ? 'border-[#10CC82] bg-[#10CC82]/10 scale-110' 
                           : isCurrent 
                           ? 'border-[#0E457F] bg-[#0E457F]/10 scale-110 shadow-[0_0_10px_rgba(79,126,248,0.4)]' 
-                          : 'border-[#22384F]'
+                          : 'border-[#e6eef4]'
                       }`}>
                         {isCompleted && <span className="w-1.5 h-1.5 rounded-full bg-[#10CC82]" />}
                         {isCurrent && <span className="w-1.5 h-1.5 rounded-full bg-[#0E457F] animate-ping" />}
@@ -336,11 +336,11 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                       {/* Card Box */}
                       <div className={`p-4 rounded-lg border transition-all ${
                         isSelected 
-                          ? 'bg-[#1B2F49] border-[#0E457F]' 
-                          : 'bg-[#1B2F49]/40 border-[#22384F] hover:border-[#22384F]/80'
+                          ? 'bg-[#f5f9fc] border-[#0E457F]' 
+                          : 'bg-[#f5f9fc]/40 border-[#e6eef4] hover:border-[#e6eef4]/80'
                       }`}>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                          <span className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-white">
+                          <span className="text-[13px] font-semibold text-[#0F1A2C] group-hover:text-white">
                             {stage.title}
                           </span>
                           <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-semibold w-fit ${
@@ -355,7 +355,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                         </div>
                         <p className="text-[11.5px] text-[#64748B] mt-1.5 leading-relaxed truncate-2-lines">{stage.description}</p>
                         
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[10.5px] text-[#8DA2B5]">
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-[10.5px] text-[#64748B]">
                           <span className="flex items-center gap-1 font-mono">
                             <span className="text-[#64748B]">Financiación:</span> {stage.funding}
                           </span>
@@ -374,16 +374,16 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
             <div className="lg:col-span-5 space-y-5">
               
               {/* Detailed Card for Selected Phase */}
-              <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 space-y-4">
+              <div className="bg-white border border-[#e6eef4] rounded-lg p-5 space-y-4">
                 {(() => {
                   const stage = corporateStages.find(s => s.number === selectedPhase)!;
                   const isCurrentPhase = stage.number === 2;
 
                   return (
                     <>
-                      <div className="border-b border-[#22384F] pb-3.5">
+                      <div className="border-b border-[#e6eef4] pb-3.5">
                         <div className="text-[10px] text-[#0E457F] font-bold uppercase tracking-wider font-mono mb-1">Fase seleccionada</div>
-                        <h4 className="text-[15px] font-bold text-[#EAF3F9]">{stage.title}</h4>
+                        <h4 className="text-[15px] font-bold text-[#0F1A2C]">{stage.title}</h4>
                         <p className="text-[12px] text-[#64748B] mt-1">{stage.description}</p>
                       </div>
 
@@ -401,10 +401,10 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                                 key={idx} 
                                 className={`p-3 rounded-lg border text-[12.5px] transition-all ${
                                   isDone 
-                                    ? 'bg-[#10CC82]/4 border-[#10CC82]/15 text-[#EAF3F9]' 
+                                    ? 'bg-[#10CC82]/4 border-[#10CC82]/15 text-[#0F1A2C]' 
                                     : linkedTask && linkedTask.column === 'En Progreso'
-                                    ? 'bg-[#0E457F]/4 border-[#0E457F]/20 text-[#EAF3F9]'
-                                    : 'bg-white/[0.01] border-[#22384F] text-[#8DA2B5]'
+                                    ? 'bg-[#0E457F]/4 border-[#0E457F]/20 text-[#0F1A2C]'
+                                    : 'bg-white/[0.01] border-[#e6eef4] text-[#64748B]'
                                 }`}
                               >
                                 <div className="flex items-start gap-2.5">
@@ -418,15 +418,15 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                                     {isDone ? '✓' : '●'}
                                   </span>
                                   <div className="flex-1 min-w-0">
-                                    <div className={`font-medium ${isDone ? 'line-through text-[#64748B]' : 'text-[#EAF3F9]'}`}>
+                                    <div className={`font-medium ${isDone ? 'line-through text-[#64748B]' : 'text-[#0F1A2C]'}`}>
                                       {m.title}
                                     </div>
                                     
                                     {/* Live feedback loop from Kanban Board */}
                                     {linkedTask && (
-                                      <div className="mt-2 pt-2 border-t border-[#22384F]/40 flex items-center justify-between text-[11px]">
+                                      <div className="mt-2 pt-2 border-t border-[#e6eef4]/40 flex items-center justify-between text-[11px]">
                                         <span className="text-[#64748B]">
-                                          Asignado: <strong className="text-[#8DA2B5] font-mono">{linkedTask.assignedTo}</strong>
+                                          Asignado: <strong className="text-[#64748B] font-mono">{linkedTask.assignedTo}</strong>
                                         </span>
                                         <span className={`font-mono font-bold flex items-center gap-1 ${getTaskStatusColor(linkedTask)}`}>
                                           <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
@@ -446,7 +446,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                         <div className="bg-[#0E457F]/4 border border-[#0E457F]/15 rounded-lg p-3 text-xs leading-relaxed text-[#64748B] flex items-start gap-2">
                           <AlertCircle className="w-4 h-4 text-[#47B6E6] flex-shrink-0 mt-0.5" />
                           <div>
-                            <span className="text-[#EAF3F9] font-medium">Nota de Sincronización:</span> Las tareas de esta etapa están enlazadas en tiempo real con el Kanban de <strong className="text-[#47B6E6]">Operaciones &gt; Tareas</strong>. Moverlas allí actualizará automáticamente el progreso de esta sección.
+                            <span className="text-[#0F1A2C] font-medium">Nota de Sincronización:</span> Las tareas de esta etapa están enlazadas en tiempo real con el Kanban de <strong className="text-[#47B6E6]">Operaciones &gt; Tareas</strong>. Moverlas allí actualizará automáticamente el progreso de esta sección.
                           </div>
                         </div>
                       )}
@@ -456,7 +456,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
               </div>
 
               {/* Hiring roadmap / Options pool alignment */}
-              <div className="bg-[#14243A] border border-[#22384F] p-5 rounded-lg space-y-4">
+              <div className="bg-white border border-[#e6eef4] p-5 rounded-lg space-y-4">
                 <div className="flex items-center gap-1.5 text-white font-semibold text-[13.5px]">
                   <Users className="w-4 h-4 text-[#47B6E6]" />
                   Planificación de Incorporaciones (Hiring)
@@ -466,17 +466,17 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                 </p>
 
                 <div className="space-y-2.5">
-                  <div className="flex items-center justify-between p-2.5 bg-[#1B2F49]/40 border border-[#22384F] rounded-lg">
+                  <div className="flex items-center justify-between p-2.5 bg-[#f5f9fc]/40 border border-[#e6eef4] rounded-lg">
                     <div>
-                      <div className="text-[12px] font-semibold text-[#EAF3F9]">Lead Backend Developer</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C]">Lead Backend Developer</div>
                       <div className="text-[10px] text-[#64748B]">Fase 2 (Pendiente) · Opción stock 0.3%</div>
                     </div>
                     <span className="text-[10px] font-mono text-[#F5A623] bg-[#F5A623]/15 px-2 py-0.5 rounded uppercase font-bold">Open hire</span>
                   </div>
 
-                  <div className="flex items-center justify-between p-2.5 bg-[#1B2F49]/40 border border-[#22384F] rounded-lg">
+                  <div className="flex items-center justify-between p-2.5 bg-[#f5f9fc]/40 border border-[#e6eef4] rounded-lg">
                     <div>
-                      <div className="text-[12px] font-semibold text-[#EAF3F9]">Chief Financial Officer (CFO)</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C]">Chief Financial Officer (CFO)</div>
                       <div className="text-[10px] text-[#64748B]">Fase 3 (Planificado) · Opción stock 1.0%</div>
                     </div>
                     <span className="text-[10px] font-mono text-[#64748B] bg-[#64748B]/10 px-2 py-0.5 rounded uppercase font-bold">Q4 2026</span>
@@ -497,23 +497,23 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
         <>
           {/* Dynamic KPIs Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in">
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
               <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Masa salarial total</div>
-              <div className="text-[28px] font-bold text-[#EAF3F9] mt-2 tracking-tight leading-none">€{(totalSalary / 1000).toFixed(0)}K</div>
-              <div className="text-[12px] text-[#8DA2B5] flex items-center gap-1 mt-2.5">
+              <div className="text-[28px] font-bold text-[#0F1A2C] mt-2 tracking-tight leading-none">€{(totalSalary / 1000).toFixed(0)}K</div>
+              <div className="text-[12px] text-[#64748B] flex items-center gap-1 mt-2.5">
                 <Users className="w-[13px] h-[13px]" /> {team.length} personas · /mes
               </div>
             </div>
 
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
               <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Pool de opciones</div>
-              <div className="text-[28px] font-bold text-[#EAF3F9] mt-2 tracking-tight leading-none">8.5%</div>
-              <div className="text-[12px] text-[#EAF3F9] flex items-center gap-1 mt-2.5">
+              <div className="text-[28px] font-bold text-[#0F1A2C] mt-2 tracking-tight leading-none">8.5%</div>
+              <div className="text-[12px] text-[#0F1A2C] flex items-center gap-1 mt-2.5">
                 {assignedEquity.toFixed(1)}% asignado founders + team
               </div>
             </div>
 
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#00C9A7]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#00C9A7]">
               <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Burn mensual</div>
               <div className="text-[28px] font-bold text-white mt-2 tracking-tight leading-none">€{(monthlyBurn / 1000).toFixed(0)}K</div>
               <div className="text-[12px] text-[#F05252] flex items-center gap-1 mt-2.5">
@@ -521,9 +521,9 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
               </div>
             </div>
 
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
               <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Runway</div>
-              <div className="text-[28px] font-bold text-[#EAF3F9] mt-2 tracking-tight leading-none">{customRunway}m</div>
+              <div className="text-[28px] font-bold text-[#0F1A2C] mt-2 tracking-tight leading-none">{customRunway}m</div>
               <div className="text-[12px] text-[#10CC82] flex items-center gap-1 mt-2.5">
                 <Clock className="w-[13px] h-[13px]" /> hasta Q1 2027
               </div>
@@ -534,14 +534,14 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
             
             {/* Left Column: Team compensation list table */}
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg lg:col-span-7">
-              <div className="border-b border-[#22384F] p-5 flex items-center justify-between">
-                <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Equipo &amp; compensación</h3>
+            <div className="bg-white border border-[#e6eef4] rounded-lg lg:col-span-7">
+              <div className="border-b border-[#e6eef4] p-5 flex items-center justify-between">
+                <h3 className="text-[14px] font-semibold text-[#0F1A2C]">Equipo &amp; compensación</h3>
                 <div className="flex gap-2">
                   <button 
                     type="button"
                     onClick={() => triggerToast('Sueldos y proyecciones de dilución exportados como PDF fiscal')}
-                    className="px-2.5 py-1 bg-[#1B2F49] border border-[#2A415A] rounded text-[11px] text-[#8DA2B5] hover:text-white transition-all cursor-pointer flex items-center gap-1"
+                    className="px-2.5 py-1 bg-[#f5f9fc] border border-[#e6eef4] rounded text-[11px] text-[#64748B] hover:text-white transition-all cursor-pointer flex items-center gap-1"
                   >
                     <Download className="w-3 h-3" /> Exportar
                   </button>
@@ -558,7 +558,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-white/[0.02] text-left border-b border-[#22384F]">
+                    <tr className="bg-white/[0.02] text-left border-b border-[#e6eef4]">
                       <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Persona</th>
                       <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Rol</th>
                       <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Salario/mes</th>
@@ -566,7 +566,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                       <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Vesting</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#22384F]">
+                  <tbody className="divide-y divide-[#eef2f6]">
                     {team.map((mb) => {
                       const nameParts = mb.name.split(' ');
                       const initials = nameParts.map(p => p[0]).join('').slice(0, 2);
@@ -578,7 +578,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                                 {initials}
                               </div>
                               <div>
-                                <div className="font-semibold text-[#EAF3F9] text-[13px]">{mb.name}</div>
+                                <div className="font-semibold text-[#0F1A2C] text-[13px]">{mb.name}</div>
                                 <div className="text-[11px] text-[#64748B] mt-0.5">{mb.role}</div>
                               </div>
                             </div>
@@ -629,7 +629,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
             {/* Right Column: salary benchmarks & benefits */}
             <div className="lg:col-span-5 space-y-6">
               {/* benchmarks card */}
-              <div className="bg-[#14243A] border border-[#22384F] p-5 rounded-lg space-y-4">
+              <div className="bg-white border border-[#e6eef4] p-5 rounded-lg space-y-4">
                 <div>
                   <h3 className="text-[14px] font-semibold text-white">Bandas salariales</h3>
                   <p className="text-[11.5px] text-[#64748B] mt-1">Referencia promedio de mercado (bruto anual) · España</p>
@@ -639,7 +639,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <div className="space-y-1">
                     <div className="flex justify-between text-[11px] font-mono font-semibold">
                       <span className="text-[#64748B]">CEO</span>
-                      <span className="text-[#8DA2B5]">€54K</span>
+                      <span className="text-[#64748B]">€54K</span>
                     </div>
                     <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                       <div className="bg-[#0E457F] h-full rounded-full" style={{ width: '40%' }}></div>
@@ -649,7 +649,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <div className="space-y-1">
                     <div className="flex justify-between text-[11px] font-mono font-semibold">
                       <span className="text-[#64748B]">CTO</span>
-                      <span className="text-[#8DA2B5]">€54K</span>
+                      <span className="text-[#64748B]">€54K</span>
                     </div>
                     <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                       <div className="bg-[#0E457F] h-full rounded-full" style={{ width: '40%' }}></div>
@@ -659,7 +659,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <div className="space-y-1">
                     <div className="flex justify-between text-[11px] font-mono font-semibold">
                       <span className="text-[#64748B]">ML Eng.</span>
-                      <span className="text-[#8DA2B5]">€120K</span>
+                      <span className="text-[#64748B]">€120K</span>
                     </div>
                     <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                       <div className="bg-[#47B6E6] h-full rounded-full" style={{ width: '89%' }}></div>
@@ -669,7 +669,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <div className="space-y-1">
                     <div className="flex justify-between text-[11px] font-mono font-semibold">
                       <span className="text-[#64748B]">Sr. Eng.</span>
-                      <span className="text-[#8DA2B5]">€108K</span>
+                      <span className="text-[#64748B]">€108K</span>
                     </div>
                     <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                       <div className="bg-[#47B6E6] h-full rounded-full" style={{ width: '80%' }}></div>
@@ -679,7 +679,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <div className="space-y-1">
                     <div className="flex justify-between text-[11px] font-mono font-semibold">
                       <span className="text-[#64748B]">Sales AE</span>
-                      <span className="text-[#8DA2B5]">€90K</span>
+                      <span className="text-[#64748B]">€90K</span>
                     </div>
                     <div className="w-full bg-[#22384F] h-1.5 rounded-full overflow-hidden">
                       <div className="bg-[#00C9A7] h-full rounded-full" style={{ width: '67%' }}></div>
@@ -687,60 +687,60 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   </div>
                 </div>
 
-                <div className="text-[10px] text-[#64748B] border-t border-[#22384F]/60 pt-3 leading-normal font-sans">
+                <div className="text-[10px] text-[#64748B] border-t border-[#e6eef4]/60 pt-3 leading-normal font-sans">
                   * Sueldos actuales de founders regulados por debajo de mercado de forma intencional en pro del runway. Ajuste planificado post Serie A.
                 </div>
               </div>
 
               {/* Perks card */}
-              <div className="bg-[#14243A] border border-[#22384F] p-5 rounded-lg space-y-4">
+              <div className="bg-white border border-[#e6eef4] p-5 rounded-lg space-y-4">
                 <h3 className="text-[14px] font-semibold text-white">Beneficios &amp; perks</h3>
                 
                 <div className="grid grid-cols-2 gap-2.5">
-                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#22384F]/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#e6eef4]/50 rounded-lg">
                     <Home className="w-4 h-4 text-[#0E457F] flex-shrink-0" />
                     <div className="min-w-0">
-                      <div className="text-[12px] font-semibold text-[#EAF3F9] truncate">Trabajo remoto</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C] truncate">Trabajo remoto</div>
                       <div className="text-[10px] text-[#64748B] truncate">100% flexible</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#22384F]/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#e6eef4]/50 rounded-lg">
                     <Laptop className="w-4 h-4 text-[#00C9A7] flex-shrink-0" />
                     <div className="min-w-0">
-                      <div className="text-[12px] font-semibold text-[#EAF3F9] truncate">Equipamiento</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C] truncate">Equipamiento</div>
                       <div className="text-[10px] text-[#64748B] truncate font-mono">Mac + setup</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#22384F]/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#e6eef4]/50 rounded-lg">
                     <PieChart className="w-4 h-4 text-[#47B6E6] flex-shrink-0" />
                     <div className="min-w-0">
-                      <div className="text-[12px] font-semibold text-[#EAF3F9] truncate">Stock options</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C] truncate">Stock options</div>
                       <div className="text-[10px] text-[#64748B] truncate font-mono">Cliff 1 año</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#22384F]/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#e6eef4]/50 rounded-lg">
                     <BookOpen className="w-4 h-4 text-[#F5A623] flex-shrink-0" />
                     <div className="min-w-0">
-                      <div className="text-[12px] font-semibold text-[#EAF3F9] truncate">Formación</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C] truncate">Formación</div>
                       <div className="text-[10px] text-[#64748B] truncate">€1,500/año</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#22384F]/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#e6eef4]/50 rounded-lg">
                     <Heart className="w-4 h-4 text-[#F05252] flex-shrink-0" />
                     <div className="min-w-0">
-                      <div className="text-[12px] font-semibold text-[#EAF3F9] truncate">Seguro médico</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C] truncate">Seguro médico</div>
                       <div className="text-[10px] text-[#64748B] truncate">Post Serie A</div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#22384F]/50 rounded-lg">
+                  <div className="flex items-center gap-2 p-2 bg-white/[0.02] hover:bg-white/[0.06] transition-colors border border-[#e6eef4]/50 rounded-lg">
                     <Plane className="w-4 h-4 text-[#00C9A7] flex-shrink-0" />
                     <div className="min-w-0">
-                      <div className="text-[12px] font-semibold text-[#EAF3F9] truncate">Travel budget</div>
+                      <div className="text-[12px] font-semibold text-[#0F1A2C] truncate">Travel budget</div>
                       <div className="text-[10px] text-[#64748B] truncate">Para aeropuertos</div>
                     </div>
                   </div>
@@ -755,10 +755,10 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
       {/* Add team member Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#EAF3F9]">Simular Persona en el Equipo</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F1A2C]">Simular Persona en el Equipo</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -771,7 +771,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ej. Laura Diaz"
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -782,7 +782,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <select 
                     value={roleGroup}
                     onChange={(e) => setRoleGroup(e.target.value)}
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Eng.">Ingeniero (FE/BE)</option>
                     <option value="ML Eng.">Ingeniero ML</option>
@@ -798,7 +798,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                     value={salaryStr}
                     onChange={(e) => setSalaryStr(e.target.value)}
                     placeholder="Ej. 6500"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                     required
                   />
                 </div>
@@ -812,15 +812,15 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   value={equityStr}
                   onChange={(e) => setEquityStr(e.target.value)}
                   placeholder="Ej. 0.5"
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                 />
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>

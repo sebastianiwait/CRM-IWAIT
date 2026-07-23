@@ -328,7 +328,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 }
               }}
               placeholder={activeSubTab === 'local' ? "Buscar por nombre, tipo, categoría..." : "Buscar por nombre o tipo..."}
-              className="bg-[#14243A] border border-[#2A415A] rounded-lg pl-9 pr-4 py-1.8 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
+              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-1.8 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
             />
           </div>
           
@@ -337,7 +337,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
               <button 
                 type="button"
                 onClick={() => setIsShareOpen(true)}
-                className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-[#14243A] rounded-lg border border-[#2A415A] text-[#8DA2B5] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
+                className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-white rounded-lg border border-[#e6eef4] text-[#64748B] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
               >
                 <UserPlus className="w-[15px] h-[15px]" /> Compartir acceso
               </button>
@@ -355,7 +355,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
             <button 
               type="button"
               onClick={() => fetchDriveFiles(driveToken!)}
-              className="px-3.5 py-1.8 bg-[#1B2F49] hover:bg-[#22384F] text-[#47B6E6] rounded-lg border border-[#2A415A] text-[13px] flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-3.5 py-1.8 bg-[#f5f9fc] hover:bg-[#22384F] text-[#47B6E6] rounded-lg border border-[#e6eef4] text-[13px] flex items-center gap-1.5 transition-all cursor-pointer"
               disabled={isLoadingDrive}
             >
               <RefreshCw className={`w-[14px] h-[14px] ${isLoadingDrive ? 'animate-spin' : ''}`} /> Sincronizar
@@ -365,13 +365,13 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
       </div>
 
       {/* Sub-tab Navigation */}
-      <div className="flex border-b border-[#22384F] gap-6">
+      <div className="flex border-b border-[#e6eef4] gap-6">
         <button 
           onClick={() => setActiveSubTab('local')}
           className={`pb-3 text-[14px] font-semibold tracking-wide transition-all relative cursor-pointer ${
             activeSubTab === 'local' 
               ? 'text-[#0E457F]' 
-              : 'text-[#64748B] hover:text-[#EAF3F9]'
+              : 'text-[#64748B] hover:text-[#0F1A2C]'
           }`}
         >
           {activeSubTab === 'local' && (
@@ -389,7 +389,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
           className={`pb-3 text-[14px] font-semibold tracking-wide transition-all relative cursor-pointer flex items-center gap-1.5 ${
             activeSubTab === 'drive' 
               ? 'text-[#0E457F]' 
-              : 'text-[#64748B] hover:text-[#EAF3F9]'
+              : 'text-[#64748B] hover:text-[#0F1A2C]'
           }`}
         >
           {activeSubTab === 'drive' && (
@@ -405,7 +405,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
           {/* Left column Folder explorer */}
           <div className="lg:col-span-6 space-y-4">
             <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider">Carpetas principales</div>
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg divide-y divide-[#22384F]">
+            <div className="bg-white border border-[#e6eef4] rounded-lg divide-y divide-[#eef2f6]">
               
               {/* Folder 1: Financiero */}
               <div>
@@ -417,14 +417,14 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                     <Folder className="w-[18px] h-[18px] text-[#47B6E6]" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-[13.5px] font-medium text-[#EAF3F9]">Financiero</div>
+                    <div className="text-[13.5px] font-medium text-[#0F1A2C]">Financiero</div>
                     <div className="text-[11px] text-[#64748B]">14 archivos · Actualizado hace 2 días</div>
                   </div>
                   <ChevronRight className={`w-4 h-4 text-[#64748B] transition-transform ${expandedFolder === 'Financiero' ? 'rotate-90' : ''}`} />
                 </div>
                 
                 {expandedFolder === 'Financiero' && (
-                  <div className="bg-[#1B2F49]/30 divide-y divide-[#22384F]/40 border-t border-[#22384F]/40">
+                  <div className="bg-[#f5f9fc]/30 divide-y divide-[#eef2f6]/40 border-t border-[#e6eef4]/40">
                     {/* Hardcoded visual representation of the subfiles for maximum alignment */}
                     <div 
                       onClick={() => {
@@ -435,7 +435,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                     >
                       <FileSpreadsheet className="w-[14px] h-[14px] text-[#0E457F]" />
                       <div className="flex-1 min-w-0">
-                        <div className="text-[13px] text-[#EAF3F9] truncate">Financial Model v4.xlsx</div>
+                        <div className="text-[13px] text-[#0F1A2C] truncate">Financial Model v4.xlsx</div>
                         <div className="text-[11px] text-[#64748B]">Actualizado hoy · 8.4 MB</div>
                       </div>
                       <span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] font-bold px-1.5 py-0.5 rounded">Actual</span>
@@ -449,7 +449,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                     >
                       <FileText className="w-[14px] h-[14px] text-[#0E457F]" />
                       <div className="flex-1 min-w-0">
-                        <div className="text-[13px] text-[#EAF3F9] truncate">P&L Proyectado 2024-2027.pdf</div>
+                        <div className="text-[13px] text-[#0F1A2C] truncate">P&L Proyectado 2024-2027.pdf</div>
                         <div className="text-[11px] text-[#64748B]">Hace 3 días · 4.8 MB</div>
                       </div>
                       <Download className="w-3.5 h-3.5 text-[#64748B] hover:text-white" />
@@ -463,7 +463,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                     >
                       <FileText className="w-[14px] h-[14px] text-[#0E457F]" />
                       <div className="flex-1 min-w-0">
-                        <div className="text-[13px] text-[#EAF3F9] truncate">Cap Table 2026.pdf</div>
+                        <div className="text-[13px] text-[#0F1A2C] truncate">Cap Table 2026.pdf</div>
                         <div className="text-[11px] text-[#64748B]">Hace 6 days • 2.1 MB</div>
                       </div>
                       <Download className="w-3.5 h-3.5 text-[#64748B] hover:text-white" />
@@ -485,7 +485,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   <FolderLock className="w-[18px] h-[18px] text-[#47B6E6]" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-[13.5px] font-medium text-[#EAF3F9]">Legal</div>
+                  <div className="text-[13.5px] font-medium text-[#0F1A2C]">Legal</div>
                   <div className="text-[11px] text-[#64748B]">8 archivos · Actualizado hace 1 semana</div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#64748B]" />
@@ -504,7 +504,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   <Folder className="w-[18px] h-[18px] text-[#00C9A7]" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-[13.5px] font-medium text-[#EAF3F9]">Producto &amp; Tecnología</div>
+                  <div className="text-[13.5px] font-medium text-[#0F1A2C]">Producto &amp; Tecnología</div>
                   <div className="text-[11px] text-[#64748B]">22 archivos · Actualizado ayer</div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#64748B]" />
@@ -519,7 +519,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   <Folder className="w-[18px] h-[18px] text-[#F5A623]" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-[13.5px] font-medium text-[#EAF3F9]">Due Diligence</div>
+                  <div className="text-[13.5px] font-medium text-[#0F1A2C]">Due Diligence</div>
                   <div className="text-[11px] text-[#64748B]">31 archivos de soporte comercial</div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#64748B]" />
@@ -537,7 +537,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   <Folder className="w-[18px] h-[18px] text-[#E879A0]" />
                 </div>
                 <div className="flex-1">
-                  <div className="text-[13.5px] font-medium text-[#EAF3F9]">Pitch Deck &amp; Demos</div>
+                  <div className="text-[13.5px] font-medium text-[#0F1A2C]">Pitch Deck &amp; Demos</div>
                   <div className="text-[11px] text-[#64748B]">6 archivos de cara al público</div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#64748B]" />
@@ -553,17 +553,17 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
               <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider mb-3">
                 {searchTerm.trim() ? `Resultados de la búsqueda (${filteredFiles.length})` : 'Documentos recientes'}
               </div>
-              <div className="bg-[#14243A] border border-[#22384F] rounded-lg overflow-hidden">
+              <div className="bg-white border border-[#e6eef4] rounded-lg overflow-hidden">
                 <table className="w-full">
                   <thead>
                     <tr className="bg-white/[0.02]">
-                      <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Documento</th>
-                      <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Carpeta</th>
-                      <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Subido</th>
-                      <th className="px-4 py-2.5 border-b border-[#22384F]"></th>
+                      <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Documento</th>
+                      <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Carpeta</th>
+                      <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Subido</th>
+                      <th className="px-4 py-2.5 border-b border-[#e6eef4]"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#22384F]">
+                  <tbody className="divide-y divide-[#eef2f6]">
                     {(searchTerm.trim() ? filteredFiles : filteredFiles.slice(0, 4)).length === 0 ? (
                       <tr>
                         <td colSpan={4} className="px-4 py-8 text-center text-[#64748B] text-[13px]">
@@ -578,7 +578,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                           className={`hover:bg-[#0E457F]/4 cursor-pointer transition-colors ${selectedFile?.id === file.id ? 'bg-[#0E457F]/6' : ''}`}
                         >
                           <td className="px-4 py-2.5">
-                            <div className="font-medium text-[#EAF3F9] text-[13px] max-w-[200px] truncate">{file.name}</div>
+                            <div className="font-medium text-[#0F1A2C] text-[13px] max-w-[200px] truncate">{file.name}</div>
                           </td>
                           <td className="px-4 py-2.5">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
@@ -610,7 +610,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
 
             {/* Detailed Document custom card inspector */}
             {selectedFile && (
-              <div className="bg-[#1B2F49]/40 border border-[#2A415A] p-5 rounded-lg space-y-4">
+              <div className="bg-[#f5f9fc]/40 border border-[#e6eef4] p-5 rounded-lg space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[#47B6E6]" />
@@ -619,12 +619,12 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   <span className="text-[11px] text-[#64748B]">{selectedFile.size}</span>
                 </div>
                 <div>
-                  <h4 className="text-[14px] font-bold text-[#EAF3F9]">{selectedFile.name}</h4>
-                  <p className="text-[12px] text-[#8DA2B5]/85 mt-2 leading-relaxed bg-[#14243A]/50 p-3 rounded-md border border-[#22384F]">
+                  <h4 className="text-[14px] font-bold text-[#0F1A2C]">{selectedFile.name}</h4>
+                  <p className="text-[12px] text-[#64748B]/85 mt-2 leading-relaxed bg-white/50 p-3 rounded-md border border-[#e6eef4]">
                     {selectedFile.description}
                   </p>
                 </div>
-                <div className="bg-[#0F1A2C]/80 border border-[#22384F] p-3.5 rounded-lg">
+                <div className="bg-[#0F1A2C]/80 border border-[#e6eef4] p-3.5 rounded-lg">
                   <div className="text-[11px] font-mono font-bold text-[#64748B] uppercase tracking-wider mb-2">Contenido Encriptado / Sumario</div>
                   <p className="text-[11.5px] font-mono text-[#47B6E6] whitespace-pre-wrap leading-relaxed">
                     {selectedFile.detailedContent}
@@ -652,31 +652,31 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
             )}
 
             {/* Access Logs from Investors Table */}
-            <div className="bg-[#14243A] border border-[#22384F] rounded-lg">
-              <div className="border-b border-[#22384F] px-4 py-3 flex items-center justify-between">
-                <h3 className="text-[13px] font-semibold text-[#EAF3F9]">Accesos de inversores</h3>
+            <div className="bg-white border border-[#e6eef4] rounded-lg">
+              <div className="border-b border-[#e6eef4] px-4 py-3 flex items-center justify-between">
+                <h3 className="text-[13px] font-semibold text-[#0F1A2C]">Accesos de inversores</h3>
               </div>
               <table className="w-full">
                 <thead>
                   <tr className="bg-white/[0.01] text-left">
-                    <th className="px-4 py-2 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Inversor</th>
-                    <th className="px-4 py-2 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Acceso</th>
-                    <th className="px-4 py-2 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Última visita</th>
+                    <th className="px-4 py-2 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Inversor</th>
+                    <th className="px-4 py-2 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Acceso</th>
+                    <th className="px-4 py-2 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Última visita</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#22384F]/60 text-[12.5px]">
+                <tbody className="divide-y divide-[#eef2f6]/60 text-[12.5px]">
                   <tr>
-                    <td className="px-4 py-2.5 font-medium text-[#EAF3F9]">Athos Capital</td>
+                    <td className="px-4 py-2.5 font-medium text-[#0F1A2C]">Athos Capital</td>
                     <td className="px-4 py-2.5"><span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] font-bold px-1.5 py-0.5 rounded">Completo</span></td>
                     <td className="px-4 py-2.5 text-[#64748B]">Hoy, 14:32</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2.5 font-medium text-[#EAF3F9]">Kibo Ventures</td>
+                    <td className="px-4 py-2.5 font-medium text-[#0F1A2C]">Kibo Ventures</td>
                     <td className="px-4 py-2.5"><span className="bg-[#0E457F]/15 text-[#47B6E6] text-[10px] font-bold px-1.5 py-0.5 rounded">Parcial</span></td>
                     <td className="px-4 py-2.5 text-[#64748B]">Ayer</td>
                   </tr>
                   <tr>
-                    <td className="px-4 py-2.5 font-medium text-[#EAF3F9]">Punto Capital</td>
+                    <td className="px-4 py-2.5 font-medium text-[#0F1A2C]">Punto Capital</td>
                     <td className="px-4 py-2.5"><span className="bg-[#F5A623]/15 text-[#F5A623] text-[10px] font-bold px-1.5 py-0.5 rounded">Solo Financiero</span></td>
                     <td className="px-4 py-2.5 text-[#64748B]">Hace 3 días</td>
                   </tr>
@@ -690,13 +690,13 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
         <div className="space-y-6">
           {!driveUser ? (
             /* Locked and promotional GDrive onboarding state */
-            <div className="p-10 border border-[#22384F] bg-[#14243A] rounded-xl text-center max-w-2xl mx-auto space-y-5 shadow-xl animate-zoom-in">
+            <div className="p-10 border border-[#e6eef4] bg-white rounded-xl text-center max-w-2xl mx-auto space-y-5 shadow-xl animate-zoom-in">
               <div className="w-16 h-16 rounded-full bg-[#0E457F]/15 flex items-center justify-center mx-auto">
                 <Cloud className="w-8 h-8 text-[#47B6E6]" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-lg font-bold text-[#EAF3F9]">Sincronización Directa de Documentos en la Nube</h3>
-                <p className="text-[13px] text-[#8DA2B5]/85 max-w-md mx-auto leading-relaxed">
+                <h3 className="text-lg font-bold text-[#0F1A2C]">Sincronización Directa de Documentos en la Nube</h3>
+                <p className="text-[13px] text-[#64748B]/85 max-w-md mx-auto leading-relaxed">
                   Conecte su cuenta de Google Drive de forma segura mediante OAuth para ver carpetas de trabajo, respaldar actas en la nube, e importar archivos directamente a su Data Room CRM de <strong className="text-[#47B6E6]">sebastian@iwait.io</strong>.
                 </p>
               </div>
@@ -726,20 +726,20 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
             </div>
           ) : (
             /* Connected visual container with full browser functionality */
-            <div className="bg-[#14243A] border border-[#22384F] rounded-xl overflow-hidden shadow-xl">
+            <div className="bg-white border border-[#e6eef4] rounded-xl overflow-hidden shadow-xl">
               {/* Connected Account metadata bar */}
-              <div className="bg-[#1B2F49] px-5 py-4 border-b border-[#22384F] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="bg-[#f5f9fc] px-5 py-4 border-b border-[#e6eef4] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-[#10CC82]/10 flex items-center justify-center">
                     <Cloud className="w-5 h-5 text-[#10CC82]" />
                   </div>
                   <div>
-                    <h4 className="text-[13.5px] font-bold text-[#EAF3F9]">Tu Google Drive está conectado</h4>
+                    <h4 className="text-[13.5px] font-bold text-[#0F1A2C]">Tu Google Drive está conectado</h4>
                     <p className="text-[11px] text-[#64748B]">Expediente sincronizado corporativamente</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-[12px] bg-[#22384F] text-[#8DA2B5] px-2.5 py-1 rounded-lg border border-[#2A415A] font-mono">
+                  <span className="text-[12px] bg-[#22384F] text-[#64748B] px-2.5 py-1 rounded-lg border border-[#e6eef4] font-mono">
                     {driveUser.email}
                   </span>
                   <button 
@@ -778,16 +778,16 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-[13px] text-[#EAF3F9]">
+                    <table className="w-full text-left text-[13px] text-[#0F1A2C]">
                       <thead>
-                        <tr className="border-b border-[#22384F] text-[#64748B] font-semibold text-[11px] uppercase tracking-wider text-left">
+                        <tr className="border-b border-[#e6eef4] text-[#64748B] font-semibold text-[11px] uppercase tracking-wider text-left">
                           <th className="px-4 py-3">Nombre del Archivo en Drive</th>
                           <th className="px-4 py-3 text-center">Tamaño</th>
                           <th className="px-4 py-3">Última Modificación</th>
                           <th className="px-4 py-3 text-right">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#22384F]/55">
+                      <tbody className="divide-y divide-[#eef2f6]/55">
                         {filteredDriveFiles.map((df) => {
                           const isDoc = df.mimeType?.includes('document') || false;
                           const isSheet = df.mimeType?.includes('spreadsheet') || false;
@@ -811,7 +811,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                                   </span>
                                 </div>
                               </td>
-                              <td className="px-4 py-3 text-center text-[#8DA2B5]/85 font-mono text-[12px]">
+                              <td className="px-4 py-3 text-center text-[#64748B]/85 font-mono text-[12px]">
                                 {df.size ? formatBytes(df.size) : 'Desconocido'}
                               </td>
                               <td className="px-4 py-3 text-[#64748B] text-[12.5px]">
@@ -833,7 +833,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                                       href={df.webViewLink} 
                                       target="_blank" 
                                       rel="noreferrer cursor-pointer"
-                                      className="p-1 px-1.5 bg-[#1B2F49] hover:bg-[#22384F] border border-[#2A415A] rounded text-[#8DA2B5] hover:text-[#EAF3F9] transition-all flex items-center gap-1 text-[11.5px]"
+                                      className="p-1 px-1.5 bg-[#f5f9fc] hover:bg-[#22384F] border border-[#e6eef4] rounded text-[#64748B] hover:text-[#0F1A2C] transition-all flex items-center gap-1 text-[11.5px]"
                                     >
                                       Ver <ExternalLink className="w-3 h-3" />
                                     </a>
@@ -863,10 +863,10 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
       {/* Upload document Modal */}
       {isUploadOpen && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#EAF3F9]">Subir Archivo al Data Room</h3>
-              <button onClick={() => setIsUploadOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F1A2C]">Subir Archivo al Data Room</h3>
+              <button onClick={() => setIsUploadOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -879,7 +879,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   value={newFileName}
                   onChange={(e) => setNewFileName(e.target.value)}
                   placeholder="Ej. Financial Model v5.xlsx"
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -889,7 +889,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileCategory}
                   onChange={(e: any) => setNewFileCategory(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Finanzas">Financiero</option>
                   <option value="Legal">Legal</option>
@@ -903,7 +903,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileConf}
                   onChange={(e: any) => setNewFileConf(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Público">Público (Cualquiera con acceso)</option>
                   <option value="Confidencial">Confidencial (Solo inversores verificados)</option>
@@ -918,21 +918,21 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   onChange={(e) => setNewFileDesc(e.target.value)}
                   placeholder="Explique resumidamente el contenido del documento"
                   rows={3}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
               {/* Drag and Drop area representation */}
-              <div className="border border-dashed border-[#2A415A] p-4 text-center rounded-lg bg-[#1B2F49]/20">
+              <div className="border border-dashed border-[#e6eef4] p-4 text-center rounded-lg bg-[#f5f9fc]/20">
                 <Eye className="w-6 h-6 text-[#64748B] mx-auto mb-1 opacity-70" />
                 <span className="text-[12px] text-[#64748B]">Añada firmas o suba PDF de forma segura</span>
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsUploadOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>
@@ -951,10 +951,10 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
       {/* Share access Modal */}
       {isShareOpen && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#EAF3F9]">Compartir Acceso Seguro</h3>
-              <button onClick={() => setIsShareOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F1A2C]">Compartir Acceso Seguro</h3>
+              <button onClick={() => setIsShareOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -967,7 +967,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   value={shareEmail}
                   onChange={(e) => setShareEmail(e.target.value)}
                   placeholder="socio@pundopartners.com"
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -977,7 +977,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={sharePerm}
                   onChange={(e: any) => setSharePerm(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Completo">Acceso Completo (Finanzas + Legal)</option>
                   <option value="Parcial">Acceso Parcial (Legal + Pitch)</option>
@@ -985,11 +985,11 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 </select>
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsShareOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>
@@ -1008,14 +1008,14 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
       {/* Import from Google Drive Modal */}
       {isImportOpen && importFileSelected && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#EAF3F9] flex items-center gap-2">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F1A2C] flex items-center gap-2">
                 <Cloud className="w-5 h-5 text-[#0E457F]" /> Importar a CRM
               </h3>
               <button 
                 onClick={() => { setIsImportOpen(false); setImportFileSelected(null); }} 
-                className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1"
+                className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1028,7 +1028,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   type="text" 
                   value={newFileName}
                   onChange={(e) => setNewFileName(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -1038,7 +1038,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileCategory}
                   onChange={(e: any) => setNewFileCategory(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Finanzas">Financiero</option>
                   <option value="Legal">Legal</option>
@@ -1052,7 +1052,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileConf}
                   onChange={(e: any) => setNewFileConf(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Público">Público (Cualquiera con acceso)</option>
                   <option value="Confidencial">Confidencial (Solo inversores verificados)</option>
@@ -1067,20 +1067,20 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   onChange={(e) => setNewFileDesc(e.target.value)}
                   placeholder="Escriba comentarios o detalles para este archivo importado"
                   rows={3}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
-              <div className="bg-[#22384F]/30 border border-[#2A415A] p-3 rounded-lg space-y-1 text-xs">
-                <div className="text-[#64748B]">Tamaño original: <span className="text-[#EAF3F9] font-mono">{importFileSelected.size ? formatBytes(importFileSelected.size) : 'Desconocido'}</span></div>
-                <div className="text-[#64748B]">Tipo MIME original: <span className="text-[#EAF3F9] font-mono">{importFileSelected.mimeType}</span></div>
+              <div className="bg-[#22384F]/30 border border-[#e6eef4] p-3 rounded-lg space-y-1 text-xs">
+                <div className="text-[#64748B]">Tamaño original: <span className="text-[#0F1A2C] font-mono">{importFileSelected.size ? formatBytes(importFileSelected.size) : 'Desconocido'}</span></div>
+                <div className="text-[#64748B]">Tipo MIME original: <span className="text-[#0F1A2C] font-mono">{importFileSelected.mimeType}</span></div>
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => { setIsImportOpen(false); setImportFileSelected(null); }}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>

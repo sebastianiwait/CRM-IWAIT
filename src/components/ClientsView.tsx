@@ -154,7 +154,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
       case 'Lead':
       case 'Prospecto':
       default:
-        return <span className="bg-white/5 text-[#8DA2B5] text-[11px] font-semibold px-2 py-0.5 rounded">Prospecto</span>;
+        return <span className="bg-white/5 text-[#64748B] text-[11px] font-semibold px-2 py-0.5 rounded">Prospecto</span>;
     }
   };
 
@@ -176,14 +176,14 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
         </div>
 
         {/* Tab switcher */}
-        <div className="flex bg-[#0B1524] border border-[#22384F] rounded-lg p-1">
+        <div className="flex bg-[#eef2f6] border border-[#e6eef4] rounded-lg p-1">
           <button
             type="button"
             onClick={() => setSubTab('all')}
             className={`px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-all duration-200 cursor-pointer ${
               subTab === 'all'
                 ? 'bg-[#0E457F] text-white'
-                : 'text-[#64748B] hover:text-[#EAF3F9]'
+                : 'text-[#64748B] hover:text-[#0F1A2C]'
             }`}
           >
             Todos
@@ -194,7 +194,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
             className={`px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-all duration-200 cursor-pointer ${
               subTab === 'leads'
                 ? 'bg-[#0E457F] text-white'
-                : 'text-[#64748B] hover:text-[#EAF3F9]'
+                : 'text-[#64748B] hover:text-[#0F1A2C]'
             }`}
           >
             Leads
@@ -205,7 +205,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
             className={`px-3.5 py-1.5 rounded-md text-[12.5px] font-medium transition-all duration-200 cursor-pointer ${
               subTab === 'clientes'
                 ? 'bg-[#0E457F] text-white'
-                : 'text-[#64748B] hover:text-[#EAF3F9]'
+                : 'text-[#64748B] hover:text-[#0F1A2C]'
             }`}
           >
             Clientes
@@ -214,14 +214,14 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
 
         <div className="flex flex-wrap gap-2.5 items-center">
           {/* View Layout Toggle */}
-          <div className="flex bg-[#0B1524] border border-[#22384F] rounded-lg p-1">
+          <div className="flex bg-[#eef2f6] border border-[#e6eef4] rounded-lg p-1">
             <button
               type="button"
               onClick={() => setViewLayout('list')}
               className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer ${
                 viewLayout === 'list'
                   ? 'bg-[#0E457F] text-white'
-                  : 'text-[#64748B] hover:text-[#EAF3F9]'
+                  : 'text-[#64748B] hover:text-[#0F1A2C]'
               }`}
               title="Vista Lista"
             >
@@ -233,7 +233,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
               className={`p-1.5 rounded-md transition-all duration-200 cursor-pointer ${
                 viewLayout === 'kanban'
                   ? 'bg-[#0E457F] text-white'
-                  : 'text-[#64748B] hover:text-[#EAF3F9]'
+                  : 'text-[#64748B] hover:text-[#0F1A2C]'
               }`}
               title="Vista Kanban"
             >
@@ -249,7 +249,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar..."
-              className="bg-[#14243A] border border-[#2A415A] rounded-lg pl-9 pr-4 py-1.8 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[150px] md:w-[180px]"
+              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-1.8 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[150px] md:w-[180px]"
             />
           </div>
           <button 
@@ -265,9 +265,9 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
       {/* Pipeline visual sequence */}
       <div className="mb-28">
         <div className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wider mb-2.5">Embudo Comercial (Pipeline)</div>
-        <div className="grid grid-cols-2 sm:grid-cols-5 bg-[#14243A] border border-[#22384F] rounded-xl overflow-hidden text-center divide-x divide-[#22384F]">
+        <div className="grid grid-cols-2 sm:grid-cols-5 bg-white border border-[#e6eef4] rounded-xl overflow-hidden text-center divide-x divide-[#eef2f6]">
           <div className="p-3.5">
-            <div className="text-lg font-bold text-[#EAF3F9]">5</div>
+            <div className="text-lg font-bold text-[#0F1A2C]">5</div>
             <div className="text-[11px] text-[#64748B] mt-0.5">Prospecto</div>
           </div>
           <div className="p-3.5 bg-[#0E457F]/10 border-y sm:border-y-0 text-center">
@@ -275,11 +275,11 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
             <div className="text-[11px] text-[#47B6E6] mt-0.5 font-semibold">Demo (Activo)</div>
           </div>
           <div className="p-3.5">
-            <div className="text-lg font-bold text-[#EAF3F9]">3</div>
+            <div className="text-lg font-bold text-[#0F1A2C]">3</div>
             <div className="text-[11px] text-[#64748B] mt-0.5">Propuesta</div>
           </div>
           <div className="p-3.5">
-            <div className="text-lg font-bold text-[#EAF3F9]">2</div>
+            <div className="text-lg font-bold text-[#0F1A2C]">2</div>
             <div className="text-[11px] text-[#64748B] mt-0.5">Negociación</div>
           </div>
           <div className="p-3.5">
@@ -291,20 +291,20 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
 
       {/* Client listing / Kanban view */}
       {viewLayout === 'list' ? (
-        <div className="bg-[#14243A] border border-[#22384F] rounded-lg overflow-hidden animate-fade-in">
-          <div className="border-b border-[#22384F] px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#1B2F49]/25">
-            <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Todas las cuentas</h3>
+        <div className="bg-white border border-[#e6eef4] rounded-lg overflow-hidden animate-fade-in">
+          <div className="border-b border-[#e6eef4] px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#f5f9fc]">
+            <h3 className="text-[14px] font-semibold text-[#0F1A2C]">Todas las cuentas</h3>
             <div className="flex gap-2.5 flex-wrap">
               <span className="bg-[#10CC82]/15 text-[#10CC82] text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full">{activeCount} activos</span>
               <span className="bg-[#47B6E6]/15 text-[#47B6E6] text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full">{pipelineCount} en pipeline</span>
-              <span className="bg-[#8DA2B5]/10 text-[#8DA2B5] text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full">{prospectCount} prospectos</span>
+              <span className="bg-[#8DA2B5]/10 text-[#64748B] text-[10px] sm:text-[11px] font-semibold px-2.5 py-0.5 rounded-full">{prospectCount} prospectos</span>
             </div>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-white/[0.02] text-left border-b border-[#22384F]">
+                <tr className="bg-white/[0.02] text-left border-b border-[#e6eef4]">
                   <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Empresa</th>
                   <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Tipo</th>
                   <th className="px-5 py-3 text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">Etapa</th>
@@ -314,11 +314,11 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                   <th className="px-5 py-3"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#22384F]">
+              <tbody className="divide-y divide-[#eef2f6]">
                 {filteredClients.map((client) => (
                   <tr key={client.id} className="hover:bg-[#0E457F]/4 transition-colors">
                     <td className="px-5 py-3">
-                      <div className="font-semibold text-[#EAF3F9] text-[13.5px]">{client.name}</div>
+                      <div className="font-semibold text-[#0F1A2C] text-[13.5px]">{client.name}</div>
                       <div className="text-[11px] text-[#64748B] mt-0.5">{client.hub}</div>
                     </td>
                     <td className="px-5 py-3">
@@ -335,11 +335,11 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                     <td className="px-5 py-3">
                       {getStatusBadge(client.status)}
                     </td>
-                    <td className="px-5 py-3 font-semibold text-[#EAF3F9] text-[13.5px]">
+                    <td className="px-5 py-3 font-semibold text-[#0F1A2C] text-[13.5px]">
                       €{client.dealValue.toLocaleString('es-ES')}/año
                     </td>
                     <td className="px-5 py-3 text-[#64748B] text-[12.5px]">Hoy</td>
-                    <td className="px-5 py-3 text-[#EAF3F9] text-[13px]">
+                    <td className="px-5 py-3 text-[#0F1A2C] text-[13px]">
                       <div className="flex items-center gap-2">
                         {client.contactPerson}
                         {client.linkedin && (
@@ -380,14 +380,14 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                 onDragOver={(e) => handleDragOver(e, statusKey)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, statusKey as any)}
-                className={`flex-1 min-w-[280px] max-w-[320px] bg-[#14243A] border rounded-lg p-3 snap-start flex flex-col transition-all duration-200 ${
+                className={`flex-1 min-w-[280px] max-w-[320px] bg-white border rounded-lg p-3 snap-start flex flex-col transition-all duration-200 ${
                   activeOverStatus === statusKey 
-                    ? 'border-[#0E457F] bg-[#14243A]/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
-                    : 'border-[#22384F]'
+                    ? 'border-[#0E457F] bg-white/80 shadow-[0_0_15px_rgba(79,126,248,0.15)] scale-[1.01]' 
+                    : 'border-[#e6eef4]'
                 }`}
               >
                 <div className="flex justify-between items-center mb-3 px-1">
-                  <h4 className="text-[13px] font-semibold text-[#EAF3F9] flex items-center gap-2">
+                  <h4 className="text-[13px] font-semibold text-[#0F1A2C] flex items-center gap-2">
                     {statusKey}
                     <span className="bg-[#22384F] text-[#64748B] px-2 py-0.5 rounded-full text-[10px] font-mono">
                       {columnClients.length}
@@ -404,21 +404,21 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                       draggable
                       onDragStart={(e) => handleDragStart(e, client.id)}
                       onDragEnd={handleDragEnd}
-                      className={`bg-[#1B2F49] border p-3 rounded-md transition-all cursor-grab active:cursor-grabbing group ${
+                      className={`bg-[#f5f9fc] border p-3 rounded-md transition-all cursor-grab active:cursor-grabbing group ${
                         draggingClientId === client.id 
-                          ? 'opacity-40 border-dashed border-[#0E457F]/60 bg-[#1B2F49]/40 scale-95' 
-                          : 'border-[#2A415A] hover:border-[#0E457F]/50'
+                          ? 'opacity-40 border-dashed border-[#0E457F]/60 bg-[#f5f9fc]/40 scale-95' 
+                          : 'border-[#e6eef4] hover:border-[#0E457F]/50'
                       }`}
                       onClick={() => setSelectedClient(client)}
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="font-semibold text-[#EAF3F9] text-[13px] group-hover:text-[#47B6E6] transition-colors">{client.name}</span>
+                        <span className="font-semibold text-[#0F1A2C] text-[13px] group-hover:text-[#47B6E6] transition-colors">{client.name}</span>
                         {getStatusBadge(client.status)}
                       </div>
                       <div className="text-[11px] text-[#64748B] mb-2.5 flex items-center gap-1">
                         <MapPin className="w-3 h-3" /> {client.hub}
                       </div>
-                      <div className="flex justify-between items-center mt-2 pt-2 border-t border-[#22384F]/50">
+                      <div className="flex justify-between items-center mt-2 pt-2 border-t border-[#e6eef4]/50">
                         <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                           client.type === 'Aerolínea' 
                             ? 'bg-[#0E457F]/15 text-[#47B6E6]' 
@@ -428,14 +428,14 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                         }`}>
                           {client.type}
                         </span>
-                        <div className="text-[12px] font-semibold text-[#EAF3F9]">
+                        <div className="text-[12px] font-semibold text-[#0F1A2C]">
                           €{(client.dealValue / 1000).toFixed(0)}k
                         </div>
                       </div>
                     </div>
                   ))}
                   {columnClients.length === 0 && (
-                    <div className="border border-dashed border-[#22384F] rounded-md p-4 flex items-center justify-center text-[12px] text-[#64748B]">
+                    <div className="border border-dashed border-[#e6eef4] rounded-md p-4 flex items-center justify-center text-[12px] text-[#64748B]">
                       Sin cuentas
                     </div>
                   )}
@@ -449,15 +449,15 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
       {/* Client Detail modal */}
       {selectedClient && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between bg-[#1B2F49]/40">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between bg-[#f5f9fc]/40">
               <div className="flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#47B6E6]" />
-                <h3 className="text-base font-semibold text-[#EAF3F9]">{selectedClient.name}</h3>
+                <h3 className="text-base font-semibold text-[#0F1A2C]">{selectedClient.name}</h3>
               </div>
               <button 
                 onClick={() => setSelectedClient(null)} 
-                className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1"
+                className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -467,23 +467,23 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
               <div className="grid grid-cols-2 gap-3.5">
                 <div className="space-y-0.5">
                   <div className="text-[11px] text-[#64748B] uppercase tracking-wider font-semibold">Tipo de Cuenta</div>
-                  <div className="text-[13.5px] text-[#EAF3F9] font-medium">{selectedClient.type}</div>
+                  <div className="text-[13.5px] text-[#0F1A2C] font-medium">{selectedClient.type}</div>
                 </div>
                 <div className="space-y-0.5">
                   <div className="text-[11px] text-[#64748B] uppercase tracking-wider font-semibold">Estado comercial</div>
-                  <div className="text-[13.5px] text-[#EAF3F9] font-medium">{selectedClient.status}</div>
+                  <div className="text-[13.5px] text-[#0F1A2C] font-medium">{selectedClient.status}</div>
                 </div>
                 <div className="space-y-0.5">
                   <div className="text-[11px] text-[#64748B] uppercase tracking-wider font-semibold">Hub Primario</div>
-                  <div className="text-[13.5px] text-[#EAF3F9] font-medium flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#64748B]" /> {selectedClient.hub}</div>
+                  <div className="text-[13.5px] text-[#0F1A2C] font-medium flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#64748B]" /> {selectedClient.hub}</div>
                 </div>
                 <div className="space-y-0.5">
                   <div className="text-[11px] text-[#64748B] uppercase tracking-wider font-semibold">Pasajeros mensuales</div>
-                  <div className="text-[13.5px] text-[#EAF3F9] font-medium font-mono">{selectedClient.passengersMonthly ? selectedClient.passengersMonthly.toLocaleString('es-ES') : 'TBD'} pax</div>
+                  <div className="text-[13.5px] text-[#0F1A2C] font-medium font-mono">{selectedClient.passengersMonthly ? selectedClient.passengersMonthly.toLocaleString('es-ES') : 'TBD'} pax</div>
                 </div>
               </div>
 
-              <div className="bg-[#0F1A2C]/50 border border-[#22384F] p-4 rounded-lg space-y-2">
+              <div className="bg-[#0F1A2C]/50 border border-[#e6eef4] p-4 rounded-lg space-y-2">
                 <div className="text-[11px] text-[#64748B] uppercase tracking-wider font-semibold flex items-center gap-1">
                   <TrendingUp className="w-3.5 h-3.5 text-[#F5A623]" /> Métricas de Valor del Contrato (ARR)
                 </div>
@@ -491,13 +491,13 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                 <div className="text-[11px] text-[#64748B]">Formulado mediante cargo fijo SaaS y comisión por cupón expedido.</div>
               </div>
 
-              <div className="flex items-center justify-between p-3.5 bg-[#1B2F49]/40 border border-[#2A415A] rounded-lg">
+              <div className="flex items-center justify-between p-3.5 bg-[#f5f9fc]/40 border border-[#e6eef4] rounded-lg">
                 <div className="flex items-center gap-2.5">
                   <div className="w-[30px] h-[30px] rounded-full bg-[#0E457F]/10 text-[#47B6E6] flex items-center justify-center">
                     <User className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-[13px] font-medium text-[#EAF3F9]">{selectedClient.contactPerson}</div>
+                    <div className="text-[13px] font-medium text-[#0F1A2C]">{selectedClient.contactPerson}</div>
                     <div className="text-[11px] text-[#64748B]">Punto de contacto y tomador de decisión</div>
                   </div>
                 </div>
@@ -508,7 +508,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                 )}
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2">
                 <button 
                   onClick={() => {
                     triggerToast(`Llamada o demo programada para ${selectedClient.name}`);
@@ -527,10 +527,10 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
       {/* New Client Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#EAF3F9]">Añadir Nueva Cuenta Comercial</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F1A2C]">Añadir Nueva Cuenta Comercial</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -543,7 +543,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ej. AENA Group"
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -554,7 +554,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                   <select 
                     value={type}
                     onChange={(e: any) => setType(e.target.value)}
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Aerolínea">Aerolínea</option>
                     <option value="Aeropuerto">Aeropuerto</option>
@@ -566,7 +566,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                   <select 
                     value={status}
                     onChange={(e: any) => setStatus(e.target.value)}
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Lead">Lead / Prospecto</option>
                     <option value="Negociando">Negociación</option>
@@ -584,7 +584,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                     value={dealValue}
                     onChange={(e) => setDealValue(e.target.value)}
                     placeholder="Ej. 120000"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                     required
                   />
                 </div>
@@ -595,7 +595,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                     value={passengers}
                     onChange={(e) => setPassengers(e.target.value)}
                     placeholder="Ej. 300000"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>
@@ -608,7 +608,7 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                     value={hub}
                     onChange={(e) => setHub(e.target.value)}
                     placeholder="Ej. Madrid T4"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
                 <div>
@@ -618,16 +618,16 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="Ej. Marta Villanueva"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>

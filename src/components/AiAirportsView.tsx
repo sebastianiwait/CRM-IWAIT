@@ -122,7 +122,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
           <button 
             type="button"
             onClick={() => triggerToast('Generando reporte consolidado de precisión y latencia de IA...')}
-            className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-[#14243A] rounded-lg border border-[#2A415A] text-[#8DA2B5] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
+            className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-white rounded-lg border border-[#e6eef4] text-[#64748B] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
           >
             <Cpu className="w-[15px] h-[15px]" /> Informe global
           </button>
@@ -138,31 +138,31 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
 
       {/* Global stats KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#00C9A7]">
+        <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#00C9A7]">
           <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Aeropuertos activos</div>
-          <div className="text-[28px] font-bold text-[#EAF3F9] mt-2 tracking-tight leading-none">{airports.length}</div>
+          <div className="text-[28px] font-bold text-[#0F1A2C] mt-2 tracking-tight leading-none">{airports.length}</div>
           <div className="text-[12px] text-[#10CC82] flex items-center gap-1 mt-2.5">
             <Sparkles className="w-[13px] h-[13px]" /> +1 este mes
           </div>
         </div>
 
-        <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
+        <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#0E457F]">
           <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Pasajeros analizados/día</div>
-          <div className="text-[28px] font-bold text-[#EAF3F9] mt-2 tracking-tight leading-none">142K</div>
+          <div className="text-[28px] font-bold text-[#0F1A2C] mt-2 tracking-tight leading-none">142K</div>
           <div className="text-[12px] text-[#10CC82] flex items-center gap-1 mt-2.5">
             <TrendingDown className="w-[13px] h-[13px]" /> +23% vs. semana pasada
           </div>
         </div>
 
-        <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
+        <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#47B6E6]">
           <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Precisión predicción</div>
-          <div className="text-[28px] font-bold text-[#EAF3F9] mt-2 tracking-tight leading-none">94.2%</div>
+          <div className="text-[28px] font-bold text-[#0F1A2C] mt-2 tracking-tight leading-none">94.2%</div>
           <div className="text-[12px] text-[#10CC82] flex items-center gap-1 mt-2.5">
             <Cpu className="w-[13px] h-[13px]" /> Promedio red
           </div>
         </div>
 
-        <div className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
+        <div className="bg-white border border-[#e6eef4] rounded-lg p-5 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:height-[2px] before:bg-[#F5A623]">
           <div className="text-[12px] text-[#64748B] font-semibold uppercase tracking-wider">Tiempo espera reducido</div>
           <div className="text-[28px] font-bold text-white mt-2 tracking-tight leading-none">-38%</div>
           <div className="text-[12px] text-[#10CC82] flex items-center gap-1 mt-2.5">
@@ -174,11 +174,11 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
       {/* Airport cards grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
         {airports.map((ap) => (
-          <div key={ap.id} className="bg-[#14243A] border border-[#22384F] rounded-lg p-5 space-y-4">
+          <div key={ap.id} className="bg-white border border-[#e6eef4] rounded-lg p-5 space-y-4">
             <div className="flex justify-between items-start">
               <div>
                 <div className="text-[22px] font-extrabold text-[#47B6E6] tracking-wide font-mono leading-none">{ap.iata}</div>
-                <h4 className="text-[15px] font-semibold text-[#EAF3F9] mt-2">{ap.name}</h4>
+                <h4 className="text-[15px] font-semibold text-[#0F1A2C] mt-2">{ap.name}</h4>
                 <div className="text-[12px] text-[#64748B] mt-0.5">{ap.country}</div>
               </div>
               {getStatusBadge(ap.status)}
@@ -186,22 +186,22 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
 
             {/* Sub Metrics matrix */}
             <div className="grid grid-cols-3 gap-2.5 pt-1">
-              <div className="bg-[#1B2F49]/40 border border-[#2A415A] p-2.5 text-center rounded-lg">
+              <div className="bg-[#f5f9fc]/40 border border-[#e6eef4] p-2.5 text-center rounded-lg">
                 <div className="text-[16px] font-bold text-[#00C9A7] font-mono">{ap.precision}%</div>
                 <div className="text-[10px] text-[#64748B] mt-1 font-sans">Precisión</div>
               </div>
-              <div className="bg-[#1B2F49]/40 border border-[#2A415A] p-2.5 text-center rounded-lg">
-                <div className="text-[16px] font-bold text-[#EAF3F9] font-mono">{ap.passengers}</div>
+              <div className="bg-[#f5f9fc]/40 border border-[#e6eef4] p-2.5 text-center rounded-lg">
+                <div className="text-[16px] font-bold text-[#0F1A2C] font-mono">{ap.passengers}</div>
                 <div className="text-[10px] text-[#64748B] mt-1 font-sans">Pasaj./día</div>
               </div>
-              <div className="bg-[#1B2F49]/40 border border-[#2A415A] p-2.5 text-center rounded-lg">
+              <div className="bg-[#f5f9fc]/40 border border-[#e6eef4] p-2.5 text-center rounded-lg">
                 <div className="text-[16px] font-bold text-[#10CC82] font-mono">-{ap.reduction}%</div>
                 <div className="text-[10px] text-[#64748B] mt-1 font-sans">Tiempo cola</div>
               </div>
             </div>
             
-            <div className="text-[11px] text-[#64748B] border-t border-[#22384F]/60 pt-3 flex items-center justify-between">
-              <span className="truncate">Módulos: <strong className="text-[#8DA2B5]">{ap.modules}</strong></span>
+            <div className="text-[11px] text-[#64748B] border-t border-[#e6eef4]/60 pt-3 flex items-center justify-between">
+              <span className="truncate">Módulos: <strong className="text-[#64748B]">{ap.modules}</strong></span>
               <button 
                 onClick={() => triggerToast(`Sincronizando logs en tiempo real para el nodo ${ap.iata}`)}
                 className="text-[#47B6E6] hover:underline flex items-center gap-1 flex-shrink-0 cursor-pointer"
@@ -215,37 +215,37 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
         {/* Airport Add trigger card */}
         <div 
           onClick={() => setIsModalOpen(true)}
-          className="border border-dashed border-[#22384F] hover:border-[#0E457F] bg-[#14243A]/30 hover:bg-[#14243A]/65 p-6 rounded-lg flex flex-col justify-center items-center text-center cursor-pointer min-h-[170px] transition-all group"
+          className="border border-dashed border-[#e6eef4] hover:border-[#0E457F] bg-white/30 hover:bg-white/65 p-6 rounded-lg flex flex-col justify-center items-center text-center cursor-pointer min-h-[170px] transition-all group"
         >
           <Plus className="w-8 h-8 text-[#0E457F] opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-transform mb-2.5" />
-          <div className="text-[14px] font-semibold text-[#EAF3F9]">Próximo aeropuerto</div>
+          <div className="text-[14px] font-semibold text-[#0F1A2C]">Próximo aeropuerto</div>
           <div className="text-[12px] text-[#64748B] mt-1 max-w-[200px]">LHR — Heathrow · En negociación activa</div>
         </div>
       </div>
 
       {/* AI Models Table Card layout */}
-      <div className="bg-[#14243A] border border-[#22384F] rounded-lg">
-        <div className="border-b border-[#22384F] px-5 py-4">
-          <h3 className="text-[14px] font-semibold text-[#EAF3F9]">Modelos IA en producción</h3>
+      <div className="bg-white border border-[#e6eef4] rounded-lg">
+        <div className="border-b border-[#e6eef4] px-5 py-4">
+          <h3 className="text-[14px] font-semibold text-[#0F1A2C]">Modelos IA en producción</h3>
         </div>
         
         <table className="w-full">
           <thead>
             <tr className="bg-white/[0.02]">
-              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Modelo</th>
-              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Función</th>
-              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Aeropuertos</th>
-              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Precisión</th>
-              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Latencia</th>
-              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#22384F]">Estado</th>
+              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Modelo</th>
+              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Función</th>
+              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Aeropuertos</th>
+              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Precisión</th>
+              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Latencia</th>
+              <th className="px-5 py-3 text-left text-[11px] font-semibold text-[#64748B] uppercase tracking-wider border-b border-[#e6eef4]">Estado</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#22384F] text-[13px]">
+          <tbody className="divide-y divide-[#eef2f6] text-[13px]">
             {models.map((m, i) => (
               <tr key={i} className="hover:bg-[#0E457F]/4 transition-colors">
                 <td className="px-5 py-3 font-mono font-bold text-[#47B6E6]">{m.name}</td>
-                <td className="px-5 py-3 text-[#EAF3F9]">{m.function}</td>
-                <td className="px-5 py-3 text-[#8DA2B5]">{m.airports}</td>
+                <td className="px-5 py-3 text-[#0F1A2C]">{m.function}</td>
+                <td className="px-5 py-3 text-[#64748B]">{m.airports}</td>
                 <td className="px-5 py-3 font-bold text-[#10CC82]">{m.precision}</td>
                 <td className="px-5 py-3 text-[#64748B] font-mono">{m.latency}</td>
                 <td className="px-5 py-3">
@@ -268,10 +268,10 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
       {/* Add Airport Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14243A] border border-[#22384F] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#22384F] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#EAF3F9]">Añadir Aeropuerto / Despliegue</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#EAF3F9] transition-colors p-1">
+          <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
+            <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-[#0F1A2C]">Añadir Aeropuerto / Despliegue</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -286,7 +286,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     onChange={(e) => setIata(e.target.value)}
                     placeholder="Ej. BCN"
                     maxLength={3}
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm text-center font-mono font-bold"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm text-center font-mono font-bold"
                     required
                   />
                 </div>
@@ -297,7 +297,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej. Aeropuerto El Prat"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                     required
                   />
                 </div>
@@ -311,7 +311,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder="Ej. Barcelona · España"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
                 <div>
@@ -321,7 +321,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     value={passengers}
                     onChange={(e) => setPassengers(e.target.value)}
                     placeholder="Ej. 52K"
-                    className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>
@@ -331,7 +331,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                 <select 
                   value={activeModules}
                   onChange={(e) => setActiveModules(e.target.value)}
-                  className="w-full bg-[#1B2F49] border border-[#2A415A] rounded-lg px-3 py-2 text-[#EAF3F9] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="AI Queue Predictor">AI Queue Predictor</option>
                   <option value="AI Queue Predictor · Live Dashboard">AI Queue Predictor y Live Dashboard</option>
@@ -339,11 +339,11 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                 </select>
               </div>
 
-              <div className="border-t border-[#22384F] pt-4 flex justify-end gap-2.5">
+              <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg bg-transparent border border-[#2A415A] text-[#64748B] hover:text-[#EAF3F9] text-sm cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
                 </button>

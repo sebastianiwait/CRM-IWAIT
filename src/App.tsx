@@ -28,7 +28,7 @@ import ProductView from './components/ProductView';
 import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
-import SprintBoardView from './components/SprintBoardView';
+import ProductHubView from './components/ProductHubView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
@@ -171,16 +171,9 @@ export default function App() {
             triggerToast={triggerToast}
           />
         );
-      case 'sprint-jd':
-        return (
-          <SprintBoardView triggerToast={triggerToast} />
-        );
       case 'producto':
         return (
-          <ProductView
-            triggerToast={triggerToast}
-            tasks={tasks}
-          />
+          <ProductHubView triggerToast={triggerToast} />
         );
       case 'leads':
         return (
@@ -238,7 +231,7 @@ export default function App() {
       />
 
       {/* Main content stage */}
-      <main className="flex-1 ml-[230px] min-h-screen flex flex-col relative bg-gradient-to-br from-[#cde4ed] via-[#f5fcfd] to-white">
+      <main className="flex-1 ml-[230px] min-h-screen flex flex-col relative bg-[#f7fafc]">
         <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#c3dae4] px-8 py-4">
           <div className="max-w-3xl mx-auto relative">
             <div className={`relative flex items-center bg-white border ${isSearchFocused ? 'border-[#0E457F] ring-1 ring-[#0E457F]/40' : 'border-[#c3dae4]'} rounded-xl transition-all duration-200 shadow-sm`}>
@@ -361,7 +354,7 @@ export default function App() {
             )}
           </div>
         </div>
-        <div className="px-8 py-7 max-w-7xl w-full mx-auto flex-1">
+        <div className="px-8 py-7 w-full mx-auto flex-1">
           {renderActiveView()}
         </div>
       </main>
