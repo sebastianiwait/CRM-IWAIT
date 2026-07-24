@@ -184,7 +184,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
 
       {/* Segmented tabs */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="inline-flex bg-[#eef2f6] rounded-xl p-1">
+        <div data-tour="dash-tabs" className="inline-flex bg-[#eef2f6] rounded-xl p-1">
           {(['Resumen', 'Actividad hoy', 'Ayer'] as const).map((t) => (
             <button
               key={t}
@@ -204,7 +204,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
       </div>
 
       {/* KPI Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div data-tour="dash-kpis" className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {[
           {
             label: 'Capital levantado',
@@ -256,7 +256,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div data-tour="dash-quick" className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <button 
           onClick={() => setModalType('investor')}
           className="flex items-center justify-between p-4 bg-white/70 backdrop-blur-sm border border-[#dbe9f0] rounded-2xl shadow-sm hover:border-[#0E457F] hover:bg-white transition-all group"

@@ -24,11 +24,11 @@ import DashboardView from './components/DashboardView';
 import InvestorsView from './components/InvestorsView';
 import DataRoomView from './components/DataRoomView';
 import TasksView from './components/TasksView';
-import ProductView from './components/ProductView';
 import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
 import ProductHubView from './components/ProductHubView';
+import GuidePanel from './components/GuidePanel';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
@@ -233,7 +233,7 @@ export default function App() {
       {/* Main content stage */}
       <main className="flex-1 ml-[230px] min-h-screen flex flex-col relative bg-[#f7fafc]">
         <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#c3dae4] px-8 py-4">
-          <div className="max-w-3xl mx-auto relative">
+          <div className="max-w-3xl mx-auto relative" data-tour="global-search">
             <div className={`relative flex items-center bg-white border ${isSearchFocused ? 'border-[#0E457F] ring-1 ring-[#0E457F]/40' : 'border-[#c3dae4]'} rounded-xl transition-all duration-200 shadow-sm`}>
               <Search className={`absolute left-4 w-5 h-5 ${isSearchFocused ? 'text-[#0E457F]' : 'text-[#64748B]'}`} />
               <input
@@ -359,9 +359,12 @@ export default function App() {
         </div>
       </main>
 
+      {/* Contextual usage guide */}
+      <GuidePanel activeTab={activeTab} />
+
       {/* Premium custom alert messages / Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#1B2F49] border border-[#0E457F] text-[#EAF3F9] px-4 py-3 rounded-lg shadow-2xl flex items-center gap-2.5 animate-slide-up">
+        <div className="fixed bottom-6 right-6 z-[60] bg-[#0F1A2C] text-white px-4 py-3 rounded-lg shadow-2xl flex items-center gap-2.5 animate-slide-up">
           <Sparkles className="w-4 h-4 text-[#47B6E6] flex-shrink-0" />
           <span className="text-[13px] font-medium">{toastMessage}</span>
         </div>

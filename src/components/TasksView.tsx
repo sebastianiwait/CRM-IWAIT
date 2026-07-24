@@ -80,7 +80,7 @@ export default function TasksView({
   const [column, setColumn] = useState<'Por Hacer' | 'En Progreso' | 'Hecho'>('Por Hacer');
   const [priority, setPriority] = useState<'Alta' | 'Media' | 'Baja'>('Media');
   const [dept, setDept] = useState<'Producto' | 'Clientes' | 'Inversionistas' | 'Aeropuerto' | 'Legal'>('Producto');
-  const [assigned, setAssigned] = useState('');
+  const [assigned, setAssigned] = useState('Juan Diego');
   const [dueDate, setDueDate] = useState('30 Jun 2026');
 
   // Process task filtering
@@ -175,8 +175,9 @@ export default function TasksView({
               <option value="Baja">Prioridad Baja</option>
             </select>
           </div>
-          <button 
+          <button
             type="button"
+            data-tour="tasks-add"
             onClick={() => setIsModalOpen(true)}
             className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
@@ -184,7 +185,7 @@ export default function TasksView({
           </button>
         </div>
       </div>      {/* Kanban main board */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
+      <div data-tour="tasks-board" className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
         {/* Column 1: Pendiente / Por Hacer */}
         <div 
           onDragOver={(e) => handleDragOver(e, 'Por Hacer')}
@@ -434,13 +435,14 @@ export default function TasksView({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5 font-mono">Asignado a</label>
-                  <input 
-                    type="text" 
+                  <select
                     value={assigned}
                     onChange={(e) => setAssigned(e.target.value)}
-                    placeholder="Ej. Sebastian, CTO"
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
-                  />
+                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  >
+                    <option value="Juan Diego">Juan Diego</option>
+                    <option value="Sebastian M.">Sebastian M.</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Fecha Límite</label>

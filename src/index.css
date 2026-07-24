@@ -28,11 +28,22 @@
 
 /* Custom layout global resets just in case */
 body {
-  background-color: #0F1A2C;
-  color: #EAF3F9;
+  background-color: #f7fafc;
+  color: #0F1A2C;
 }
 
 ::selection {
   background: #47B6E6;
   color: #0F1A2C;
 }
+
+/* ---- Animations ---- */
+@keyframes iw-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes iw-zoom-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes iw-slide-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes iw-slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+.animate-fade-in { animation: iw-fade-in 0.25s ease-out; }
+.animate-zoom-in { animation: iw-zoom-in 0.18s ease-out; }
+.animate-slide-up { animation: iw-slide-up 0.25s ease-out; }
+.animate-slide-in-right { animation: iw-slide-in-right 0.28s cubic-bezier(0.16, 1, 0.3, 1); }

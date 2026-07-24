@@ -157,7 +157,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
           <p className="text-[13px] text-[#64748B] mt-0.5">Elige un producto para ver su backlog y su progreso</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div data-tour="prod-cards" className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {PRODUCTS.map((p) => {
             const its = items.filter((i) => i.product === p.key);
             const done = its.filter((i) => i.status === 'Hecho').length;

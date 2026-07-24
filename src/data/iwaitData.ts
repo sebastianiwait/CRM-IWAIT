@@ -1,3 +1,5 @@
+export type InvestorStage = 'Contactado' | 'Reunión' | 'Due Diligence' | 'Compromiso' | 'Cerrado';
+
 export interface Investor {
   id: string;
   name: string;
@@ -7,6 +9,8 @@ export interface Investor {
   email: string;
   round: string;
   sharesPercent: number;
+  stage?: InvestorStage;
+  contact?: string;
 }
 
 export interface DataRoomFile {
@@ -56,12 +60,14 @@ export interface FlightDelay {
 }
 
 export const INITIAL_INVESTORS: Investor[] = [
-  { id: 'inv-1', name: 'Santiago de Alvear', firm: 'Pre-Seed Lead / Venture Capital', committedAmount: 150000, status: 'Firmado', email: 's.alvear@latamvc.com', round: 'Pre-Seed', sharesPercent: 3.5 },
-  { id: 'inv-2', name: 'Mariana Gomez', firm: 'Angel Investor (Ex-Iata)', committedAmount: 50000, status: 'Firmado', email: 'mariana.gomez@exata.net', round: 'Pre-Seed', sharesPercent: 1.2 },
-  { id: 'inv-3', name: 'Andrés Pastrana', firm: 'Andes Ventures LLC', committedAmount: 250000, status: 'Firmado', email: 'pastrana@andesventures.com', round: 'Semilla', sharesPercent: 5.0 },
-  { id: 'inv-4', name: 'Clara Ortiz', firm: 'SaaS Global Fund', committedAmount: 180000, status: 'Pendiente', email: 'c.ortiz@saasglobal.io', round: 'Semilla', sharesPercent: 3.6 },
-  { id: 'inv-5', name: 'Sebastian Mazorra', firm: 'Founder & Investor Pool', committedAmount: 400000, status: 'Firmado', email: 'sebastian@iwait.io', round: 'Fundadores', sharesPercent: 52.4 },
-  { id: 'inv-6', name: 'AeroCapital SL', firm: 'Syndicate Airport Sector EMEA', committedAmount: 120000, status: 'Negociando', email: 'dealflow@aerocapital.es', round: 'Semilla', sharesPercent: 2.4 }
+  { id: 'inv-1', name: 'Santiago de Alvear', firm: 'Pre-Seed Lead / Venture Capital', committedAmount: 150000, status: 'Firmado', email: 's.alvear@latamvc.com', round: 'Pre-Seed', sharesPercent: 3.5, stage: 'Cerrado', contact: 'Santiago de Alvear' },
+  { id: 'inv-2', name: 'Mariana Gomez', firm: 'Angel Investor (Ex-Iata)', committedAmount: 50000, status: 'Firmado', email: 'mariana.gomez@exata.net', round: 'Pre-Seed', sharesPercent: 1.2, stage: 'Cerrado', contact: 'Mariana Gomez' },
+  { id: 'inv-3', name: 'Andrés Pastrana', firm: 'Andes Ventures LLC', committedAmount: 250000, status: 'Firmado', email: 'pastrana@andesventures.com', round: 'Semilla', sharesPercent: 5.0, stage: 'Cerrado', contact: 'Andrés Pastrana' },
+  { id: 'inv-4', name: 'Clara Ortiz', firm: 'SaaS Global Fund', committedAmount: 180000, status: 'Pendiente', email: 'c.ortiz@saasglobal.io', round: 'Semilla', sharesPercent: 3.6, stage: 'Due Diligence', contact: 'Clara Ortiz' },
+  { id: 'inv-5', name: 'Sebastian Mazorra', firm: 'Founder & Investor Pool', committedAmount: 400000, status: 'Firmado', email: 'sebastian@iwait.io', round: 'Fundadores', sharesPercent: 52.4, stage: 'Cerrado', contact: 'Sebastian Mazorra' },
+  { id: 'inv-6', name: 'AeroCapital SL', firm: 'Syndicate Airport Sector EMEA', committedAmount: 120000, status: 'Negociando', email: 'dealflow@aerocapital.es', round: 'Semilla', sharesPercent: 2.4, stage: 'Compromiso', contact: 'Luis Restrepo' },
+  { id: 'inv-7', name: 'Nordic Angels', firm: 'Angel Syndicate (Nordics)', committedAmount: 90000, status: 'Negociando', email: 'deals@nordicangels.io', round: 'Semilla', sharesPercent: 0, stage: 'Reunión', contact: 'Erik Lund' },
+  { id: 'inv-8', name: 'Blue Runway Capital', firm: 'Aviation-focused VC', committedAmount: 300000, status: 'Negociando', email: 'ir@bluerunway.vc', round: 'Semilla', sharesPercent: 0, stage: 'Contactado', contact: 'Priya Nair' }
 ];
 
 export const INITIAL_DATA_ROOM: DataRoomFile[] = [
@@ -135,12 +141,12 @@ export const INITIAL_DATA_ROOM: DataRoomFile[] = [
 ];
 
 export const INITIAL_TASKS: KanbanTask[] = [
-  { id: 'task-1', title: 'Rediseño del Wallet Apple Pass', description: 'Actualizar colores al cobre oficial #C48138 en la versión de producción del ticket de pasajero.', column: 'En Progreso', priority: 'Alta', department: 'Producto', assignedTo: 'Laura Diaz', dueDate: '25 Jun 2026' },
-  { id: 'task-2', title: 'Cierre legal SAFE Clara Ortiz', description: 'Enviar firmas del SAFE por $180k USD con SaaS Global Fund.', column: 'Por Hacer', priority: 'Alta', department: 'Inversionistas', assignedTo: 'Sebastian Mazorra', dueDate: '28 Jun 2026' },
-  { id: 'task-3', title: 'Integrar base de datos de comercios JFK', description: 'Dar de alta los terminales de pago en 12 restaurantes de la terminal 4 en Nueva York.', column: 'Por Hacer', priority: 'Media', department: 'Aeropuerto', assignedTo: 'Mateo Restrepo', dueDate: '15 Jul 2026' },
-  { id: 'task-4', title: 'Dashboard de Conciliación Comercial BOG', description: 'Finalizar interfaz de gráficos bento para restaurantes asociados en el Dorado.', column: 'Hecho', priority: 'Media', department: 'Producto', assignedTo: 'Laura Diaz', dueDate: '10 Jun 2026' },
-  { id: 'task-5', title: 'Firma de Contrato con Air Europa', description: 'Revisión final de tarifas de contingencias del counter de Madrid.', column: 'En Progreso', priority: 'Alta', department: 'Legal', assignedTo: 'Dr. Alejandro Peña', dueDate: '30 Jun 2026' },
-  { id: 'task-6', title: 'Presentación del Data Room trimestral', description: 'Reunir balance de NPS general de 82 puntos y subir el resumen al Data Room.', column: 'Hecho', priority: 'Baja', department: 'Inversionistas', assignedTo: 'Carlos Rivas', dueDate: '18 Jun 2026' }
+  { id: 'task-1', title: 'Rediseño del Wallet Apple Pass', description: 'Actualizar colores al cobre oficial #C48138 en la versión de producción del ticket de pasajero.', column: 'En Progreso', priority: 'Alta', department: 'Producto', assignedTo: 'Juan Diego', dueDate: '25 Jun 2026' },
+  { id: 'task-2', title: 'Cierre legal SAFE Clara Ortiz', description: 'Enviar firmas del SAFE por $180k USD con SaaS Global Fund.', column: 'Por Hacer', priority: 'Alta', department: 'Inversionistas', assignedTo: 'Sebastian M.', dueDate: '28 Jun 2026' },
+  { id: 'task-3', title: 'Integrar base de datos de comercios JFK', description: 'Dar de alta los terminales de pago en 12 restaurantes de la terminal 4 en Nueva York.', column: 'Por Hacer', priority: 'Media', department: 'Aeropuerto', assignedTo: 'Juan Diego', dueDate: '15 Jul 2026' },
+  { id: 'task-4', title: 'Dashboard de Conciliación Comercial BOG', description: 'Finalizar interfaz de gráficos bento para restaurantes asociados en el Dorado.', column: 'Hecho', priority: 'Media', department: 'Producto', assignedTo: 'Juan Diego', dueDate: '10 Jun 2026' },
+  { id: 'task-5', title: 'Firma de Contrato con Air Europa', description: 'Revisión final de tarifas de contingencias del counter de Madrid.', column: 'En Progreso', priority: 'Alta', department: 'Legal', assignedTo: 'Sebastian M.', dueDate: '30 Jun 2026' },
+  { id: 'task-6', title: 'Presentación del Data Room trimestral', description: 'Reunir balance de NPS general de 82 puntos y subir el resumen al Data Room.', column: 'Hecho', priority: 'Baja', department: 'Inversionistas', assignedTo: 'Sebastian M.', dueDate: '18 Jun 2026' }
 ];
 
 export const INITIAL_CLIENTS: ClientEntity[] = [

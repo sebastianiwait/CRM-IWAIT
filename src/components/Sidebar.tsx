@@ -75,7 +75,7 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount }: Sidebar
   };
 
   return (
-    <div className="w-[230px] bg-white border-r border-[#e6eef4] flex flex-col fixed top-0 left-0 h-screen overflow-y-auto">
+    <div data-tour="sidebar" className="w-[230px] bg-white border-r border-[#e6eef4] flex flex-col fixed top-0 left-0 h-screen overflow-y-auto">
       {/* Brand Header */}
       <div className="p-4 flex items-center gap-2.5">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0E457F] to-[#47B6E6] flex items-center justify-center text-white font-extrabold text-[13px] tracking-tight">
