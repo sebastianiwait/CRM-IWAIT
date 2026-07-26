@@ -11,16 +11,18 @@ import {
   Briefcase,
   KanbanSquare,
   Search,
-  ChevronDown
+  ChevronDown,
+  GraduationCap
 } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   tasksCount: number;
+  onOpenTutorials: () => void;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, tasksCount }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTutorials }: SidebarProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     general: true,
     inversiones: true,
@@ -136,6 +138,17 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount }: Sidebar
           {renderItem('clientes', 'Clientes', <Users className="w-[17px] h-[17px]" />)}
         </>)}
       </nav>
+
+      {/* Tutoriales trigger */}
+      <div className="px-3 pb-2">
+        <button
+          onClick={onOpenTutorials}
+          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-left cursor-pointer transition-all duration-200 text-[13.5px] text-[#33475b] hover:bg-[#0E457F]/8 hover:text-[#0F1A2C]"
+        >
+          <GraduationCap className="w-[17px] h-[17px] text-[#0E457F]" />
+          <span className="flex-1 font-medium">Tutoriales</span>
+        </button>
+      </div>
 
       {/* Sidebar Footer User Details */}
       <div className="p-3.5 border-t border-[#e6eef4] flex items-center gap-2.5">

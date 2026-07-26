@@ -28,10 +28,33 @@ import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
 import ProductHubView from './components/ProductHubView';
-import GuidePanel from './components/GuidePanel';
+import Tour, { TourStep } from './components/Tour';
+import TutorialsMenu from './components/TutorialsMenu';
+import { TOURS } from './data/tours';
+import { TUTORIALS } from './data/tutorials';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
+  const [tutorialsOpen, setTutorialsOpen] = useState(false);
+  const [activeTour, setActiveTour] = useState<TourStep[] | null>(null);
+
+  // Launch a tutorial: navigate to its section, then run the interactive tour
+  // (or a centered walkthrough derived from the written manual).
+  const startTutorial = (section: string) => {
+    setTutorialsOpen(false);
+    setActiveTab(section);
+    const steps: TourStep[] =
+      TOURS[section] ??
+      (TUTORIALS[section]
+        ? [
+            { title: TUTORIALS[section].title, body: TUTORIALS[section].intro },
+            ...TUTORIALS[section].steps.map((s) => ({ title: s.title, body: s.body })),
+            { title: 'Tip', body: TUTORIALS[section].tip }
+          ]
+        : []);
+    if (steps.length === 0) return;
+    setTimeout(() => setActiveTour(steps), 380);
+  };
   
   // State management
   const [investors, setInvestors] = useState<Investor[]>(INITIAL_INVESTORS);
@@ -224,10 +247,11 @@ export default function App() {
     <div className="min-h-screen bg-[#0F1A2C] text-[#EAF3F9] font-sans antialiased flex">
       
       {/* Sidebar navigation */}
-      <Sidebar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         tasksCount={tasks.filter(t => t.column !== 'Hecho').length}
+        onOpenTutorials={() => setTutorialsOpen(true)}
       />
 
       {/* Main content stage */}
@@ -359,8 +383,11 @@ export default function App() {
         </div>
       </main>
 
-      {/* Contextual usage guide */}
-      <GuidePanel activeTab={activeTab} />
+      {/* Tutorials picker + interactive tour */}
+      {tutorialsOpen && (
+        <TutorialsMenu onClose={() => setTutorialsOpen(false)} onSelect={startTutorial} />
+      )}
+      {activeTour && <Tour steps={activeTour} onClose={() => setActiveTour(null)} />}
 
       {/* Premium custom alert messages / Toast */}
       {toastMessage && (
