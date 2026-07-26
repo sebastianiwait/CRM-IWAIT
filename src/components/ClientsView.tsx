@@ -249,13 +249,13 @@ export default function ClientsView({ clients, onAddClient, onUpdateClientStatus
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar..."
-              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-1.8 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[150px] md:w-[180px]"
+              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[150px] md:w-[180px]"
             />
           </div>
           <button 
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nuevo lead / cliente
           </button>

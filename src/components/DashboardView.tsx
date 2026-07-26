@@ -168,14 +168,14 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           <button 
             type="button"
             onClick={() => triggerToast('Resumen ejecutivo descargado como reporte PDF')}
-            className="btn btn-ghost px-3.5 py-1.8 bg-white hover:bg-[#eef6fa] rounded-lg border border-[#dbe9f0] text-[#33475b] hover:text-[#0F1A2C] text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer shadow-sm"
+            className="btn btn-ghost px-3.5 py-2 bg-white hover:bg-[#eef6fa] rounded-lg border border-[#dbe9f0] text-[#33475b] hover:text-[#0F1A2C] text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer shadow-sm"
           >
             <Download className="w-[15px] h-[15px]" /> Exportar
           </button>
           <button 
             type="button"
             onClick={onAddAction}
-            className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva acción
           </button>
@@ -363,61 +363,31 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           </div>
         </div>
 
-        {/* Resumen del pipeline progress card */}
+        {/* Resumen general por área */}
         <div className="bg-white/70 backdrop-blur-sm border border-[#dbe9f0] rounded-2xl shadow-sm">
           <div className="border-b border-[#dbe9f0] px-5 py-4 flex items-center gap-2">
             <TrendingUp className="w-[15px] h-[15px] text-[#47B6E6]" />
-            <h3 className="text-[14px] font-semibold text-[#0F1A2C]">Resumen del pipeline</h3>
+            <h3 className="text-[14px] font-semibold text-[#0F1A2C]">Resumen por área</h3>
           </div>
           <div className="p-5 space-y-5">
-            {/* Bar 1 */}
-            <div>
-              <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">
-                <span>Lead → Propuesta</span>
-                <span className="font-semibold text-[#0F1A2C]">68%</span>
+            {[
+              { label: 'Ronda de inversión', pct: 78, color: '#0E457F', note: '$940K de $1.2M · Semilla' },
+              { label: 'Pipeline comercial', pct: 44, color: '#47B6E6', note: '4 de 9 clientes en negociación' },
+              { label: 'Producto — Aerolíneas', pct: 28, color: '#F5A623', note: 'Sprint 12 · 11/40 pts' },
+              { label: 'Producto — AI Aeropuertos', pct: 40, color: '#00C9A7', note: 'Sprint 8 · en progreso' },
+              { label: 'Tareas del equipo', pct: 33, color: '#8B63F5', note: `${metrics.tasksCount} pendientes · 2 vencidas` }
+            ].map((row) => (
+              <div key={row.label}>
+                <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">
+                  <span>{row.label}</span>
+                  <span className="font-semibold text-[#0F1A2C]">{row.pct}%</span>
+                </div>
+                <div className="w-full bg-[#e3eef4] h-1.5 rounded-full overflow-hidden">
+                  <div className="h-full rounded-full transition-all duration-500" style={{ width: `${row.pct}%`, backgroundColor: row.color }}></div>
+                </div>
+                <div className="text-[11px] text-[#64748B] mt-1">{row.note}</div>
               </div>
-              <div className="w-full bg-[#e3eef4] h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#0E457F] h-full rounded-full transition-all duration-500" style={{ width: '68%' }}></div>
-              </div>
-              <div className="text-[11px] text-[#64748B] mt-1">9 de 14 leads calificados</div>
-            </div>
-
-            {/* Bar 2 */}
-            <div>
-              <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">
-                <span>Propuesta → Negociación</span>
-                <span className="font-semibold text-[#0F1A2C]">44%</span>
-              </div>
-              <div className="w-full bg-[#e3eef4] h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#47B6E6] h-full rounded-full transition-all duration-500" style={{ width: '44%' }}></div>
-              </div>
-              <div className="text-[11px] text-[#64748B] mt-1">4 de 9 en negociación activa</div>
-            </div>
-
-            {/* Bar 3 */}
-            <div>
-              <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">
-                <span>Objetivo runway (meses)</span>
-                <span className="font-semibold text-[#0F1A2C]">60%</span>
-              </div>
-              <div className="w-full bg-[#e3eef4] h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#00C9A7] h-full rounded-full transition-all duration-500" style={{ width: '60%' }}></div>
-              </div>
-              <div className="text-[11px] text-[#64748B] mt-1">7.2 meses actuales</div>
-            </div>
-
-            {/* Bar 4 */}
-            <div>
-              <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">
-                <span>Producto — Sprint actual</span>
-                <span className="font-semibold text-[#0F1A2C]">75%</span>
-              </div>
-              <div className="w-full bg-[#e3eef4] h-1.5 rounded-full overflow-hidden">
-                <div className="bg-[#F5A623] h-full rounded-full transition-all duration-500" style={{ width: '75%' }}></div>
-              </div>
-              <div className="text-[11px] text-[#64748B] mt-1">Sprint 12 · 75% completado</div>
-            </div>
-
+            ))}
           </div>
         </div>
       </div>

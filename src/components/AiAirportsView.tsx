@@ -122,14 +122,14 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
           <button 
             type="button"
             onClick={() => triggerToast('Generando reporte consolidado de precisión y latencia de IA...')}
-            className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-white rounded-lg border border-[#e6eef4] text-[#64748B] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
+            className="btn btn-ghost px-3.5 py-2 bg-transparent hover:bg-white rounded-lg border border-[#e6eef4] text-[#64748B] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
           >
             <Cpu className="w-[15px] h-[15px]" /> Informe global
           </button>
           <button 
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Añadir aeropuerto
           </button>

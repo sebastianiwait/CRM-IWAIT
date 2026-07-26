@@ -179,7 +179,7 @@ export default function TasksView({
             type="button"
             data-tour="tasks-add"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva tarea
           </button>

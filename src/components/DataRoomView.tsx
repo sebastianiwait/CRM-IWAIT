@@ -328,7 +328,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 }
               }}
               placeholder={activeSubTab === 'local' ? "Buscar por nombre, tipo, categoría..." : "Buscar por nombre o tipo..."}
-              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-1.8 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
+              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
             />
           </div>
           
@@ -337,14 +337,14 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
               <button 
                 type="button"
                 onClick={() => setIsShareOpen(true)}
-                className="btn btn-ghost px-3.5 py-1.8 bg-transparent hover:bg-white rounded-lg border border-[#e6eef4] text-[#64748B] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
+                className="btn btn-ghost px-3.5 py-2 bg-transparent hover:bg-white rounded-lg border border-[#e6eef4] text-[#64748B] hover:text-white text-[13px] flex items-center gap-1.5 transition-all text-sm cursor-pointer"
               >
                 <UserPlus className="w-[15px] h-[15px]" /> Compartir acceso
               </button>
               <button 
                 type="button"
                 onClick={() => setIsUploadOpen(true)}
-                className="btn btn-primary px-3.5 py-1.8 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+                className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
               >
                 <Plus className="w-[15px] h-[15px]" /> Subir archivo
               </button>
@@ -355,7 +355,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
             <button 
               type="button"
               onClick={() => fetchDriveFiles(driveToken!)}
-              className="px-3.5 py-1.8 bg-[#f5f9fc] hover:bg-[#22384F] text-[#47B6E6] rounded-lg border border-[#e6eef4] text-[13px] flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-3.5 py-2 bg-[#f5f9fc] hover:bg-[#22384F] text-[#47B6E6] rounded-lg border border-[#e6eef4] text-[13px] flex items-center gap-1.5 transition-all cursor-pointer"
               disabled={isLoadingDrive}
             >
               <RefreshCw className={`w-[14px] h-[14px] ${isLoadingDrive ? 'animate-spin' : ''}`} /> Sincronizar
