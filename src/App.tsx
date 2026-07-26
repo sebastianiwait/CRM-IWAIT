@@ -28,6 +28,7 @@ import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
 import ProductHubView from './components/ProductHubView';
+import ClientsCrmView from './components/ClientsCrmView';
 import Tour, { TourStep } from './components/Tour';
 import TutorialsMenu from './components/TutorialsMenu';
 import { TOURS } from './data/tours';
@@ -211,13 +212,10 @@ export default function App() {
         );
       case 'clientes':
         return (
-          <ClientsView 
-            key="clientes"
-            clients={clients}
+          <ClientsCrmView
+            clients={clients.filter(c => c.status !== 'Lead')}
             onAddClient={handleAddClient}
-            onUpdateClientStatus={handleUpdateClientStatus}
             triggerToast={triggerToast}
-            initialViewMode="clientes"
           />
         );
       case 'airports':
