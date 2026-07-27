@@ -13,6 +13,7 @@ import {
   Mail
 } from 'lucide-react';
 import { Investor, InvestorStage } from '../data/iwaitData';
+import ContactDetailCard from './ContactDetailCard';
 
 interface InvestorsViewProps {
   investors: Investor[];
@@ -48,6 +49,7 @@ export default function InvestorsView({
   const [view, setView] = useState<'db' | 'pipeline'>('db');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [detail, setDetail] = useState<Investor | null>(null);
 
   // local stage overrides for the pipeline (parent has no updater)
   const [stageOverrides, setStageOverrides] = useState<Record<string, InvestorStage>>({});
@@ -229,7 +231,7 @@ export default function InvestorsView({
               </thead>
               <tbody className="divide-y divide-[#f1f5f9]">
                 {filtered.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-[#fafcfe] transition-colors group">
+                  <tr key={inv.id} onClick={() => setDetail(inv)} className="hover:bg-[#fafcfe] transition-colors group cursor-pointer">
                     <td className="px-5 py-3.5">
                       <div className="text-[13.5px] font-semibold text-[#0F1A2C]">{inv.name}</div>
                       <div className="text-[11.5px] text-[#64748B]">{inv.firm}</div>
@@ -248,7 +250,7 @@ export default function InvestorsView({
                     </td>
                     <td className="px-5 py-3.5 text-right">
                       <button
-                        onClick={() => onDeleteInvestor(inv.id)}
+                        onClick={(e) => { e.stopPropagation(); onDeleteInvestor(inv.id); }}
                         className="opacity-0 group-hover:opacity-100 text-[#94a3b8] hover:text-[#F05252] transition-all p-1 cursor-pointer"
                         title="Eliminar"
                       >
@@ -305,7 +307,8 @@ export default function InvestorsView({
                       draggable
                       onDragStart={(e) => { setDraggingId(inv.id); e.dataTransfer.setData('text/plain', inv.id); }}
                       onDragEnd={() => { setDraggingId(null); setOverCol(null); }}
-                      className={`bg-white border rounded-lg p-3 shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing transition-all ${
+                      onClick={() => setDetail(inv)}
+                      className={`bg-white border rounded-lg p-3 shadow-sm hover:shadow-md hover:border-[#47B6E6] cursor-pointer active:cursor-grabbing transition-all ${
                         draggingId === inv.id ? 'opacity-40 border-dashed border-[#47B6E6]' : 'border-[#eef2f6]'
                       }`}
                     >
@@ -380,6 +383,27 @@ export default function InvestorsView({
             </form>
           </div>
         </div>
+      )}
+
+      {/* Detalle del inversor */}
+      {detail && (
+        <ContactDetailCard
+          title={detail.name}
+          subtitle={detail.firm}
+          badge={{ label: stageOf(detail), className: '' }}
+          email={detail.email || undefined}
+          linkedin={detail.linkedin}
+          fields={[
+            { label: 'Contacto', value: detail.contact ?? '—' },
+            { label: 'Ronda', value: detail.round },
+            { label: 'Monto', value: money(detail.committedAmount) },
+            { label: 'Equity', value: detail.sharesPercent ? `${detail.sharesPercent}%` : '—' },
+            { label: 'Etapa', value: stageOf(detail) },
+            { label: 'Estado', value: detail.status },
+            ...(detail.email ? [{ label: 'Email', value: detail.email }] : [])
+          ]}
+          onClose={() => setDetail(null)}
+        />
       )}
     </div>
   );

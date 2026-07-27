@@ -11,6 +11,7 @@ export interface Investor {
   sharesPercent: number;
   stage?: InvestorStage;
   contact?: string;
+  linkedin?: string;
 }
 
 export interface DataRoomFile {
@@ -62,7 +63,7 @@ export interface FlightDelay {
 export const INITIAL_INVESTORS: Investor[] = [
   { id: 'inv-1', name: 'Santiago de Alvear', firm: 'Pre-Seed Lead / Venture Capital', committedAmount: 150000, status: 'Firmado', email: 's.alvear@latamvc.com', round: 'Pre-Seed', sharesPercent: 3.5, stage: 'Cerrado', contact: 'Santiago de Alvear' },
   { id: 'inv-2', name: 'Mariana Gomez', firm: 'Angel Investor (Ex-Iata)', committedAmount: 50000, status: 'Firmado', email: 'mariana.gomez@exata.net', round: 'Pre-Seed', sharesPercent: 1.2, stage: 'Cerrado', contact: 'Mariana Gomez' },
-  { id: 'inv-3', name: 'Andrés Pastrana', firm: 'Andes Ventures LLC', committedAmount: 250000, status: 'Firmado', email: 'pastrana@andesventures.com', round: 'Semilla', sharesPercent: 5.0, stage: 'Cerrado', contact: 'Andrés Pastrana' },
+  { id: 'inv-3', name: 'Andrés Pastrana', firm: 'Andes Ventures LLC', committedAmount: 250000, status: 'Firmado', email: 'pastrana@andesventures.com', round: 'Semilla', sharesPercent: 5.0, stage: 'Cerrado', contact: 'Andrés Pastrana', linkedin: 'https://www.linkedin.com/in/andrespastrana/' },
   { id: 'inv-4', name: 'Clara Ortiz', firm: 'SaaS Global Fund', committedAmount: 180000, status: 'Pendiente', email: 'c.ortiz@saasglobal.io', round: 'Semilla', sharesPercent: 3.6, stage: 'Due Diligence', contact: 'Clara Ortiz' },
   { id: 'inv-5', name: 'Sebastian Mazorra', firm: 'Founder & Investor Pool', committedAmount: 400000, status: 'Firmado', email: 'sebastian@iwait.io', round: 'Fundadores', sharesPercent: 52.4, stage: 'Cerrado', contact: 'Sebastian Mazorra' },
   { id: 'inv-6', name: 'AeroCapital SL', firm: 'Syndicate Airport Sector EMEA', committedAmount: 120000, status: 'Negociando', email: 'dealflow@aerocapital.es', round: 'Semilla', sharesPercent: 2.4, stage: 'Compromiso', contact: 'Luis Restrepo' },
@@ -150,10 +151,10 @@ export const INITIAL_TASKS: KanbanTask[] = [
 ];
 
 export const INITIAL_CLIENTS: ClientEntity[] = [
-  { id: 'cli-1', name: 'Iberia Airlines', type: 'Aerolínea', status: 'Operativo', dealValue: 125000, hub: 'Madrid Barajas T4', contactPerson: 'Marta Villanueva', passengersMonthly: 450000 },
+  { id: 'cli-1', name: 'Iberia Airlines', type: 'Aerolínea', status: 'Operativo', dealValue: 125000, hub: 'Madrid Barajas T4', contactPerson: 'Marta Villanueva', passengersMonthly: 450000, linkedin: 'https://www.linkedin.com/company/iberia/' },
   { id: 'cli-2', name: 'Aeropuerto El Dorado (OPAIN)', type: 'Aeropuerto', status: 'Operativo', dealValue: 95000, hub: 'Bogotá El Dorado', contactPerson: 'Felipe Holguín', passengersMonthly: 980000 },
   { id: 'cli-3', name: 'Air Europa', type: 'Aerolínea', status: 'Contrato', dealValue: 85000, hub: 'Madrid Barajas T1', contactPerson: 'Juan Carlos Ruiz', passengersMonthly: 210000 },
-  { id: 'cli-4', name: 'Avianca', type: 'Aerolínea', status: 'Negociando', dealValue: 140000, hub: 'Bogotá T1 / Medellín MDE', contactPerson: 'Claudia Patricia Gil', passengersMonthly: 620000 },
+  { id: 'cli-4', name: 'Avianca', type: 'Aerolínea', status: 'Negociando', dealValue: 140000, hub: 'Bogotá T1 / Medellín MDE', contactPerson: 'Claudia Patricia Gil', passengersMonthly: 620000, linkedin: 'https://www.linkedin.com/company/avianca/' },
   { id: 'cli-5', name: 'Dufry Duty Free', type: 'Comercio', status: 'Operativo', dealValue: 45000, hub: 'EMEA & LATAM Hubs', contactPerson: 'Hans-Peter Steiner', passengersMonthly: 1200000 },
   { id: 'cli-6', name: 'LATAM Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 180000, hub: 'Santiago SCL / Lima LIM', contactPerson: 'Eduardo Valenzuela', passengersMonthly: 750000 },
   { id: 'cli-7', name: 'Starbucks Airport', type: 'Comercio', status: 'Operativo', dealValue: 35000, hub: 'Múltiples Terminales', contactPerson: 'Lucía Fernández', passengersMonthly: 300000 },

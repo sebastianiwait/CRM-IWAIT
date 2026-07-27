@@ -15,6 +15,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { ClientEntity } from '../data/iwaitData';
+import ContactDetailCard from './ContactDetailCard';
 
 interface ClientsCrmViewProps {
   clients: ClientEntity[];
@@ -71,6 +72,7 @@ export default function ClientsCrmView({ clients, triggerToast }: ClientsCrmView
 
   const [activities, setActivities] = useState<Record<string, ActivityEntry[]>>(SEED_ACTIVITY);
   const [selectedId, setSelectedId] = useState<string>(clients[0]?.id ?? '');
+  const [detail, setDetail] = useState<ClientEntity | null>(null);
 
   // new activity form
   const [kind, setKind] = useState<ActivityKind>('Nota');
@@ -188,7 +190,7 @@ export default function ClientsCrmView({ clients, triggerToast }: ClientsCrmView
                 </thead>
                 <tbody className="divide-y divide-[#f1f5f9]">
                   {filtered.map((c) => (
-                    <tr key={c.id} className="hover:bg-[#fafcfe] transition-colors group">
+                    <tr key={c.id} onClick={() => setDetail(c)} className="hover:bg-[#fafcfe] transition-colors group cursor-pointer">
                       <td className="px-5 py-3.5 font-semibold text-[13.5px] text-[#0F1A2C]">{c.name}</td>
                       <td className="px-5 py-3.5">
                         <span className="inline-flex items-center gap-1.5 text-[12px] text-[#33475b]">
@@ -203,7 +205,7 @@ export default function ClientsCrmView({ clients, triggerToast }: ClientsCrmView
                       </td>
                       <td className="px-5 py-3.5 text-right">
                         <button
-                          onClick={() => openActivity(c.id)}
+                          onClick={(e) => { e.stopPropagation(); openActivity(c.id); }}
                           className="inline-flex items-center gap-1 text-[12px] font-medium text-[#0E457F] hover:text-[#0A365F] cursor-pointer"
                         >
                           <MessageSquarePlus className="w-3.5 h-3.5" />
@@ -351,6 +353,26 @@ export default function ClientsCrmView({ clients, triggerToast }: ClientsCrmView
             </div>
           )}
         </div>
+      )}
+
+      {/* Detalle del cliente */}
+      {detail && (
+        <ContactDetailCard
+          title={detail.name}
+          subtitle={`${detail.type} · ${detail.hub}`}
+          badge={{ label: detail.status, className: '' }}
+          icon={typeIcon(detail.type)}
+          linkedin={detail.linkedin}
+          fields={[
+            { label: 'Contacto', value: detail.contactPerson },
+            { label: 'Deal value', value: money(detail.dealValue) },
+            { label: 'Pax / mes', value: `${(detail.passengersMonthly / 1000).toFixed(0)}K` },
+            { label: 'Estado', value: detail.status },
+            { label: 'Hub', value: detail.hub },
+            { label: 'Actividades', value: String(activityCount(detail.id)) }
+          ]}
+          onClose={() => setDetail(null)}
+        />
       )}
     </div>
   );
