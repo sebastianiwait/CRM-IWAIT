@@ -76,24 +76,16 @@ export const TUTORIALS: Record<string, Tutorial> = {
     ],
     tip: 'Una tarea buena tiene responsable y fecha. Si no los tiene, probablemente no se hará.'
   },
-  leads: {
-    title: 'Leads & Pipeline',
-    intro: 'Los prospectos comerciales (aerolíneas, aeropuertos, comercios) antes de convertirse en clientes.',
+  negocios: {
+    title: 'Negocios',
+    intro: 'Tu CRM comercial: cada negocio es una oportunidad con su empresa, sus contactos y su historial de actividad.',
     steps: [
-      { title: 'Revisa el pipeline comercial', body: 'Cada lead tiene su etapa, valor de deal y contacto.' },
-      { title: 'Registra un lead', body: 'Añade la cuenta, su hub y el valor estimado del negocio.' },
-      { title: 'Haz seguimiento', body: 'Actualiza el estado a medida que avanza la conversación comercial.' }
+      { title: 'Mira el pipeline', body: 'Las columnas son las etapas de venta, de Prospecto a Cerrado ganado. Arrastra un negocio para moverlo de etapa.' },
+      { title: 'Abre un negocio', body: 'Haz clic en cualquier tarjeta para ver su ficha completa: valor, cierre estimado, contactos y toda la actividad.' },
+      { title: 'Gestiona los contactos', body: 'Dentro de cada negocio añades las personas con su cargo, email y LinkedIn. Los botones te llevan directo a escribirles.' },
+      { title: 'Registra la actividad', body: 'Anota cada llamada, reunión, email o nota. El cambio de etapa se registra solo en el timeline.' },
+      { title: 'Cambia de vista', body: 'La pestaña Tabla te da la lista completa con filtros por etapa, tipo y responsable.' }
     ],
-    tip: 'Prioriza por valor de deal y probabilidad: no todos los leads merecen el mismo esfuerzo.'
-  },
-  clientes: {
-    title: 'Clientes',
-    intro: 'Las cuentas ya activas. Aquí registras actividad y das seguimiento a la relación.',
-    steps: [
-      { title: 'Consulta la base de clientes', body: 'Tipo de cuenta, hub, contacto y valor. Es tu CRM operativo.' },
-      { title: 'Registra actividad', body: 'Anota llamadas, reuniones y notas para mantener el historial de la relación.' },
-      { title: 'Detecta oportunidades', body: 'Un cliente operativo es candidato a expandir a más terminales o módulos.' }
-    ],
-    tip: 'La retención vive de la actividad registrada: lo que no se anota, se olvida.'
+    tip: 'Un negocio sin actividad reciente es un negocio que se está enfriando. Revisa la columna "Última actividad".'
   }
 };

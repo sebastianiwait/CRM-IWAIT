@@ -7,16 +7,16 @@ import {
   Briefcase,
   CheckCircle2
 } from 'lucide-react';
-import { 
-  INITIAL_INVESTORS, 
-  INITIAL_DATA_ROOM, 
-  INITIAL_TASKS, 
-  INITIAL_CLIENTS,
-  Investor, 
-  DataRoomFile, 
-  KanbanTask, 
-  ClientEntity
+import {
+  INITIAL_INVESTORS,
+  INITIAL_DATA_ROOM,
+  INITIAL_TASKS,
+  Investor,
+  DataRoomFile,
+  KanbanTask
 } from './data/iwaitData';
+import { INITIAL_DEALS } from './data/crmData';
+import { useDeals } from './hooks/useDeals';
 
 // Modular Sub-views
 import Sidebar from './components/Sidebar';
@@ -24,11 +24,10 @@ import DashboardView from './components/DashboardView';
 import InvestorsView from './components/InvestorsView';
 import DataRoomView from './components/DataRoomView';
 import TasksView from './components/TasksView';
-import ClientsView from './components/ClientsView';
 import AiAirportsView from './components/AiAirportsView';
 import CompensationsView from './components/CompensationsView';
 import ProductHubView from './components/ProductHubView';
-import ClientsCrmView from './components/ClientsCrmView';
+import DealsView from './components/commercial/DealsView';
 import Tour, { TourStep } from './components/Tour';
 import TutorialsMenu from './components/TutorialsMenu';
 import { TOURS } from './data/tours';
@@ -61,11 +60,11 @@ export default function App() {
   const [investors, setInvestors] = useState<Investor[]>(INITIAL_INVESTORS);
   const [dataRoomFiles, setDataRoomFiles] = useState<DataRoomFile[]>(INITIAL_DATA_ROOM);
   const [tasks, setTasks] = useState<KanbanTask[]>(INITIAL_TASKS);
-  const [clients, setClients] = useState<ClientEntity[]>(INITIAL_CLIENTS);
 
   // Global search state
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [focusDealId, setFocusDealId] = useState<string | null>(null);
 
   // Simple Notification Toast State
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -77,6 +76,18 @@ export default function App() {
     }, 4500);
   };
 
+  // Módulo comercial (deals con contactos y actividad embebidos)
+  const {
+    deals,
+    addDeal,
+    updateDeal,
+    moveStage,
+    deleteDeal,
+    addActivity,
+    upsertContact,
+    deleteContact
+  } = useDeals(INITIAL_DEALS, triggerToast);
+
   const handleGlobalSearch = (term: string) => {
     setGlobalSearchTerm(term);
   };
@@ -86,14 +97,19 @@ export default function App() {
     const term = globalSearchTerm.toLowerCase();
     
     const matchedInvestors = investors.filter(i => i.name.toLowerCase().includes(term) || i.status.toLowerCase().includes(term));
-    const matchedClients = clients.filter(c => c.name.toLowerCase().includes(term) || c.status.toLowerCase().includes(term) || c.type.toLowerCase().includes(term));
+    const matchedDeals = deals.filter(d =>
+      d.name.toLowerCase().includes(term) ||
+      d.company.toLowerCase().includes(term) ||
+      d.stage.toLowerCase().includes(term) ||
+      d.contacts.some(c => c.name.toLowerCase().includes(term))
+    );
     const matchedTasks = tasks.filter(t => t.title.toLowerCase().includes(term) || t.column.toLowerCase().includes(term) || t.assignedTo.toLowerCase().includes(term));
 
-    return { investors: matchedInvestors, clients: matchedClients, tasks: matchedTasks };
+    return { investors: matchedInvestors, deals: matchedDeals, tasks: matchedTasks };
   };
 
   const searchResults = getSearchResults();
-  const hasResults = searchResults && (searchResults.investors.length > 0 || searchResults.clients.length > 0 || searchResults.tasks.length > 0);
+  const hasResults = searchResults && (searchResults.investors.length > 0 || searchResults.deals.length > 0 || searchResults.tasks.length > 0);
 
 
   // State handlers to bubble up modifications
@@ -134,19 +150,6 @@ export default function App() {
     setTasks(current => current.map(t => t.id === id ? { ...t, column: newColumn } : t));
   };
 
-  const handleUpdateClientStatus = (clientId: string, newStatus: ClientEntity['status']) => {
-    setClients(prev => prev.map(c => c.id === clientId ? { ...c, status: newStatus } : c));
-  };
-
-  const handleAddClient = (newCli: Omit<ClientEntity, 'id'>) => {
-    const cli: ClientEntity = {
-      ...newCli,
-      id: `cli-${Date.now()}`
-    };
-    setClients(current => [cli, ...current]);
-    triggerToast(`Cliente "${newCli.name}" dado de alta en pipeline`);
-  };
-
   const renderActiveView = () => {
     switch (activeTab) {
       case 'inicio':
@@ -160,11 +163,11 @@ export default function App() {
             metrics={{
               totalCapital: investors.reduce((sum, item) => sum + item.committedAmount, 0),
               activeAirports: 3,
-              clientsCount: clients.length,
+              clientsCount: deals.filter(d => !d.stage.startsWith('Cerrado')).length,
               tasksCount: tasks.filter(t => t.column !== 'Hecho').length
             }}
             onAddInvestor={handleAddInvestor}
-            onAddClient={handleAddClient}
+            onAddDeal={addDeal}
             onAddTask={handleAddTask}
             navigate={setActiveTab}
           />
@@ -199,23 +202,19 @@ export default function App() {
         return (
           <ProductHubView triggerToast={triggerToast} />
         );
-      case 'leads':
+      case 'negocios':
         return (
-          <ClientsView 
-            key="leads"
-            clients={clients}
-            onAddClient={handleAddClient}
-            onUpdateClientStatus={handleUpdateClientStatus}
-            triggerToast={triggerToast}
-            initialViewMode="leads"
-          />
-        );
-      case 'clientes':
-        return (
-          <ClientsCrmView
-            clients={clients.filter(c => c.status !== 'Lead')}
-            onAddClient={handleAddClient}
-            triggerToast={triggerToast}
+          <DealsView
+            deals={deals}
+            onAddDeal={addDeal}
+            onUpdateDeal={updateDeal}
+            onMoveStage={moveStage}
+            onDeleteDeal={deleteDeal}
+            onAddActivity={addActivity}
+            onUpsertContact={upsertContact}
+            onDeleteContact={deleteContact}
+            focusDealId={focusDealId}
+            onFocusHandled={() => setFocusDealId(null)}
           />
         );
       case 'airports':
@@ -260,7 +259,7 @@ export default function App() {
               <Search className={`absolute left-4 w-5 h-5 ${isSearchFocused ? 'text-[#0E457F]' : 'text-[#64748B]'}`} />
               <input
                 type="text"
-                placeholder="Buscar inversores, clientes o tareas..."
+                placeholder="Buscar inversores, negocios o tareas..."
                 value={globalSearchTerm}
                 onChange={(e) => handleGlobalSearch(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
@@ -312,28 +311,29 @@ export default function App() {
                       </div>
                     )}
 
-                    {searchResults.clients.length > 0 && (
-                      <div className="px-3 py-2 border-t border-[#22384F]">
-                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Cuentas y Leads</h4>
-                        {searchResults.clients.map(cli => (
+                    {searchResults.deals.length > 0 && (
+                      <div className="px-3 py-2 border-t border-[#eef2f6]">
+                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Negocios</h4>
+                        {searchResults.deals.map(deal => (
                           <button
-                            key={cli.id}
+                            key={deal.id}
                             onClick={() => {
-                              setActiveTab(cli.status === 'Lead' || cli.status === 'Negociando' ? 'leads' : 'clientes');
+                              setActiveTab('negocios');
+                              setFocusDealId(deal.id);
                               setGlobalSearchTerm('');
                             }}
-                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#1B2F49] group transition-colors"
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#f1f6fa] group transition-colors"
                           >
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-[#10CC82]/10 text-[#10CC82] flex items-center justify-center">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-8 h-8 rounded-full bg-[#10CC82]/10 text-[#10CC82] flex items-center justify-center flex-shrink-0">
                                 <Briefcase className="w-4 h-4" />
                               </div>
-                              <div>
-                                <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors">{cli.name}</div>
-                                <div className="text-[11px] text-[#64748B]">{cli.type}</div>
+                              <div className="min-w-0">
+                                <div className="text-[13px] font-semibold text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors truncate">{deal.name}</div>
+                                <div className="text-[11px] text-[#64748B] truncate">{deal.company}</div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5]">{cli.status}</span>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#eef2f6] text-[#64748B] flex-shrink-0 ml-2">{deal.stage}</span>
                           </button>
                         ))}
                       </div>

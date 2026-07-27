@@ -36,18 +36,6 @@ export interface KanbanTask {
   dueDate: string;
 }
 
-export interface ClientEntity {
-  id: string;
-  name: string;
-  type: 'Aerolínea' | 'Aeropuerto' | 'Comercio';
-  status: 'Lead' | 'Negociando' | 'Contrato' | 'Operativo';
-  dealValue: number;
-  hub: string;
-  contactPerson: string;
-  passengersMonthly: number;
-  linkedin?: string;
-}
-
 export interface FlightDelay {
   id: string;
   flightNumber: string;
@@ -148,61 +136,6 @@ export const INITIAL_TASKS: KanbanTask[] = [
   { id: 'task-4', title: 'Dashboard de Conciliación Comercial BOG', description: 'Finalizar interfaz de gráficos bento para restaurantes asociados en el Dorado.', column: 'Hecho', priority: 'Media', department: 'Producto', assignedTo: 'Juan Diego', dueDate: '10 Jun 2026' },
   { id: 'task-5', title: 'Firma de Contrato con Air Europa', description: 'Revisión final de tarifas de contingencias del counter de Madrid.', column: 'En Progreso', priority: 'Alta', department: 'Legal', assignedTo: 'Sebastian M.', dueDate: '30 Jun 2026' },
   { id: 'task-6', title: 'Presentación del Data Room trimestral', description: 'Reunir balance de NPS general de 82 puntos y subir el resumen al Data Room.', column: 'Hecho', priority: 'Baja', department: 'Inversionistas', assignedTo: 'Sebastian M.', dueDate: '18 Jun 2026' }
-];
-
-export const INITIAL_CLIENTS: ClientEntity[] = [
-  { id: 'cli-1', name: 'Iberia Airlines', type: 'Aerolínea', status: 'Operativo', dealValue: 125000, hub: 'Madrid Barajas T4', contactPerson: 'Marta Villanueva', passengersMonthly: 450000, linkedin: 'https://www.linkedin.com/company/iberia/' },
-  { id: 'cli-2', name: 'Aeropuerto El Dorado (OPAIN)', type: 'Aeropuerto', status: 'Operativo', dealValue: 95000, hub: 'Bogotá El Dorado', contactPerson: 'Felipe Holguín', passengersMonthly: 980000 },
-  { id: 'cli-3', name: 'Air Europa', type: 'Aerolínea', status: 'Contrato', dealValue: 85000, hub: 'Madrid Barajas T1', contactPerson: 'Juan Carlos Ruiz', passengersMonthly: 210000 },
-  { id: 'cli-4', name: 'Avianca', type: 'Aerolínea', status: 'Negociando', dealValue: 140000, hub: 'Bogotá T1 / Medellín MDE', contactPerson: 'Claudia Patricia Gil', passengersMonthly: 620000, linkedin: 'https://www.linkedin.com/company/avianca/' },
-  { id: 'cli-5', name: 'Dufry Duty Free', type: 'Comercio', status: 'Operativo', dealValue: 45000, hub: 'EMEA & LATAM Hubs', contactPerson: 'Hans-Peter Steiner', passengersMonthly: 1200000 },
-  { id: 'cli-6', name: 'LATAM Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 180000, hub: 'Santiago SCL / Lima LIM', contactPerson: 'Eduardo Valenzuela', passengersMonthly: 750000 },
-  { id: 'cli-7', name: 'Starbucks Airport', type: 'Comercio', status: 'Operativo', dealValue: 35000, hub: 'Múltiples Terminales', contactPerson: 'Lucía Fernández', passengersMonthly: 300000 },
-  { id: 'cli-air-1', name: 'Avianca Express', type: 'Aerolínea', status: 'Lead', dealValue: 40000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 120000 },
-  { id: 'cli-air-2', name: 'LATAM Airlines Colombia', type: 'Aerolínea', status: 'Lead', dealValue: 90000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 300000 },
-  { id: 'cli-air-3', name: 'Wingo', type: 'Aerolínea', status: 'Lead', dealValue: 60000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 180000 },
-  { id: 'cli-air-4', name: 'SATENA', type: 'Aerolínea', status: 'Lead', dealValue: 30000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 50000 },
-  { id: 'cli-air-5', name: 'Clic Air', type: 'Aerolínea', status: 'Lead', dealValue: 40000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 70000 },
-  { id: 'cli-air-6', name: 'Copa Airlines Colombia', type: 'Aerolínea', status: 'Lead', dealValue: 50000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 100000 },
-  { id: 'cli-air-7', name: 'JetSMART Colombia', type: 'Aerolínea', status: 'Lead', dealValue: 60000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 150000 },
-  { id: 'cli-air-8', name: 'Moon Flights', type: 'Aerolínea', status: 'Lead', dealValue: 20000, hub: 'Colombia', contactPerson: 'Colombia Segment', passengersMonthly: 10000 },
-  { id: 'cli-air-9', name: 'Avianca (grupo)', type: 'Aerolínea', status: 'Lead', dealValue: 150000, hub: 'Colombia', contactPerson: 'Latam Segment', passengersMonthly: 900000 },
-  { id: 'cli-air-10', name: 'Aerolíneas Argentinas', type: 'Aerolínea', status: 'Lead', dealValue: 80000, hub: 'Argentina', contactPerson: 'Latam Segment', passengersMonthly: 400000 },
-  { id: 'cli-air-11', name: 'GOL Linhas Aéreas', type: 'Aerolínea', status: 'Lead', dealValue: 110000, hub: 'Brasil', contactPerson: 'Latam Segment', passengersMonthly: 800000 },
-  { id: 'cli-air-12', name: 'Azul Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 100000, hub: 'Brasil', contactPerson: 'Latam Segment', passengersMonthly: 750000 },
-  { id: 'cli-air-13', name: 'Sky Airline', type: 'Aerolínea', status: 'Lead', dealValue: 70000, hub: 'Chile', contactPerson: 'Latam Segment', passengersMonthly: 250000 },
-  { id: 'cli-air-14', name: 'JetSMART', type: 'Aerolínea', status: 'Lead', dealValue: 80000, hub: 'Chile', contactPerson: 'Latam Segment', passengersMonthly: 300000 },
-  { id: 'cli-air-15', name: 'Copa Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 95000, hub: 'Panamá', contactPerson: 'Latam Segment', passengersMonthly: 500000 },
-  { id: 'cli-air-16', name: 'Aeroméxico', type: 'Aerolínea', status: 'Lead', dealValue: 120000, hub: 'México', contactPerson: 'Latam Segment', passengersMonthly: 600000 },
-  { id: 'cli-air-17', name: 'Volaris', type: 'Aerolínea', status: 'Lead', dealValue: 110000, hub: 'México', contactPerson: 'Latam Segment', passengersMonthly: 800000 },
-  { id: 'cli-air-18', name: 'Viva Aerobus', type: 'Aerolínea', status: 'Lead', dealValue: 90000, hub: 'México', contactPerson: 'Latam Segment', passengersMonthly: 500000 },
-  { id: 'cli-air-19', name: 'Paranair', type: 'Aerolínea', status: 'Lead', dealValue: 30000, hub: 'Paraguay', contactPerson: 'Latam Segment', passengersMonthly: 40000 },
-  { id: 'cli-air-20', name: 'Star Perú', type: 'Aerolínea', status: 'Lead', dealValue: 40000, hub: 'Perú', contactPerson: 'Latam Segment', passengersMonthly: 80000 },
-  { id: 'cli-air-21', name: 'Tropic Air', type: 'Aerolínea', status: 'Lead', dealValue: 20000, hub: 'Belice', contactPerson: 'Centroamérica', passengersMonthly: 30000 },
-  { id: 'cli-air-22', name: 'Maya Island Air', type: 'Aerolínea', status: 'Lead', dealValue: 20000, hub: 'Belice', contactPerson: 'Centroamérica', passengersMonthly: 25000 },
-  { id: 'cli-air-23', name: 'SANSA', type: 'Aerolínea', status: 'Lead', dealValue: 25000, hub: 'Costa Rica', contactPerson: 'Centroamérica', passengersMonthly: 40000 },
-  { id: 'cli-air-24', name: 'Costa Rica Green Airways', type: 'Aerolínea', status: 'Lead', dealValue: 15000, hub: 'Costa Rica', contactPerson: 'Centroamérica', passengersMonthly: 15000 },
-  { id: 'cli-air-25', name: 'TAG Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 35000, hub: 'Guatemala', contactPerson: 'Centroamérica', passengersMonthly: 60000 },
-  { id: 'cli-air-26', name: 'CM Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 25000, hub: 'Honduras', contactPerson: 'Centroamérica', passengersMonthly: 30000 },
-  { id: 'cli-air-27', name: 'Aerolíneas Sosa', type: 'Aerolínea', status: 'Lead', dealValue: 20000, hub: 'Honduras', contactPerson: 'Centroamérica', passengersMonthly: 25000 },
-  { id: 'cli-air-28', name: 'La Costeña', type: 'Aerolínea', status: 'Lead', dealValue: 20000, hub: 'Nicaragua', contactPerson: 'Centroamérica', passengersMonthly: 20000 },
-  { id: 'cli-air-29', name: 'Air Panama', type: 'Aerolínea', status: 'Lead', dealValue: 30000, hub: 'Panamá', contactPerson: 'Centroamérica', passengersMonthly: 50000 },
-  { id: 'cli-air-30', name: 'American Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 250000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 2000000 },
-  { id: 'cli-air-31', name: 'Delta Air Lines', type: 'Aerolínea', status: 'Lead', dealValue: 250000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 1900000 },
-  { id: 'cli-air-32', name: 'United Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 240000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 1800000 },
-  { id: 'cli-air-33', name: 'Southwest Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 200000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 1500000 },
-  { id: 'cli-air-34', name: 'Alaska Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 150000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 800000 },
-  { id: 'cli-air-35', name: 'JetBlue', type: 'Aerolínea', status: 'Lead', dealValue: 140000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 700000 },
-  { id: 'cli-air-36', name: 'Spirit Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 100000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 600000 },
-  { id: 'cli-air-37', name: 'Frontier Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 90000, hub: 'Estados Unidos', contactPerson: 'Norteamérica', passengersMonthly: 500000 },
-  { id: 'cli-air-38', name: 'Air Canada', type: 'Aerolínea', status: 'Lead', dealValue: 180000, hub: 'Canadá', contactPerson: 'Norteamérica', passengersMonthly: 900000 },
-  { id: 'cli-air-39', name: 'WestJet', type: 'Aerolínea', status: 'Lead', dealValue: 120000, hub: 'Canadá', contactPerson: 'Norteamérica', passengersMonthly: 600000 },
-  { id: 'cli-air-40', name: 'Emirates', type: 'Aerolínea', status: 'Lead', dealValue: 250000, hub: 'Emiratos Árabes', contactPerson: 'Global-Latam', passengersMonthly: 1500000 },
-  { id: 'cli-air-41', name: 'Qatar Airways', type: 'Aerolínea', status: 'Lead', dealValue: 250000, hub: 'Catar', contactPerson: 'Global-Latam', passengersMonthly: 1400000 },
-  { id: 'cli-air-42', name: 'Air France', type: 'Aerolínea', status: 'Lead', dealValue: 200000, hub: 'Francia', contactPerson: 'Maria Chacon', passengersMonthly: 1200000, linkedin: 'https://www.linkedin.com/in/mariachacon-marketing/' },
-  { id: 'cli-air-43', name: 'Lufthansa', type: 'Aerolínea', status: 'Lead', dealValue: 200000, hub: 'Alemania', contactPerson: 'Global-Latam', passengersMonthly: 1200000 },
-  { id: 'cli-air-44', name: 'Turkish Airlines', type: 'Aerolínea', status: 'Lead', dealValue: 190000, hub: 'Turquía', contactPerson: 'Global-Latam', passengersMonthly: 1100000 },
-  { id: 'cli-air-45', name: 'KLM', type: 'Aerolínea', status: 'Lead', dealValue: 180000, hub: 'Países Bajos', contactPerson: 'Maria Chacon', passengersMonthly: 1000000, linkedin: 'https://www.linkedin.com/in/mariachacon-marketing/' }
 ];
 
 export const INITIAL_FLIGHTS: FlightDelay[] = [

@@ -16,7 +16,8 @@ import {
   Briefcase,
   X
 } from 'lucide-react';
-import { Investor, KanbanTask, ClientEntity } from '../data/iwaitData';
+import { Investor, KanbanTask } from '../data/iwaitData';
+import { NewDealInput } from '../hooks/useDeals';
 
 interface DashboardViewProps {
   onAddAction: () => void;
@@ -28,12 +29,12 @@ interface DashboardViewProps {
     tasksCount: number;
   };
   onAddInvestor?: (inv: Omit<Investor, 'id'>) => void;
-  onAddClient?: (cli: Omit<ClientEntity, 'id'>) => void;
+  onAddDeal?: (input: NewDealInput) => string;
   onAddTask?: (task: Omit<KanbanTask, 'id'>) => void;
   navigate?: (tab: string) => void;
 }
 
-export default function DashboardView({ onAddAction, triggerToast, metrics, onAddInvestor, onAddClient, onAddTask, navigate }: DashboardViewProps) {
+export default function DashboardView({ onAddAction, triggerToast, metrics, onAddInvestor, onAddDeal, onAddTask, navigate }: DashboardViewProps) {
   const [modalType, setModalType] = useState<'investor' | 'lead' | 'task' | null>(null);
   const [periodTab, setPeriodTab] = useState<'Resumen' | 'Actividad hoy' | 'Ayer'>('Resumen');
 
@@ -53,36 +54,44 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
       if (!invName) return;
       onAddInvestor({
         name: invName,
-        type: 'Angel Investor',
-        status: 'Lead',
+        firm: 'Por definir',
         committedAmount: Number(invAmount) || 0,
-        contactPerson: 'Por definir',
-        notes: ''
+        status: 'Negociando',
+        email: '',
+        round: 'Semilla',
+        sharesPercent: 0,
+        stage: 'Contactado',
+        contact: 'Por definir'
       });
       triggerToast('Inversor creado (Acción Rápida)');
       if (navigate) navigate('inversionstas');
-    } else if (modalType === 'lead' && onAddClient) {
+    } else if (modalType === 'lead' && onAddDeal) {
       if (!leadName) return;
-      onAddClient({
-        name: leadName,
-        type: 'Aeropuerto',
-        status: 'Lead',
-        dealValue: Number(leadValue) || 0,
-        hub: leadHub || 'Global',
-        contactPerson: 'Por definir',
-        passengersMonthly: 0
+      const close = new Date();
+      close.setDate(close.getDate() + 60);
+      onAddDeal({
+        name: `${leadName} — Nueva oportunidad`,
+        company: leadName,
+        companyType: 'Aeropuerto',
+        stage: 'Prospecto',
+        amount: Number(leadValue) || 0,
+        closeDate: close.toISOString().slice(0, 10),
+        owner: 'Sebastian M.',
+        hub: leadHub || undefined,
+        contacts: [],
+        activities: []
       });
-      triggerToast('Lead creado (Acción Rápida)');
-      if (navigate) navigate('leads');
+      if (navigate) navigate('negocios');
     } else if (modalType === 'task' && onAddTask) {
       if (!taskTitle) return;
       onAddTask({
         title: taskTitle,
-        desc: 'Tarea generada desde Quick Actions',
-        date: new Date().toISOString().split('T')[0],
+        description: 'Tarea generada desde Quick Actions',
+        dueDate: new Date().toLocaleDateString('es', { day: '2-digit', month: 'short', year: 'numeric' }),
         priority: 'Media',
-        column: 'Pendiente',
-        assignedTo: taskAssigned || 'Sin asignar'
+        column: 'Por Hacer',
+        department: 'Producto',
+        assignedTo: taskAssigned || 'Juan Diego'
       });
       triggerToast('Tarea creada (Acción Rápida)');
       if (navigate) navigate('tareas');
@@ -102,7 +111,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md overflow-hidden shadow-2xl">
             <div className="border-b border-[#dbe9f0] px-6 py-4 flex justify-between items-center bg-[#f5f9fc]">
               <h3 className="text-[16px] font-semibold text-[#0F1A2C]">
-                {modalType === 'investor' ? 'Crear Nuevo Inversor' : modalType === 'lead' ? 'Crear Nuevo Lead' : 'Nueva Tarea'}
+                {modalType === 'investor' ? 'Crear Nuevo Inversor' : modalType === 'lead' ? 'Nuevo negocio' : 'Nueva Tarea'}
               </h3>
               <button onClick={() => setModalType(null)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors">
                 <X className="w-5 h-5" />
@@ -221,7 +230,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
             icon: <Plane className="w-[17px] h-[17px]" />
           },
           {
-            label: 'Clientes pipeline',
+            label: 'Negocios en pipeline',
             value: metrics.clientsCount,
             sub: '4 en negociación',
             accent: '#47B6E6',
@@ -282,8 +291,8 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
               <Briefcase className="w-5 h-5" />
             </div>
             <div className="text-left">
-              <div className="text-[13.5px] font-semibold text-[#0F1A2C]">Nuevo Lead</div>
-              <div className="text-[11px] text-[#64748B]">Cuenta o aeropuerto</div>
+              <div className="text-[13.5px] font-semibold text-[#0F1A2C]">Nuevo negocio</div>
+              <div className="text-[11px] text-[#64748B]">Empresa o aeropuerto</div>
             </div>
           </div>
           <Plus className="w-4 h-4 text-[#64748B] group-hover:text-[#10CC82] transition-colors" />

@@ -6,7 +6,6 @@ import {
   Award,
   CheckSquare,
   Rocket,
-  Users,
   Plane,
   Briefcase,
   KanbanSquare,
@@ -134,8 +133,7 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
         </>)}
 
         {renderSection('comercial', 'Comercial', <>
-          {renderItem('leads', 'Leads & Pipeline', <Briefcase className="w-[17px] h-[17px]" />)}
-          {renderItem('clientes', 'Clientes', <Users className="w-[17px] h-[17px]" />)}
+          {renderItem('negocios', 'Negocios', <Briefcase className="w-[17px] h-[17px]" />)}
         </>)}
       </nav>
 
