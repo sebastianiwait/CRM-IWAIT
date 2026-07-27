@@ -10,10 +10,12 @@ import {
   KanbanSquare,
   Search,
   X,
-  Mail
+  Mail,
+  Linkedin
 } from 'lucide-react';
 import { Investor, InvestorStage } from '../data/iwaitData';
 import ContactDetailCard from './ContactDetailCard';
+import LinkedInImportModal from './LinkedInImportModal';
 
 interface InvestorsViewProps {
   investors: Investor[];
@@ -50,6 +52,7 @@ export default function InvestorsView({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [detail, setDetail] = useState<Investor | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
 
   // local stage overrides for the pipeline (parent has no updater)
   const [stageOverrides, setStageOverrides] = useState<Record<string, InvestorStage>>({});
@@ -126,6 +129,12 @@ export default function InvestorsView({
           <p className="text-[13px] text-[#64748B] mt-0.5">Base de datos, pipeline de ronda y relaciones con inversores</p>
         </div>
         <div className="flex gap-2.5">
+          <button
+            onClick={() => setImportOpen(true)}
+            className="px-3.5 py-2 bg-white hover:bg-[#eef6fa] rounded-lg border border-[#e6eef4] text-[#0A66C2] text-[13px] flex items-center gap-1.5 transition-all shadow-sm cursor-pointer font-medium"
+          >
+            <Linkedin className="w-[15px] h-[15px]" /> Importar de LinkedIn
+          </button>
           <button
             onClick={() => triggerToast('Cap table exportado')}
             className="px-3.5 py-2 bg-white hover:bg-[#eef6fa] rounded-lg border border-[#e6eef4] text-[#33475b] hover:text-[#0F1A2C] text-[13px] flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
@@ -383,6 +392,18 @@ export default function InvestorsView({
             </form>
           </div>
         </div>
+      )}
+
+      {/* Importador de LinkedIn */}
+      {importOpen && (
+        <LinkedInImportModal
+          triggerToast={triggerToast}
+          onClose={() => setImportOpen(false)}
+          onImport={(list) => {
+            list.forEach((inv) => onAddInvestor(inv));
+            triggerToast(`${list.length} contactos importados desde LinkedIn`);
+          }}
+        />
       )}
 
       {/* Detalle del inversor */}
