@@ -19,9 +19,19 @@ interface SidebarProps {
   setActiveTab: (tab: string) => void;
   tasksCount: number;
   onOpenTutorials: () => void;
+  /** en móvil el sidebar es un drawer */
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTutorials }: SidebarProps) {
+export default function Sidebar({
+  activeTab,
+  setActiveTab,
+  tasksCount,
+  onOpenTutorials,
+  isOpen = false,
+  onClose
+}: SidebarProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     general: true,
     inversiones: true,
@@ -39,7 +49,7 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
     const isActive = activeTab === tabId;
     return (
       <button
-        onClick={() => setActiveTab(tabId)}
+        onClick={() => { setActiveTab(tabId); onClose?.(); }}
         className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left cursor-pointer transition-all duration-200 text-[13.5px] ${
           isActive
             ? 'bg-[#eef4f9] text-[#0F1A2C] font-semibold'
@@ -75,7 +85,21 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
   };
 
   return (
-    <div data-tour="sidebar" className="w-[230px] bg-white border-r border-[#e6eef4] flex flex-col fixed top-0 left-0 h-screen overflow-y-auto">
+    <>
+      {/* Backdrop solo en móvil */}
+      {isOpen && (
+        <div
+          onClick={onClose}
+          className="md:hidden fixed inset-0 z-40 bg-[#0F1A2C]/40 backdrop-blur-sm animate-fade-in"
+        />
+      )}
+
+      <div
+        data-tour="sidebar"
+        className={`w-[250px] md:w-[230px] bg-white border-r border-[#e6eef4] flex flex-col fixed top-0 left-0 h-screen overflow-y-auto z-50 transition-transform duration-300 md:translate-x-0 ${
+          isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+        }`}
+      >
       {/* Brand Header */}
       <div className="p-4 flex items-center gap-2.5">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0E457F] to-[#47B6E6] flex items-center justify-center text-white font-extrabold text-[13px] tracking-tight">
@@ -154,6 +178,7 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
           <div className="text-[11px] text-[#64748B] truncate">Founder &amp; CEO</div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

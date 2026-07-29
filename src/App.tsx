@@ -5,7 +5,8 @@ import {
   Search,
   Building2,
   Briefcase,
-  CheckCircle2
+  CheckCircle2,
+  Menu
 } from 'lucide-react';
 import {
   INITIAL_INVESTORS,
@@ -36,6 +37,7 @@ import { TUTORIALS } from './data/tutorials';
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('inicio');
   const [tutorialsOpen, setTutorialsOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTour, setActiveTour] = useState<TourStep[] | null>(null);
 
   // Launch a tutorial: navigate to its section, then run the interactive tour
@@ -267,12 +269,22 @@ export default function App() {
         setActiveTab={setActiveTab}
         tasksCount={tasks.filter(t => t.column !== 'Hecho').length}
         onOpenTutorials={() => setTutorialsOpen(true)}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
 
       {/* Main content stage */}
-      <main className="flex-1 ml-[230px] min-h-screen flex flex-col relative bg-[#f7fafc]">
-        <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#c3dae4] px-8 py-4">
-          <div className="max-w-3xl mx-auto relative" data-tour="global-search">
+      <main className="flex-1 md:ml-[230px] min-h-screen flex flex-col relative bg-[#f7fafc] w-full min-w-0">
+        <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#c3dae4] px-4 md:px-8 py-3 md:py-4 flex items-center gap-3">
+          {/* Hamburguesa solo en móvil */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden p-2 -ml-1 rounded-lg text-[#33475b] hover:bg-[#f1f6fa] transition-colors flex-shrink-0"
+            aria-label="Abrir menú"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <div className="flex-1 max-w-3xl mx-auto relative min-w-0" data-tour="global-search">
             <div className={`relative flex items-center bg-white border ${isSearchFocused ? 'border-[#0E457F] ring-1 ring-[#0E457F]/40' : 'border-[#c3dae4]'} rounded-xl transition-all duration-200 shadow-sm`}>
               <Search className={`absolute left-4 w-5 h-5 ${isSearchFocused ? 'text-[#0E457F]' : 'text-[#64748B]'}`} />
               <input
@@ -394,7 +406,7 @@ export default function App() {
             )}
           </div>
         </div>
-        <div className="px-8 py-7 w-full mx-auto flex-1">
+        <div className="px-4 md:px-8 py-5 md:py-7 w-full mx-auto flex-1 min-w-0">
           {renderActiveView()}
         </div>
       </main>
