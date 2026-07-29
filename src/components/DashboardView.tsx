@@ -49,6 +49,23 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
   const [taskTitle, setTaskTitle] = useState('');
   const [taskAssigned, setTaskAssigned] = useState('');
 
+  /** Actividad del feed. `daysAgo` permite filtrar por el periodo seleccionado. */
+  const ACTIVITY = [
+    { title: 'Nueva inversión confirmada — Punto Capital', meta: 'Hace 2 horas · $450K seed', daysAgo: 0, icon: Coins, color: '#F5A623' },
+    { title: 'Actividad registrada — JetSMART', meta: 'Hoy · Nota de seguimiento de la propuesta', daysAgo: 0, icon: Briefcase, color: '#0E457F' },
+    { title: 'Go-live completado — Aeropuerto El Prat (BCN)', meta: 'Ayer · Módulo AI Queues activo', daysAgo: 1, icon: Plane, color: '#00C9A7' },
+    { title: 'Sprint 12 actualizado — Aerolíneas', meta: 'Ayer · 2 historias movidas a Hecho', daysAgo: 1, icon: CheckSquare, color: '#8B63F5' },
+    { title: 'Documento cargado en Data Room — Term Sheet v3', meta: 'Hace 3 días', daysAgo: 3, icon: FileText, color: '#47B6E6' },
+    { title: 'Nuevo contacto potencial — Aena Group', meta: 'Hace 5 días · Demo programada', daysAgo: 5, icon: UserPlus, color: '#10CC82' }
+  ];
+
+  const visibleActivity =
+    periodTab === 'Actividad hoy'
+      ? ACTIVITY.filter((a) => a.daysAgo === 0)
+      : periodTab === 'Ayer'
+      ? ACTIVITY.filter((a) => a.daysAgo === 1)
+      : ACTIVITY;
+
   const handleCreate = () => {
     if (modalType === 'investor' && onAddInvestor) {
       if (!invName) return;
@@ -319,56 +336,43 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Actividad reciente card */}
         <div className="bg-white/70 backdrop-blur-sm border border-[#dbe9f0] rounded-2xl shadow-sm">
-          <div className="border-b border-[#dbe9f0] px-5 py-4 flex items-center gap-2">
-            <Activity className="w-[15px] h-[15px] text-[#0E457F]" />
-            <h3 className="text-[14px] font-semibold text-[#0F1A2C]">Actividad reciente</h3>
+          <div className="border-b border-[#dbe9f0] px-5 py-4 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Activity className="w-[15px] h-[15px] text-[#0E457F]" />
+              <h3 className="text-[14px] font-semibold text-[#0F1A2C]">
+                {periodTab === 'Resumen' ? 'Actividad reciente' : periodTab}
+              </h3>
+            </div>
+            <span className="text-[11px] font-semibold bg-[#eef2f6] text-[#64748B] px-2 py-0.5 rounded-full">
+              {visibleActivity.length}
+            </span>
           </div>
           <div className="p-5 space-y-4">
-            
-            {/* Item 1 */}
-            <div className="flex gap-3.5 pb-5 border-b border-[#dbe9f0]/40 last:border-b-0 last:pb-0 relative before:content-[''] before:absolute before:left-3.5 before:top-7.5 before:bottom-0 before:width-[1px] before:bg-[#dbe9f0] last:before:display-none">
-              <div className="w-[30px] h-[30px] rounded-full bg-[#eef6fa] border border-[#dbe9f0] flex items-center justify-center flex-shrink-0 z-10">
-                <Coins className="w-[14px] h-[14px] text-[#F5A623]" />
+            {visibleActivity.length === 0 ? (
+              <div className="text-center py-10">
+                <Activity className="w-7 h-7 text-[#cbd5e1] mx-auto mb-2" />
+                <p className="text-[13px] text-[#64748B]">Sin actividad registrada {periodTab === 'Ayer' ? 'ayer' : 'hoy'}.</p>
+                <p className="text-[12px] text-[#94a3b8] mt-0.5">Cambia a "Resumen" para ver el histórico.</p>
               </div>
-              <div>
-                <div className="text-[13.5px] font-medium text-[#0F1A2C]">Nueva inversión confirmada — Punto Capital</div>
-                <div className="text-[11px] text-[#64748B] mt-1">Hace 2 horas · $450K seed</div>
-              </div>
-            </div>
-
-            {/* Item 2 */}
-            <div className="flex gap-3.5 pb-5 border-b border-[#dbe9f0]/40 last:border-b-0 last:pb-0 relative before:content-[''] before:absolute before:left-3.5 before:top-7.5 before:bottom-0 before:width-[1px] before:bg-[#dbe9f0] last:before:display-none">
-              <div className="w-[30px] h-[30px] rounded-full bg-[#eef6fa] border border-[#dbe9f0] flex items-center justify-center flex-shrink-0 z-10">
-                <Plane className="w-[14px] h-[14px] text-[#00C9A7]" />
-              </div>
-              <div>
-                <div className="text-[13.5px] font-medium text-[#0F1A2C]">Go-live completado — Aeropuerto El Prat (BCN)</div>
-                <div className="text-[11px] text-[#64748B] mt-1">Hace 1 día · Módulo AI Queues activo</div>
-              </div>
-            </div>
-
-            {/* Item 3 */}
-            <div className="flex gap-3.5 pb-5 border-b border-[#dbe9f0]/40 last:border-b-0 last:pb-0 relative before:content-[''] before:absolute before:left-3.5 before:top-7.5 before:bottom-0 before:width-[1px] before:bg-[#dbe9f0] last:before:display-none">
-              <div className="w-[30px] h-[30px] rounded-full bg-[#eef6fa] border border-[#dbe9f0] flex items-center justify-center flex-shrink-0 z-10">
-                <FileText className="w-[14px] h-[14px] text-[#47B6E6]" />
-              </div>
-              <div>
-                <div className="text-[13.5px] font-medium text-[#0F1A2C]">Documento cargado en Data Room — Term Sheet v3</div>
-                <div className="text-[11px] text-[#64748B] mt-1">Hace 3 días</div>
-              </div>
-            </div>
-
-            {/* Item 4 */}
-            <div className="flex gap-3.5 last:pb-0">
-              <div className="w-[30px] h-[30px] rounded-full bg-[#eef6fa] border border-[#dbe9f0] flex items-center justify-center flex-shrink-0 z-10">
-                <UserPlus className="w-[14px] h-[14px] text-[#10CC82]" />
-              </div>
-              <div>
-                <div className="text-[13.5px] font-medium text-[#0F1A2C]">Nuevo cliente potencial — Aena Group</div>
-                <div className="text-[11px] text-[#64748B] mt-1">Hace 5 días · Demo programada</div>
-              </div>
-            </div>
-
+            ) : (
+              visibleActivity.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className={`flex gap-3.5 ${i < visibleActivity.length - 1 ? 'pb-5 border-b border-[#dbe9f0]/40' : ''}`}
+                  >
+                    <div className="w-[30px] h-[30px] rounded-full bg-[#eef6fa] border border-[#dbe9f0] flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-[14px] h-[14px]" style={{ color: item.color }} />
+                    </div>
+                    <div>
+                      <div className="text-[13.5px] font-medium text-[#0F1A2C]">{item.title}</div>
+                      <div className="text-[11px] text-[#64748B] mt-1">{item.meta}</div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 

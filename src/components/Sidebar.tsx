@@ -26,7 +26,6 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
     general: true,
     inversiones: true,
     producto: true,
-    operaciones: true,
     comercial: true
   });
   const [filter, setFilter] = useState('');
@@ -111,6 +110,12 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
       <nav className="flex-1 px-3 pb-3 space-y-3">
         {renderSection('general', 'General', <>
           {renderItem('inicio', 'Inicio', <LayoutDashboard className="w-[17px] h-[17px]" />)}
+          {renderItem(
+            'tareas',
+            'Tareas',
+            <CheckSquare className="w-[17px] h-[17px]" />,
+            <span className="bg-[#0E457F]/10 text-[#0E457F] text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-auto">{tasksCount}</span>
+          )}
         </>)}
 
         {renderSection('inversiones', 'Inversiones', <>
@@ -121,15 +126,6 @@ export default function Sidebar({ activeTab, setActiveTab, tasksCount, onOpenTut
         {renderSection('producto', 'Producto', <>
           {renderItem('producto', 'Aerolíneas & Aeropuertos', <Rocket className="w-[17px] h-[17px]" />)}
           {renderItem('compensaciones', 'Compensaciones & Progreso', <Award className="w-[17px] h-[17px]" />)}
-        </>)}
-
-        {renderSection('operaciones', 'Operaciones', <>
-          {renderItem(
-            'tareas',
-            'Tareas',
-            <CheckSquare className="w-[17px] h-[17px]" />,
-            <span className="bg-[#0E457F]/10 text-[#0E457F] text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-auto">{tasksCount}</span>
-          )}
         </>)}
 
         {renderSection('comercial', 'Comercial', <>

@@ -122,6 +122,11 @@ export default function App() {
     triggerToast(`Inversor "${newInv.name}" agregado exitosamente`);
   };
 
+  const handleUpdateInvestor = (id: string, patch: Partial<Omit<Investor, 'id'>>) => {
+    setInvestors(current => current.map(i => (i.id === id ? { ...i, ...patch } : i)));
+    triggerToast('Inversor actualizado');
+  };
+
   const handleDeleteInvestor = (id: string) => {
     const target = investors.find(i => i.id === id);
     if (!target) return;
@@ -150,6 +155,16 @@ export default function App() {
     setTasks(current => current.map(t => t.id === id ? { ...t, column: newColumn } : t));
   };
 
+  const handleUpdateTask = (id: string, patch: Partial<Omit<KanbanTask, 'id'>>) => {
+    setTasks(current => current.map(t => (t.id === id ? { ...t, ...patch } : t)));
+    triggerToast('Tarea actualizada');
+  };
+
+  const handleDeleteTask = (id: string) => {
+    setTasks(current => current.filter(t => t.id !== id));
+    triggerToast('Tarea eliminada');
+  };
+
   const renderActiveView = () => {
     switch (activeTab) {
       case 'inicio':
@@ -174,9 +189,10 @@ export default function App() {
         );
       case 'inversionstas':
         return (
-          <InvestorsView 
+          <InvestorsView
             investors={investors}
             onAddInvestor={handleAddInvestor}
+            onUpdateInvestor={handleUpdateInvestor}
             onDeleteInvestor={handleDeleteInvestor}
             triggerToast={triggerToast}
           />
@@ -191,10 +207,12 @@ export default function App() {
         );
       case 'tareas':
         return (
-          <TasksView 
+          <TasksView
             tasks={tasks}
             onAddTask={handleAddTask}
             onUpdateTaskColumn={handleUpdateTaskColumn}
+            onUpdateTask={handleUpdateTask}
+            onDeleteTask={handleDeleteTask}
             triggerToast={triggerToast}
           />
         );

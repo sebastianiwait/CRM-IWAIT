@@ -19,7 +19,8 @@ import {
   Lock,
   LogOut,
   UploadIcon,
-  Sparkles
+  Sparkles,
+  Code
 } from 'lucide-react';
 import { DataRoomFile } from '../data/iwaitData';
 import { 
@@ -53,6 +54,8 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
   const [newFileCategory, setNewFileCategory] = useState<'Legal' | 'Finanzas' | 'Producto' | 'Marketing'>('Finanzas');
   const [newFileConf, setNewFileConf] = useState<'Público' | 'Confidencial' | 'Solo Directiva'>('Confidencial');
   const [newFileDesc, setNewFileDesc] = useState('');
+  const [uploadMode, setUploadMode] = useState<'file' | 'html'>('file');
+  const [newFileHtml, setNewFileHtml] = useState('');
 
   // Share Access Form
   const [shareEmail, setShareEmail] = useState('');
@@ -279,21 +282,42 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
       triggerToast('Proporcione un nombre válido para el archivo');
       return;
     }
-    const safeName = newFileName.endsWith('.pdf') || newFileName.endsWith('.xlsx') ? newFileName : `${newFileName}.pdf`;
-    
+    const isHtml = uploadMode === 'html';
+
+    if (isHtml && !newFileHtml.trim()) {
+      triggerToast('Pega el contenido HTML antes de guardar');
+      return;
+    }
+
+    const safeName = isHtml
+      ? newFileName.endsWith('.html')
+        ? newFileName
+        : `${newFileName}.html`
+      : newFileName.endsWith('.pdf') || newFileName.endsWith('.xlsx')
+      ? newFileName
+      : `${newFileName}.pdf`;
+
     onUploadFile({
       name: safeName,
       category: newFileCategory,
       confidentiality: newFileConf,
-      size: `${(Math.random() * (12.5 - 1.2) + 1.2).toFixed(1)} MB`,
+      size: isHtml
+        ? `${(new Blob([newFileHtml]).size / 1024).toFixed(1)} KB`
+        : `${(Math.random() * (12.5 - 1.2) + 1.2).toFixed(1)} MB`,
       date: 'Hoy',
       description: newFileDesc || 'Sin descripción detallada.',
-      detailedContent: `Detalle del documento subido: "${safeName}"\n• Tipo: ${newFileCategory}\n• Clasificación: ${newFileConf}\n• Subido el: ${new Date().toLocaleDateString()}\n• Comentarios: Documento adjunto por Sebastian M.`
+      contentType: isHtml ? 'html' : 'text',
+      detailedContent: isHtml
+        ? newFileHtml
+        : `Detalle del documento subido: "${safeName}"\n• Tipo: ${newFileCategory}\n• Clasificación: ${newFileConf}\n• Subido el: ${new Date().toLocaleDateString()}\n• Comentarios: Documento adjunto por Sebastian M.`
     });
 
-    triggerToast(`Archivo "${safeName}" subido exitosamente al Data Room.`);
+    triggerToast(
+      isHtml ? `Documento HTML "${safeName}" agregado al Data Room.` : `Archivo "${safeName}" subido exitosamente al Data Room.`
+    );
     setNewFileName('');
     setNewFileDesc('');
+    setNewFileHtml('');
     setIsUploadOpen(false);
   };
 
@@ -624,12 +648,30 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                     {selectedFile.description}
                   </p>
                 </div>
-                <div className="bg-[#0F1A2C]/80 border border-[#e6eef4] p-3.5 rounded-lg">
-                  <div className="text-[11px] font-mono font-bold text-[#64748B] uppercase tracking-wider mb-2">Contenido Encriptado / Sumario</div>
-                  <p className="text-[11.5px] font-mono text-[#47B6E6] whitespace-pre-wrap leading-relaxed">
-                    {selectedFile.detailedContent}
-                  </p>
-                </div>
+                {selectedFile.contentType === 'html' ? (
+                  <div className="border border-[#e6eef4] rounded-lg overflow-hidden bg-white">
+                    <div className="flex items-center justify-between px-3.5 py-2 border-b border-[#e6eef4] bg-[#f5f9fc]">
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#64748B] uppercase tracking-wider">
+                        <Code className="w-3.5 h-3.5" /> Vista previa HTML
+                      </div>
+                      <span className="text-[10px] text-[#94a3b8]">scripts bloqueados</span>
+                    </div>
+                    <iframe
+                      title={selectedFile.name}
+                      // sandbox sin allow-scripts: renderiza estilos pero aísla el JS del CRM
+                      sandbox=""
+                      srcDoc={`<!doctype html><meta charset="utf-8"><style>body{font-family:system-ui,-apple-system,sans-serif;color:#0F1A2C;padding:14px;margin:0;font-size:13px;line-height:1.6}img{max-width:100%}table{border-collapse:collapse;width:100%}td,th{border:1px solid #e6eef4;padding:6px}</style>${selectedFile.detailedContent}`}
+                      className="w-full h-[280px] bg-white"
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-[#0F1A2C]/80 border border-[#e6eef4] p-3.5 rounded-lg">
+                    <div className="text-[11px] font-mono font-bold text-[#64748B] uppercase tracking-wider mb-2">Contenido Encriptado / Sumario</div>
+                    <p className="text-[11.5px] font-mono text-[#47B6E6] whitespace-pre-wrap leading-relaxed">
+                      {selectedFile.detailedContent}
+                    </p>
+                  </div>
+                )}
                 <div className="flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center text-[12px] pt-1">
                   <div className="text-[#64748B]">Clasificación: <span className="font-semibold text-[#E879A0]">{selectedFile.confidentiality}</span></div>
                   <div className="flex gap-2 w-full sm:w-auto">
@@ -865,12 +907,38 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
             <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#0F1A2C]">Subir Archivo al Data Room</h3>
+              <h3 className="text-base font-semibold text-[#0F1A2C]">
+                {uploadMode === 'html' ? 'Agregar HTML al Data Room' : 'Subir Archivo al Data Room'}
+              </h3>
               <button onClick={() => setIsUploadOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
+            {/* Selector de modo */}
+            <div className="px-5 pt-4">
+              <div className="inline-flex bg-[#eef2f6] rounded-xl p-1 w-full">
+                <button
+                  type="button"
+                  onClick={() => setUploadMode('file')}
+                  className={`flex-1 px-3 py-1.5 rounded-lg text-[12.5px] font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    uploadMode === 'file' ? 'bg-white text-[#0F1A2C] shadow-sm' : 'text-[#64748B] hover:text-[#0F1A2C]'
+                  }`}
+                >
+                  <FileText className="w-3.5 h-3.5" /> Documento
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUploadMode('html')}
+                  className={`flex-1 px-3 py-1.5 rounded-lg text-[12.5px] font-semibold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    uploadMode === 'html' ? 'bg-white text-[#0F1A2C] shadow-sm' : 'text-[#64748B] hover:text-[#0F1A2C]'
+                  }`}
+                >
+                  <Code className="w-3.5 h-3.5" /> Pegar HTML
+                </button>
+              </div>
+            </div>
+
             <form onSubmit={handleFileUpload} className="p-5 space-y-4">
               <div>
                 <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Nombre del Documento</label>
@@ -922,11 +990,27 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 />
               </div>
 
-              {/* Drag and Drop area representation */}
-              <div className="border border-dashed border-[#e6eef4] p-4 text-center rounded-lg bg-[#f5f9fc]/20">
-                <Eye className="w-6 h-6 text-[#64748B] mx-auto mb-1 opacity-70" />
-                <span className="text-[12px] text-[#64748B]">Añada firmas o suba PDF de forma segura</span>
-              </div>
+              {uploadMode === 'html' ? (
+                <div>
+                  <label className="block text-[12px] font-medium text-[#64748B] uppercase tracking-wider mb-1.5">Contenido HTML</label>
+                  <textarea
+                    value={newFileHtml}
+                    onChange={(e) => setNewFileHtml(e.target.value)}
+                    placeholder={'<h2>Resumen ejecutivo</h2>\n<p>Pega aquí tu HTML…</p>'}
+                    rows={8}
+                    className="w-full bg-[#0F1A2C] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#EAF3F9] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[12.5px] font-mono resize-y"
+                  />
+                  <p className="text-[11px] text-[#94a3b8] mt-1.5">
+                    Se renderiza en un marco aislado: los estilos funcionan, los scripts quedan bloqueados.
+                  </p>
+                </div>
+              ) : (
+                /* Drag and Drop area representation */
+                <div className="border border-dashed border-[#e6eef4] p-4 text-center rounded-lg bg-[#f5f9fc]/20">
+                  <Eye className="w-6 h-6 text-[#64748B] mx-auto mb-1 opacity-70" />
+                  <span className="text-[12px] text-[#64748B]">Añada firmas o suba PDF de forma segura</span>
+                </div>
+              )}
 
               <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 

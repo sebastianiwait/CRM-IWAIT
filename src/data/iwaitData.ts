@@ -23,6 +23,8 @@ export interface DataRoomFile {
   confidentiality: 'Público' | 'Confidencial' | 'Solo Directiva';
   description: string;
   detailedContent: string;
+  /** 'html' renderiza detailedContent como HTML en un iframe aislado */
+  contentType?: 'text' | 'html';
 }
 
 export interface KanbanTask {

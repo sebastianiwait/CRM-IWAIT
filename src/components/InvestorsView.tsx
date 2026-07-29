@@ -11,7 +11,8 @@ import {
   Search,
   X,
   Mail,
-  Linkedin
+  Linkedin,
+  Pencil
 } from 'lucide-react';
 import { Investor, InvestorStage } from '../data/iwaitData';
 import ContactDetailCard from './ContactDetailCard';
@@ -20,6 +21,7 @@ import LinkedInImportModal from './LinkedInImportModal';
 interface InvestorsViewProps {
   investors: Investor[];
   onAddInvestor: (investor: Omit<Investor, 'id'>) => void;
+  onUpdateInvestor: (id: string, patch: Partial<Omit<Investor, 'id'>>) => void;
   onDeleteInvestor: (id: string) => void;
   triggerToast: (msg: string) => void;
 }
@@ -45,6 +47,7 @@ const money = (n: number) => {
 export default function InvestorsView({
   investors,
   onAddInvestor,
+  onUpdateInvestor,
   onDeleteInvestor,
   triggerToast
 }: InvestorsViewProps) {
@@ -54,21 +57,22 @@ export default function InvestorsView({
   const [detail, setDetail] = useState<Investor | null>(null);
   const [importOpen, setImportOpen] = useState(false);
 
-  // local stage overrides for the pipeline (parent has no updater)
-  const [stageOverrides, setStageOverrides] = useState<Record<string, InvestorStage>>({});
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [overCol, setOverCol] = useState<InvestorStage | null>(null);
 
-  // form
+  // form (editingId !== null → modo edición)
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [firm, setFirm] = useState('');
   const [contact, setContact] = useState('');
   const [amount, setAmount] = useState('');
   const [round, setRound] = useState('Semilla');
   const [stage, setStage] = useState<InvestorStage>('Contactado');
+  const [linkedin, setLinkedin] = useState('');
+  const [email, setEmail] = useState('');
 
   const stageOf = (inv: Investor): InvestorStage =>
-    stageOverrides[inv.id] ?? inv.stage ?? (inv.status === 'Firmado' ? 'Cerrado' : 'Contactado');
+    inv.stage ?? (inv.status === 'Firmado' ? 'Cerrado' : 'Contactado');
 
   const totalRaised = investors.reduce((a, c) => a + c.committedAmount, 0);
   const roundCommitted = investors
@@ -86,9 +90,30 @@ export default function InvestorsView({
   }, [investors, search]);
 
   const moveStage = (id: string, s: InvestorStage) => {
-    setStageOverrides((cur) => ({ ...cur, [id]: s }));
     const inv = investors.find((i) => i.id === id);
-    if (inv) triggerToast(`${inv.name} → ${s}`);
+    if (!inv || stageOf(inv) === s) return;
+    onUpdateInvestor(id, { stage: s, status: s === 'Cerrado' ? 'Firmado' : inv.status });
+  };
+
+  /** Abre el modal en modo edición precargando los campos */
+  const openEdit = (inv: Investor) => {
+    setEditingId(inv.id);
+    setName(inv.name);
+    setFirm(inv.firm);
+    setContact(inv.contact ?? '');
+    setAmount(inv.committedAmount ? String(inv.committedAmount) : '');
+    setRound(inv.round);
+    setStage(stageOf(inv));
+    setLinkedin(inv.linkedin ?? '');
+    setEmail(inv.email ?? '');
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingId(null);
+    setName(''); setFirm(''); setContact(''); setAmount(''); setLinkedin(''); setEmail('');
+    setStage('Contactado');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -97,19 +122,28 @@ export default function InvestorsView({
       triggerToast('Ingresa el nombre del inversor');
       return;
     }
-    onAddInvestor({
+    const payload = {
       name,
       firm: firm || 'Sin descripción',
       contact: contact || name,
       committedAmount: Number(amount) || 0,
-      status: stage === 'Cerrado' ? 'Firmado' : 'Negociando',
-      email: '',
+      status: (stage === 'Cerrado' ? 'Firmado' : 'Negociando') as Investor['status'],
+      email,
       round,
       sharesPercent: 0,
-      stage
-    });
-    setName(''); setFirm(''); setContact(''); setAmount('');
-    setIsModalOpen(false);
+      stage,
+      linkedin: linkedin.trim() || undefined
+    };
+
+    if (editingId) {
+      // en edición no pisamos el equity ya registrado
+      const { sharesPercent, ...patch } = payload;
+      onUpdateInvestor(editingId, patch);
+    } else {
+      onAddInvestor(payload);
+    }
+    closeModal();
+    return;
   };
 
   const statusBadge = (s: string) => {
@@ -257,14 +291,35 @@ export default function InvestorsView({
                     <td className="px-5 py-3.5">
                       <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded ${statusBadge(inv.status)}`}>{inv.status}</span>
                     </td>
-                    <td className="px-5 py-3.5 text-right">
-                      <button
-                        onClick={(e) => { e.stopPropagation(); onDeleteInvestor(inv.id); }}
-                        className="opacity-0 group-hover:opacity-100 text-[#94a3b8] hover:text-[#F05252] transition-all p-1 cursor-pointer"
-                        title="Eliminar"
-                      >
-                        <Trash2 className="w-[15px] h-[15px]" />
-                      </button>
+                    <td className="px-5 py-3.5 text-right whitespace-nowrap">
+                      <div className="flex items-center justify-end gap-0.5">
+                        {inv.linkedin && (
+                          <a
+                            href={inv.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            title="Ver perfil de LinkedIn"
+                            className="p-1.5 rounded-lg text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-colors"
+                          >
+                            <Linkedin className="w-[15px] h-[15px]" />
+                          </a>
+                        )}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); openEdit(inv); }}
+                          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-[#94a3b8] hover:text-[#0E457F] hover:bg-[#0E457F]/8 transition-all cursor-pointer"
+                          title="Editar"
+                        >
+                          <Pencil className="w-[15px] h-[15px]" />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); onDeleteInvestor(inv.id); }}
+                          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-[#94a3b8] hover:text-[#F05252] hover:bg-[#F05252]/8 transition-all cursor-pointer"
+                          title="Eliminar"
+                        >
+                          <Trash2 className="w-[15px] h-[15px]" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -351,8 +406,8 @@ export default function InvestorsView({
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/40 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
             <div className="border-b border-[#eef2f6] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-[15px] font-bold text-[#0F1A2C]">Añadir inversor</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#94a3b8] hover:text-[#0F1A2C] p-1"><X className="w-5 h-5" /></button>
+              <h3 className="text-[15px] font-bold text-[#0F1A2C]">{editingId ? 'Editar inversor' : 'Añadir inversor'}</h3>
+              <button onClick={closeModal} className="text-[#94a3b8] hover:text-[#0F1A2C] p-1"><X className="w-5 h-5" /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-5 space-y-4">
               <div>
@@ -385,9 +440,19 @@ export default function InvestorsView({
                   </select>
                 </div>
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Email</label>
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="contacto@fondo.com" className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">LinkedIn</label>
+                  <input type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/..." className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                </div>
+              </div>
               <div className="border-t border-[#eef2f6] pt-4 flex justify-end gap-2.5">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg bg-white border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer">Cancelar</button>
-                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer">Añadir</button>
+                <button type="button" onClick={closeModal} className="px-4 py-2 rounded-lg bg-white border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer">Cancelar</button>
+                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer">{editingId ? 'Guardar cambios' : 'Añadir'}</button>
               </div>
             </form>
           </div>

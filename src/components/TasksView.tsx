@@ -9,7 +9,9 @@ import {
   Play,
   CheckCircle2,
   Undo,
-  Search
+  Search,
+  Pencil,
+  Trash2
 } from 'lucide-react';
 import { KanbanTask } from '../data/iwaitData';
 
@@ -17,15 +19,20 @@ interface TasksViewProps {
   tasks: KanbanTask[];
   onAddTask: (newTask: Omit<KanbanTask, 'id'>) => void;
   onUpdateTaskColumn: (id: string, newColumn: 'Por Hacer' | 'En Progreso' | 'Hecho') => void;
+  onUpdateTask: (id: string, patch: Partial<Omit<KanbanTask, 'id'>>) => void;
+  onDeleteTask: (id: string) => void;
   triggerToast: (msg: string) => void;
 }
 
-export default function TasksView({ 
-  tasks, 
-  onAddTask, 
-  onUpdateTaskColumn, 
-  triggerToast 
+export default function TasksView({
+  tasks,
+  onAddTask,
+  onUpdateTaskColumn,
+  onUpdateTask,
+  onDeleteTask,
+  triggerToast
 }: TasksViewProps) {
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterPriority, setFilterPriority] = useState<string>('Todos');
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,6 +111,30 @@ export default function TasksView({
   const progressTasks = filteredTasks.filter(t => t.column === 'En Progreso');
   const doneTasks = filteredTasks.filter(t => t.column === 'Hecho');
 
+  const openEdit = (task: KanbanTask) => {
+    setEditingId(task.id);
+    setTitle(task.title);
+    setDesc(task.description);
+    setColumn(task.column);
+    setPriority(task.priority);
+    setDept(task.department);
+    setAssigned(task.assignedTo);
+    setDueDate(task.dueDate);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingId(null);
+    setTitle('');
+    setDesc('');
+    setAssigned('Juan Diego');
+    setDueDate('30 Jun 2026');
+    setColumn('Por Hacer');
+    setPriority('Media');
+    setDept('Producto');
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -111,20 +142,22 @@ export default function TasksView({
       return;
     }
 
-    onAddTask({
+    const payload = {
       title,
       description: desc || 'Sin detalles.',
       column,
       priority,
       department: dept,
-      assignedTo: assigned || 'Sebastian',
+      assignedTo: assigned || 'Juan Diego',
       dueDate: dueDate || 'A convenir'
-    });
+    };
 
-    setTitle('');
-    setDesc('');
-    setAssigned('');
-    setIsModalOpen(false);
+    if (editingId) {
+      onUpdateTask(editingId, payload);
+    } else {
+      onAddTask(payload);
+    }
+    closeModal();
   };
 
   const getPriorityBadge = (prio: string) => {
@@ -229,16 +262,25 @@ export default function TasksView({
                 </div>
 
                 {/* Interactive State Mover */}
-                <button 
-                  onClick={() => {
-                    onUpdateTaskColumn(task.id, 'En Progreso');
-                    triggerToast(`"${task.title}" iniciada! Se movió a 'En progreso'`);
-                  }}
-                  className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#0E457F]/10 hover:bg-[#0E457F] hover:text-white rounded text-[#47B6E6] transition-all cursor-pointer"
-                  title="Comenzar Tarea"
-                >
-                  <Play className="w-3 h-3" />
-                </button>
+                <div className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 flex gap-1 transition-all">
+                  <button
+                    onClick={() => openEdit(task)}
+                    className="p-1 bg-[#eef2f6] hover:bg-[#0E457F] hover:text-white rounded text-[#64748B] transition-all cursor-pointer"
+                    title="Editar tarea"
+                  >
+                    <Pencil className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      onUpdateTaskColumn(task.id, 'En Progreso');
+                      triggerToast(`"${task.title}" iniciada! Se movió a 'En progreso'`);
+                    }}
+                    className="p-1 bg-[#0E457F]/10 hover:bg-[#0E457F] hover:text-white rounded text-[#0E457F] transition-all cursor-pointer"
+                    title="Comenzar Tarea"
+                  >
+                    <Play className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
             ))}
             {todoTasks.length === 0 && (
@@ -300,7 +342,14 @@ export default function TasksView({
 
                 {/* Interactive State Movers */}
                 <div className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 flex gap-1 z-20">
-                  <button 
+                  <button
+                    onClick={() => openEdit(task)}
+                    className="p-1 bg-[#eef2f6] hover:bg-[#0E457F] hover:text-white rounded text-[#64748B] transition-all cursor-pointer"
+                    title="Editar tarea"
+                  >
+                    <Pencil className="w-3 h-3" />
+                  </button>
+                  <button
                     onClick={() => {
                       onUpdateTaskColumn(task.id, 'Por Hacer');
                       triggerToast(`"${task.title}" pausada y devuelta a Pendiente`);
@@ -376,16 +425,32 @@ export default function TasksView({
                 </div>
 
                 {/* Move back to progress button */}
-                <button 
+                <div className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 flex gap-1 transition-all">
+                  <button
+                    onClick={() => openEdit(task)}
+                    className="p-1 bg-[#eef2f6] hover:bg-[#0E457F] hover:text-white rounded text-[#64748B] transition-all cursor-pointer"
+                    title="Editar tarea"
+                  >
+                    <Pencil className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={() => onDeleteTask(task.id)}
+                    className="p-1 bg-[#F05252]/10 hover:bg-[#F05252] hover:text-white rounded text-[#F05252] transition-all cursor-pointer"
+                    title="Eliminar tarea"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                <button
                   onClick={() => {
                     onUpdateTaskColumn(task.id, 'En Progreso');
                     triggerToast(`"${task.title}" reasentada a 'En progreso'`);
                   }}
-                  className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 p-1 bg-[#22384F] hover:bg-[#2A415A] rounded text-[#64748B] transition-all cursor-pointer"
+                  className="p-1 bg-[#eef2f6] hover:bg-[#e6eef4] rounded text-[#64748B] transition-all cursor-pointer"
                   title="Reabrir Tarea"
                 >
                   <Undo className="w-3 h-3" />
                 </button>
+                </div>
               </div>
             ))}
             {doneTasks.length === 0 && (
@@ -402,8 +467,8 @@ export default function TasksView({
         <div className="fixed inset-0 z-50 bg-[#0F1A2C]/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white border border-[#e6eef4] rounded-xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
             <div className="border-b border-[#e6eef4] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#0F1A2C]">Crear Nueva Tarea</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
+              <h3 className="text-base font-semibold text-[#0F1A2C]">{editingId ? 'Editar tarea' : 'Crear Nueva Tarea'}</h3>
+              <button onClick={closeModal} className="text-[#64748B] hover:text-[#0F1A2C] transition-colors p-1">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -500,7 +565,7 @@ export default function TasksView({
               <div className="border-t border-[#e6eef4] pt-4 flex justify-end gap-2.5">
                 <button 
                   type="button" 
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={closeModal}
                   className="px-4 py-2 rounded-lg bg-transparent border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer"
                 >
                   Cancelar
@@ -509,7 +574,7 @@ export default function TasksView({
                   type="submit"
                   className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
                 >
-                  Asignar Tarea
+                  {editingId ? 'Guardar cambios' : 'Asignar Tarea'}
                 </button>
               </div>
             </form>
