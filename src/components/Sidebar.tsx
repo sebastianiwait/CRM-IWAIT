@@ -11,8 +11,10 @@ import {
   KanbanSquare,
   Search,
   ChevronDown,
-  GraduationCap
+  GraduationCap,
+  LogOut
 } from 'lucide-react';
+import { AppUser } from '../hooks/useAuth';
 
 interface SidebarProps {
   activeTab: string;
@@ -22,6 +24,8 @@ interface SidebarProps {
   /** en móvil el sidebar es un drawer */
   isOpen?: boolean;
   onClose?: () => void;
+  user: AppUser;
+  onSignOut: () => void;
 }
 
 export default function Sidebar({
@@ -30,7 +34,9 @@ export default function Sidebar({
   tasksCount,
   onOpenTutorials,
   isOpen = false,
-  onClose
+  onClose,
+  user,
+  onSignOut
 }: SidebarProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     general: true,
@@ -170,13 +176,34 @@ export default function Sidebar({
 
       {/* Sidebar Footer User Details */}
       <div className="p-3.5 border-t border-[#e6eef4] flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0E457F] to-[#47B6E6] flex items-center justify-center font-bold text-xs text-white flex-shrink-0">
-          SM
+        {user.photoURL ? (
+          <img
+            src={user.photoURL}
+            alt={user.name}
+            referrerPolicy="no-referrer"
+            className="w-8 h-8 rounded-full flex-shrink-0 object-cover"
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0E457F] to-[#47B6E6] flex items-center justify-center font-bold text-xs text-white flex-shrink-0">
+            {user.name.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase()}
+          </div>
+        )}
+        <div className="truncate flex-1 min-w-0">
+          <div className="text-[13px] font-semibold text-[#0F1A2C] truncate flex items-center gap-1.5">
+            {user.name}
+            {user.demo && (
+              <span className="text-[9px] font-bold uppercase bg-[#F5A623]/15 text-[#b8790f] px-1.5 py-0.5 rounded">demo</span>
+            )}
+          </div>
+          <div className="text-[11px] text-[#64748B] truncate">{user.email}</div>
         </div>
-        <div className="truncate">
-          <div className="text-[13px] font-semibold text-[#0F1A2C] truncate">Sebastian M.</div>
-          <div className="text-[11px] text-[#64748B] truncate">Founder &amp; CEO</div>
-        </div>
+        <button
+          onClick={onSignOut}
+          title="Cerrar sesión"
+          className="p-1.5 rounded-lg text-[#94a3b8] hover:text-[#F05252] hover:bg-[#F05252]/8 transition-colors cursor-pointer flex-shrink-0"
+        >
+          <LogOut className="w-4 h-4" />
+        </button>
       </div>
       </div>
     </>

@@ -18,6 +18,8 @@ import {
 } from './data/iwaitData';
 import { INITIAL_DEALS } from './data/crmData';
 import { useDeals } from './hooks/useDeals';
+import { useAuth } from './hooks/useAuth';
+import LoginScreen from './components/LoginScreen';
 
 // Modular Sub-views
 import Sidebar from './components/Sidebar';
@@ -35,6 +37,7 @@ import { TOURS } from './data/tours';
 import { TUTORIALS } from './data/tutorials';
 
 export default function App() {
+  const { user, loading: authLoading, error: authError, signInWithGoogle, signInAsDemo, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState<string>('inicio');
   const [tutorialsOpen, setTutorialsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -260,11 +263,33 @@ export default function App() {
     }
   };
 
+  // Puerta de autenticación
+  if (authLoading && !user) {
+    return (
+      <div className="min-h-screen bg-[#f7fafc] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0E457F] to-[#47B6E6] animate-pulse" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <LoginScreen
+        onGoogle={signInWithGoogle}
+        onDemo={signInAsDemo}
+        loading={authLoading}
+        error={authError}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#0F1A2C] text-[#EAF3F9] font-sans antialiased flex">
-      
+    <div className="min-h-screen bg-[#f7fafc] text-[#0F1A2C] font-sans antialiased flex">
+
       {/* Sidebar navigation */}
       <Sidebar
+        user={user}
+        onSignOut={signOut}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         tasksCount={tasks.filter(t => t.column !== 'Hecho').length}
