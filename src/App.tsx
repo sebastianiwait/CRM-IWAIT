@@ -19,6 +19,7 @@ import {
 import { INITIAL_DEALS } from './data/crmData';
 import { useDeals } from './hooks/useDeals';
 import { useAuth } from './hooks/useAuth';
+import { usePersistedState, clearPersistedData } from './hooks/usePersistedState';
 import LoginScreen from './components/LoginScreen';
 
 // Modular Sub-views
@@ -61,10 +62,10 @@ export default function App() {
     setTimeout(() => setActiveTour(steps), 380);
   };
   
-  // State management
-  const [investors, setInvestors] = useState<Investor[]>(INITIAL_INVESTORS);
-  const [dataRoomFiles, setDataRoomFiles] = useState<DataRoomFile[]>(INITIAL_DATA_ROOM);
-  const [tasks, setTasks] = useState<KanbanTask[]>(INITIAL_TASKS);
+  // State management (persistido en localStorage)
+  const [investors, setInvestors] = usePersistedState<Investor[]>('investors', INITIAL_INVESTORS);
+  const [dataRoomFiles, setDataRoomFiles] = usePersistedState<DataRoomFile[]>('dataroom', INITIAL_DATA_ROOM);
+  const [tasks, setTasks] = usePersistedState<KanbanTask[]>('tasks', INITIAL_TASKS);
 
   // Global search state
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
@@ -290,6 +291,12 @@ export default function App() {
       <Sidebar
         user={user}
         onSignOut={signOut}
+        onResetData={() => {
+          if (window.confirm('¿Restablecer todos los datos a los de ejemplo? Se perderá lo que hayas creado.')) {
+            clearPersistedData();
+            window.location.reload();
+          }
+        }}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         tasksCount={tasks.filter(t => t.column !== 'Hecho').length}

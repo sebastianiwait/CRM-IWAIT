@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import {
   Deal,
   DealActivity,
@@ -8,12 +8,13 @@ import {
   newId,
   todayISO
 } from '../data/crmData';
+import { usePersistedState } from './usePersistedState';
 
 export type NewDealInput = Omit<Deal, 'id' | 'createdAt' | 'contacts' | 'activities'> &
   Partial<Pick<Deal, 'contacts' | 'activities'>>;
 
 export function useDeals(initial: Deal[], triggerToast: (msg: string) => void) {
-  const [deals, setDeals] = useState<Deal[]>(initial);
+  const [deals, setDeals] = usePersistedState<Deal[]>('deals', initial);
 
   /** Actualiza un deal por id y refresca updatedAt */
   const patchDeal = useCallback((id: string, updater: (d: Deal) => Deal) => {

@@ -12,7 +12,8 @@ import {
   Search,
   ChevronDown,
   GraduationCap,
-  LogOut
+  LogOut,
+  RotateCcw
 } from 'lucide-react';
 import { AppUser } from '../hooks/useAuth';
 
@@ -26,6 +27,7 @@ interface SidebarProps {
   onClose?: () => void;
   user: AppUser;
   onSignOut: () => void;
+  onResetData: () => void;
 }
 
 export default function Sidebar({
@@ -36,7 +38,8 @@ export default function Sidebar({
   isOpen = false,
   onClose,
   user,
-  onSignOut
+  onSignOut,
+  onResetData
 }: SidebarProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     general: true,
@@ -171,6 +174,14 @@ export default function Sidebar({
         >
           <GraduationCap className="w-[17px] h-[17px] text-[#0E457F]" />
           <span className="flex-1 font-medium">Tutoriales</span>
+        </button>
+        <button
+          onClick={onResetData}
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left cursor-pointer transition-all duration-200 text-[12.5px] text-[#94a3b8] hover:bg-[#F05252]/8 hover:text-[#F05252]"
+          title="Vuelve a los datos de ejemplo"
+        >
+          <RotateCcw className="w-[15px] h-[15px]" />
+          <span className="flex-1">Restablecer datos</span>
         </button>
       </div>
 
