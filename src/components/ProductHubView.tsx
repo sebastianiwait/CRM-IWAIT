@@ -25,6 +25,7 @@ import {
   ProductKey
 } from '../data/productData';
 import SprintMetrics from './SprintMetrics';
+import { usePersistedState } from '../hooks/usePersistedState';
 
 interface ProductHubViewProps {
   triggerToast: (msg: string) => void;
@@ -61,8 +62,8 @@ const statusStyle = (s: BacklogStatus) => {
 export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
   const [selected, setSelected] = useState<ProductKey | null>(null);
   const [tab, setTab] = useState<'backlog' | 'progreso'>('backlog');
-  const [items, setItems] = useState<BacklogItem[]>(INITIAL_BACKLOG);
-  const [sprints] = useState(INITIAL_SPRINTS);
+  const [items, setItems] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG);
+  const [sprints] = usePersistedState('sprints', INITIAL_SPRINTS);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 

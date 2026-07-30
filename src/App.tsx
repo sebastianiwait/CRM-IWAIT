@@ -267,7 +267,7 @@ export default function App() {
   // Puerta de autenticación
   if (authLoading && !user) {
     return (
-      <div className="min-h-screen bg-[#f7fafc] flex items-center justify-center">
+      <div className="min-h-screen bg-[#f1f8fb] flex items-center justify-center">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0E457F] to-[#47B6E6] animate-pulse" />
       </div>
     );
@@ -285,7 +285,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7fafc] text-[#0F1A2C] font-sans antialiased flex">
+    <div className="min-h-screen bg-[#f1f8fb] text-[#0F1A2C] font-sans antialiased flex">
 
       {/* Sidebar navigation */}
       <Sidebar
@@ -306,7 +306,7 @@ export default function App() {
       />
 
       {/* Main content stage */}
-      <main className="flex-1 md:ml-[230px] min-h-screen flex flex-col relative bg-[#f7fafc] w-full min-w-0">
+      <main className="flex-1 md:ml-[230px] min-h-screen flex flex-col relative bg-[#f1f8fb] w-full min-w-0">
         <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#c3dae4] px-4 md:px-8 py-3 md:py-4 flex items-center gap-3">
           {/* Hamburguesa solo en móvil */}
           <button
