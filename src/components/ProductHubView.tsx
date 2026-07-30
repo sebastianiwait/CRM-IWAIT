@@ -24,6 +24,7 @@ import {
   BacklogPriority,
   ProductKey
 } from '../data/productData';
+import SprintMetrics from './SprintMetrics';
 
 interface ProductHubViewProps {
   triggerToast: (msg: string) => void;
@@ -342,6 +343,22 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
       {/* -------- PROGRESO -------- */}
       {tab === 'progreso' && (
         <div className="space-y-5">
+          {/* Métricas del sprint activo */}
+          {(() => {
+            const active = productSprints.find((s) => s.status === 'Activo');
+            if (!active) return null;
+            const closed = productSprints
+              .filter((s) => s.status === 'Cerrado')
+              .map((s) => ({ sprint: s, items: productItems.filter((i) => i.sprintId === s.id) }));
+            return (
+              <SprintMetrics
+                sprint={active}
+                items={productItems.filter((i) => i.sprintId === active.id)}
+                history={closed}
+              />
+            );
+          })()}
+
           {productSprints.map((sprint) => {
             const st = sprintStats(sprint.id);
             const isActive = sprint.status === 'Activo';

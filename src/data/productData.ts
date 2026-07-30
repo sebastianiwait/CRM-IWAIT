@@ -49,6 +49,8 @@ export const PRODUCTS: {
 ];
 
 export const INITIAL_SPRINTS: Sprint[] = [
+  { id: 'sp-al-10', product: 'aerolineas', name: 'Sprint 10', goal: 'Base del motor de reglas', range: '22 May — 4 Jun 2026', status: 'Cerrado' },
+  { id: 'sp-al-11', product: 'aerolineas', name: 'Sprint 11', goal: 'Onboarding del pasajero por WhatsApp', range: '5 Jun — 18 Jun 2026', status: 'Cerrado' },
   { id: 'sp-al-12', product: 'aerolineas', name: 'Sprint 12', goal: 'Cerrar el flujo de compensación automática', range: '19 Jun — 2 Jul 2026', status: 'Activo' },
   { id: 'sp-al-13', product: 'aerolineas', name: 'Sprint 13', goal: 'Wallet pass y notificaciones al pasajero', range: '3 Jul — 16 Jul 2026', status: 'Planificado' },
   { id: 'sp-ap-08', product: 'aeropuertos', name: 'Sprint 8', goal: 'Predictor de colas v2 en producción', range: '19 Jun — 2 Jul 2026', status: 'Activo' },
@@ -56,6 +58,13 @@ export const INITIAL_SPRINTS: Sprint[] = [
 ];
 
 export const INITIAL_BACKLOG: BacklogItem[] = [
+  // ---------- Aerolíneas · sprints cerrados (velocidad histórica) ----------
+  { id: 'AL-081', product: 'aerolineas', epic: 'Compensaciones', title: 'Esquema de datos de incidencias', description: 'Modelo base de vuelos, demoras y pasajeros afectados', type: 'Historia', priority: 'Crítica', points: 8, status: 'Hecho', sprintId: 'sp-al-10', assignee: 'Juan Diego' },
+  { id: 'AL-082', product: 'aerolineas', epic: 'Compensaciones', title: 'Parser de normativa EU261', description: 'Tabla de umbrales por distancia y horas de demora', type: 'Historia', priority: 'Alta', points: 5, status: 'Hecho', sprintId: 'sp-al-10', assignee: 'Juan Diego' },
+  { id: 'AL-083', product: 'aerolineas', epic: 'Infra', title: 'Pipeline de despliegue', description: 'CI/CD a staging', type: 'Tarea', priority: 'Media', points: 5, status: 'Hecho', sprintId: 'sp-al-10', assignee: 'Sebastian M.' },
+  { id: 'AL-091', product: 'aerolineas', epic: 'Onboarding pasajero', title: 'Bot de WhatsApp — flujo base', description: 'Alta del pasajero y verificación del vuelo', type: 'Historia', priority: 'Crítica', points: 13, status: 'Hecho', sprintId: 'sp-al-11', assignee: 'Juan Diego' },
+  { id: 'AL-092', product: 'aerolineas', epic: 'Onboarding pasajero', title: 'Generador de QR firmado', description: 'Códigos con firma SHA-256 para canje en comercios', type: 'Historia', priority: 'Alta', points: 8, status: 'Hecho', sprintId: 'sp-al-11', assignee: 'Sebastian M.' },
+
   // ---------- Aerolíneas ----------
   { id: 'AL-101', product: 'aerolineas', epic: 'Compensaciones', title: 'Motor de reglas de compensación', description: 'Calcular compensación según normativa EU261 y política de la aerolínea', type: 'Historia', priority: 'Crítica', points: 13, status: 'En progreso', sprintId: 'sp-al-12', assignee: 'Juan Diego' },
   { id: 'AL-102', product: 'aerolineas', epic: 'Compensaciones', title: 'Emisión automática de vouchers', description: 'Generar y enviar voucher digital al confirmar la compensación', type: 'Historia', priority: 'Alta', points: 8, status: 'En progreso', sprintId: 'sp-al-12', assignee: 'Juan Diego' },
