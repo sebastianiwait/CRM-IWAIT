@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { GoogleAuthProvider, signInWithPopup, signOut as fbSignOut } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+  signOut as fbSignOut
+} from 'firebase/auth';
 import { auth } from '../lib/googleDrive';
 
 export interface AppUser {
@@ -26,10 +32,31 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Restaura la sesión guardada al cargar
+  // Restaura la sesión guardada y recoge el resultado de un login por redirect
   useEffect(() => {
-    setUser(readStored());
-    setLoading(false);
+    const stored = readStored();
+    if (stored) {
+      setUser(stored);
+      setLoading(false);
+      return;
+    }
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          const u = result.user;
+          const mapped: AppUser = {
+            name: u.displayName || u.email?.split('@')[0] || 'Usuario',
+            email: u.email || '',
+            photoURL: u.photoURL || undefined
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(mapped));
+          setUser(mapped);
+        }
+      })
+      .catch(() => {
+        /* sin redirect pendiente */
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const persist = useCallback((u: AppUser | null) => {
@@ -54,14 +81,26 @@ export function useAuth() {
       });
     } catch (e: any) {
       const code = e?.code ?? '';
+
       if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
         setError(null); // el usuario cerró el popup a propósito
+      } else if (code === 'auth/popup-blocked') {
+        // Bloqueador de popups o navegador embebido: reintenta por redirect
+        try {
+          const provider = new GoogleAuthProvider();
+          await signInWithRedirect(auth, provider);
+          return; // la página navega a Google; el resultado se recoge al volver
+        } catch {
+          setError('El navegador bloqueó la ventana de Google. Permite las ventanas emergentes de este sitio e inténtalo de nuevo.');
+        }
       } else if (code === 'auth/operation-not-allowed' || code === 'auth/configuration-not-found') {
         setError(
-          'Google Sign-In todavía no está habilitado en la consola de Firebase. Usa el acceso de demo mientras tanto.'
+          'Google Sign-In no está habilitado en Firebase. Ve a Authentication → Sign-in method y activa Google.'
         );
       } else if (code === 'auth/unauthorized-domain') {
-        setError('Este dominio no está autorizado en Firebase Auth. Añádelo en Authentication → Settings.');
+        setError(
+          `El dominio "${window.location.hostname}" no está autorizado. Añádelo en Firebase → Authentication → Settings → Authorized domains.`
+        );
       } else {
         setError(e?.message || 'No se pudo iniciar sesión con Google.');
       }
