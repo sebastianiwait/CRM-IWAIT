@@ -352,7 +352,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 }
               }}
               placeholder={activeSubTab === 'local' ? "Buscar por nombre, tipo, categoría..." : "Buscar por nombre o tipo..."}
-              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
+              className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
             />
           </div>
           
@@ -368,7 +368,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
               <button 
                 type="button"
                 onClick={() => setIsUploadOpen(true)}
-                className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+                className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
               >
                 <Plus className="w-[15px] h-[15px]" /> Subir archivo
               </button>
@@ -947,7 +947,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   value={newFileName}
                   onChange={(e) => setNewFileName(e.target.value)}
                   placeholder="Ej. Financial Model v5.xlsx"
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -957,7 +957,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileCategory}
                   onChange={(e: any) => setNewFileCategory(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Finanzas">Financiero</option>
                   <option value="Legal">Legal</option>
@@ -971,7 +971,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileConf}
                   onChange={(e: any) => setNewFileConf(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Público">Público (Cualquiera con acceso)</option>
                   <option value="Confidencial">Confidencial (Solo inversores verificados)</option>
@@ -986,7 +986,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   onChange={(e) => setNewFileDesc(e.target.value)}
                   placeholder="Explique resumidamente el contenido del documento"
                   rows={3}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
@@ -1022,7 +1022,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer"
                 >
                   Cargar Documento
                 </button>
@@ -1051,7 +1051,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   value={shareEmail}
                   onChange={(e) => setShareEmail(e.target.value)}
                   placeholder="socio@pundopartners.com"
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -1061,7 +1061,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={sharePerm}
                   onChange={(e: any) => setSharePerm(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Completo">Acceso Completo (Finanzas + Legal)</option>
                   <option value="Parcial">Acceso Parcial (Legal + Pitch)</option>
@@ -1079,7 +1079,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer"
                 >
                   Enviar Invitación
                 </button>
@@ -1112,7 +1112,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   type="text" 
                   value={newFileName}
                   onChange={(e) => setNewFileName(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -1122,7 +1122,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileCategory}
                   onChange={(e: any) => setNewFileCategory(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Finanzas">Financiero</option>
                   <option value="Legal">Legal</option>
@@ -1136,7 +1136,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 <select 
                   value={newFileConf}
                   onChange={(e: any) => setNewFileConf(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="Público">Público (Cualquiera con acceso)</option>
                   <option value="Confidencial">Confidencial (Solo inversores verificados)</option>
@@ -1151,7 +1151,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                   onChange={(e) => setNewFileDesc(e.target.value)}
                   placeholder="Escriba comentarios o detalles para este archivo importado"
                   rows={3}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
@@ -1170,7 +1170,7 @@ export default function DataRoomView({ files, onUploadFile, triggerToast }: Data
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer flex items-center gap-1"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer flex items-center gap-1"
                 >
                   Confirmar Importación
                 </button>

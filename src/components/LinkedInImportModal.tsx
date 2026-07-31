@@ -225,7 +225,7 @@ export default function LinkedInImportModal({ onImport, onClose, triggerToast }:
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Buscar nombre, fondo o cargo..."
-                  className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-3 py-1.5 text-[12.5px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[220px]"
+                  className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-3 py-1.5 text-[12.5px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[220px]"
                 />
               </div>
               <label className="flex items-center gap-2 text-[12.5px] text-[#33475b] cursor-pointer">

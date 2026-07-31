@@ -771,7 +771,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ej. Laura Diaz"
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -782,7 +782,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   <select 
                     value={roleGroup}
                     onChange={(e) => setRoleGroup(e.target.value)}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Eng.">Ingeniero (FE/BE)</option>
                     <option value="ML Eng.">Ingeniero ML</option>
@@ -798,7 +798,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                     value={salaryStr}
                     onChange={(e) => setSalaryStr(e.target.value)}
                     placeholder="Ej. 6500"
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                     required
                   />
                 </div>
@@ -812,7 +812,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                   value={equityStr}
                   onChange={(e) => setEquityStr(e.target.value)}
                   placeholder="Ej. 0.5"
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                 />
               </div>
 
@@ -826,7 +826,7 @@ export default function CompensationsView({ triggerToast, tasks = [] }: Compensa
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer"
                 >
                   Confirmar Persona
                 </button>

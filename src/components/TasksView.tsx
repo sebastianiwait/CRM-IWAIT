@@ -190,12 +190,12 @@ export default function TasksView({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por tarea o asignado..."
-              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-1.5 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
+              className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-1.5 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-[13px] w-[200px] md:w-[220px]"
             />
           </div>
 
           {/* Filter dropdown */}
-          <div className="relative flex items-center bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 font-sans">
+          <div className="relative flex items-center bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 font-sans">
             <Filter className="w-3.5 h-3.5 text-[#64748B] mr-1.5" />
             <select 
               value={filterPriority}
@@ -212,7 +212,7 @@ export default function TasksView({
             type="button"
             data-tour="tasks-add"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva tarea
           </button>
@@ -481,7 +481,7 @@ export default function TasksView({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ej. Rediseño del Apple Wallet Pass"
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   required
                 />
               </div>
@@ -493,7 +493,7 @@ export default function TasksView({
                   onChange={(e) => setDesc(e.target.value)}
                   placeholder="Instrucciones detalladas o anotaciones"
                   rows={2}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm resize-none"
                 />
               </div>
 
@@ -503,7 +503,7 @@ export default function TasksView({
                   <select
                     value={assigned}
                     onChange={(e) => setAssigned(e.target.value)}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                   >
                     <option value="Juan Diego">Juan Diego</option>
                     <option value="Sebastian M.">Sebastian M.</option>
@@ -516,7 +516,7 @@ export default function TasksView({
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                     placeholder="Ej. 28 Jun 2026"
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>
@@ -527,7 +527,7 @@ export default function TasksView({
                   <select 
                     value={column}
                     onChange={(e: any) => setColumn(e.target.value)}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-2 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-[12px]"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-[12px]"
                   >
                     <option value="Por Hacer">Pendiente</option>
                     <option value="En Progreso">En proceso</option>
@@ -539,7 +539,7 @@ export default function TasksView({
                   <select 
                     value={priority}
                     onChange={(e: any) => setPriority(e.target.value)}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-2 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-[12px]"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-[12px]"
                   >
                     <option value="Alta">Alta</option>
                     <option value="Media">Media</option>
@@ -551,7 +551,7 @@ export default function TasksView({
                   <select 
                     value={dept}
                     onChange={(e: any) => setDept(e.target.value)}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-2 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-[12px]"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-[12px]"
                   >
                     <option value="Producto">Producto</option>
                     <option value="Clientes">Clientes</option>
@@ -572,7 +572,7 @@ export default function TasksView({
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer"
                 >
                   {editingId ? 'Guardar cambios' : 'Asignar Tarea'}
                 </button>

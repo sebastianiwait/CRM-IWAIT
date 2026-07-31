@@ -129,7 +129,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
           <button 
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Añadir aeropuerto
           </button>
@@ -286,7 +286,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     onChange={(e) => setIata(e.target.value)}
                     placeholder="Ej. BCN"
                     maxLength={3}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm text-center font-mono font-bold"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm text-center font-mono font-bold"
                     required
                   />
                 </div>
@@ -297,7 +297,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej. Aeropuerto El Prat"
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                     required
                   />
                 </div>
@@ -311,7 +311,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                     placeholder="Ej. Barcelona · España"
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
                 <div>
@@ -321,7 +321,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                     value={passengers}
                     onChange={(e) => setPassengers(e.target.value)}
                     placeholder="Ej. 52K"
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#64748B] focus:outline-none focus:border-[#0E457F] text-sm"
                   />
                 </div>
               </div>
@@ -331,7 +331,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                 <select 
                   value={activeModules}
                   onChange={(e) => setActiveModules(e.target.value)}
-                  className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] focus:outline-none focus:border-[#0E457F] text-sm"
                 >
                   <option value="AI Queue Predictor">AI Queue Predictor</option>
                   <option value="AI Queue Predictor · Live Dashboard">AI Queue Predictor y Live Dashboard</option>
@@ -349,7 +349,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
                 </button>
                 <button 
                   type="submit"
-                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer"
+                  className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer"
                 >
                   Confirmar Despliegue
                 </button>

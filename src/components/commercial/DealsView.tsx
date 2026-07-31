@@ -33,7 +33,7 @@ interface DealsViewProps {
 }
 
 const selectCls =
-  'bg-white border border-[#e6eef4] rounded-lg px-3 py-2 text-[12.5px] text-[#33475b] focus:outline-none focus:border-[#47B6E6] shadow-sm cursor-pointer';
+  'bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[12.5px] text-[#33475b] focus:outline-none focus:border-[#47B6E6] shadow-sm cursor-pointer';
 
 export default function DealsView({
   deals,
@@ -115,7 +115,7 @@ export default function DealsView({
         <button
           data-tour="deal-add"
           onClick={() => setForm({ open: true, mode: 'create' })}
-          className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer self-start"
+          className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer self-start"
         >
           <Plus className="w-[15px] h-[15px]" /> Nuevo negocio
         </button>
@@ -172,7 +172,7 @@ export default function DealsView({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar negocio, empresa o contacto..."
-            className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[250px] shadow-sm"
+            className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[250px] shadow-sm"
           />
         </div>
 
@@ -202,7 +202,7 @@ export default function DealsView({
           <p className="text-[13px] text-[#64748B] mt-1 mb-5">Crea tu primer negocio para empezar a construir el pipeline.</p>
           <button
             onClick={() => setForm({ open: true, mode: 'create' })}
-            className="px-4 py-2.5 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2.5 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
           >
             <Plus className="w-4 h-4" /> Crear tu primer negocio
           </button>

@@ -234,7 +234,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer self-start"
+          className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer self-start"
         >
           <Plus className="w-[15px] h-[15px]" /> Nuevo ítem
         </button>
@@ -269,7 +269,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar ítem, épica o ID..."
-              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[220px] shadow-sm"
+              className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[220px] shadow-sm"
             />
           </div>
         )}
@@ -279,7 +279,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
       {tab === 'backlog' && (
         <div className="space-y-5">
           {epics.map(([epicName, epicItems]) => (
-            <div key={epicName} className="bg-white rounded-xl border border-[#e6eef4] shadow-sm overflow-hidden">
+            <div key={epicName} className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm overflow-hidden">
               <div className="px-5 py-3 border-b border-[#eef2f6] flex items-center justify-between bg-[#fbfdfe]">
                 <div className="flex items-center gap-2">
                   <ListTree className="w-4 h-4 text-[#0E457F]" />
@@ -366,7 +366,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
             return (
               <div
                 key={sprint.id}
-                className="bg-white rounded-xl border border-[#e6eef4] shadow-sm overflow-hidden relative"
+                className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm overflow-hidden relative"
               >
                 {isActive && <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#F5A623]"></div>}
                 <div className="px-5 py-4 border-b border-[#eef2f6] flex flex-wrap items-center justify-between gap-3">
@@ -479,7 +479,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ej. Integrar webhook de incidencias"
-                  className="w-full bg-white border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm"
                   required
                 />
               </div>
@@ -491,7 +491,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
                   onChange={(e) => setDesc(e.target.value)}
                   rows={2}
                   placeholder="Detalle técnico o criterio de aceptación"
-                  className="w-full bg-white border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm resize-none"
+                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm resize-none"
                 />
               </div>
 
@@ -503,36 +503,36 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
                     value={epic}
                     onChange={(e) => setEpic(e.target.value)}
                     placeholder="Ej. Integraciones"
-                    className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]"
                   />
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Tipo</label>
-                  <select value={type} onChange={(e: any) => setType(e.target.value)} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={type} onChange={(e: any) => setType(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     <option>Historia</option><option>Bug</option><option>Spike</option><option>Tarea</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Prioridad</label>
-                  <select value={priority} onChange={(e: any) => setPriority(e.target.value)} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={priority} onChange={(e: any) => setPriority(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     <option>Crítica</option><option>Alta</option><option>Media</option><option>Baja</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Story points</label>
-                  <select value={points} onChange={(e: any) => setPoints(Number(e.target.value))} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={points} onChange={(e: any) => setPoints(Number(e.target.value))} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     {[1, 2, 3, 5, 8, 13].map((p) => <option key={p} value={p}>{p} pts</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Responsable</label>
-                  <select value={assignee} onChange={(e: any) => setAssignee(e.target.value)} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={assignee} onChange={(e: any) => setAssignee(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     {TEAM_MEMBERS.map((m) => <option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Sprint</label>
-                  <select value={sprintId} onChange={(e: any) => setSprintId(e.target.value)} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={sprintId} onChange={(e: any) => setSprintId(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     <option value="">Sin sprint (backlog)</option>
                     {productSprints.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                   </select>
@@ -541,7 +541,7 @@ export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
 
               <div className="border-t border-[#eef2f6] pt-4 flex justify-end gap-2.5">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg bg-white border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer">Cancelar</button>
-                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer">Añadir al backlog</button>
+                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer">Añadir al backlog</button>
               </div>
             </form>
           </div>

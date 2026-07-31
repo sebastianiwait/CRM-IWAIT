@@ -52,20 +52,31 @@ export default function Sidebar({
   const toggleSection = (key: string) =>
     setOpenSections((cur) => ({ ...cur, [key]: !cur[key] }));
 
-  // Navigation item helper
-  const renderItem = (tabId: string, label: string, icon: React.ReactNode, badge?: React.ReactNode) => {
+  // Navigation item helper. `count` se estiliza aquí para que contraste
+  // tanto sobre el fondo claro como sobre el navy del ítem activo.
+  const renderItem = (tabId: string, label: string, icon: React.ReactNode, count?: number) => {
     if (filter.trim() && !label.toLowerCase().includes(filter.toLowerCase())) return null;
     const isActive = activeTab === tabId;
+    const badge =
+      count === undefined ? null : (
+        <span
+          className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-auto ${
+            isActive ? 'bg-white/20 text-white' : 'bg-[#0E457F]/10 text-[#0E457F]'
+          }`}
+        >
+          {count}
+        </span>
+      );
     return (
       <button
         onClick={() => { setActiveTab(tabId); onClose?.(); }}
-        className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left cursor-pointer transition-all duration-200 text-[13.5px] ${
+        className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left cursor-pointer transition-all duration-200 text-[13.5px] ${
           isActive
-            ? 'bg-[#eef4f9] text-[#0F1A2C] font-semibold'
-            : 'text-[#33475b] hover:bg-[#f1f6fa] hover:text-[#0F1A2C]'
+            ? 'bg-gradient-to-r from-[#0E457F] to-[#1a5c9e] text-white font-semibold shadow-sm shadow-[#0E457F]/25'
+            : 'text-[#33475b] hover:bg-[#eaf3f8] hover:text-[#0F1A2C]'
         }`}
       >
-        <span className={isActive ? 'text-[#0E457F]' : 'text-[#64748B]'}>{icon}</span>
+        <span className={isActive ? 'text-white' : 'text-[#64748B]'}>{icon}</span>
         <span className="flex-1">{label}</span>
         {badge}
       </button>
@@ -131,7 +142,7 @@ export default function Sidebar({
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Buscar..."
-            className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg pl-9 pr-12 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] focus:bg-white transition-colors"
+            className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-12 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] focus:bg-white transition-colors"
           />
           <span className="absolute right-2.5 text-[10px] font-mono text-[#94a3b8] bg-white border border-[#e6eef4] rounded px-1.5 py-0.5">
             ⌘K
@@ -143,12 +154,7 @@ export default function Sidebar({
       <nav className="flex-1 px-3 pb-3 space-y-3">
         {renderSection('general', 'General', <>
           {renderItem('inicio', 'Inicio', <LayoutDashboard className="w-[17px] h-[17px]" />)}
-          {renderItem(
-            'tareas',
-            'Tareas',
-            <CheckSquare className="w-[17px] h-[17px]" />,
-            <span className="bg-[#0E457F]/10 text-[#0E457F] text-[10px] px-1.5 py-0.5 rounded-full font-bold ml-auto">{tasksCount}</span>
-          )}
+          {renderItem('tareas', 'Tareas', <CheckSquare className="w-[17px] h-[17px]" />, tasksCount)}
         </>)}
 
         {renderSection('inversiones', 'Inversiones', <>

@@ -20,7 +20,7 @@ interface DealFormModalProps {
 }
 
 const input =
-  'w-full bg-white border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[13.5px]';
+  'w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[13.5px]';
 const label = 'block text-[11px] font-semibold text-[#64748B] uppercase tracking-wide mb-1';
 
 /** Fecha por defecto: hoy + 60 días */
@@ -172,7 +172,7 @@ export default function DealFormModal({ mode, deal, onSubmit, onClose }: DealFor
 
           <div className="border-t border-[#eef2f6] pt-4 flex justify-end gap-2.5">
             <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg bg-white border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer">Cancelar</button>
-            <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer">
+            <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer">
               {mode === 'edit' ? 'Guardar cambios' : 'Crear negocio'}
             </button>
           </div>

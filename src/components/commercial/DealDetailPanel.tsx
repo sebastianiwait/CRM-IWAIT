@@ -268,16 +268,16 @@ export default function DealDetailPanel({
                     onChange={(e) => setText(e.target.value)}
                     rows={3}
                     placeholder={`Registrar ${kind.toLowerCase()} sobre ${deal.company}...`}
-                    className="w-full bg-[#f5f9fc] border border-[#e6eef4] rounded-lg px-3 py-2.5 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] resize-none"
+                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2.5 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] resize-none"
                   />
                   <div className="flex items-center justify-between mt-2.5 gap-3">
                     <input
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
-                      className="bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[12.5px] text-[#33475b] focus:outline-none focus:border-[#47B6E6]"
+                      className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[12.5px] text-[#33475b] focus:outline-none focus:border-[#47B6E6]"
                     />
-                    <button type="submit" className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] font-medium flex items-center gap-1.5 cursor-pointer">
+                    <button type="submit" className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] font-medium flex items-center gap-1.5 cursor-pointer">
                       <Plus className="w-[15px] h-[15px]" /> Registrar actividad
                     </button>
                   </div>

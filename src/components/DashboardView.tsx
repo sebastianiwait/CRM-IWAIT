@@ -139,11 +139,11 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
                 <>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Nombre del Inversor / Fondo</label>
-                    <input type="text" value={invName} onChange={e => setInvName(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Y Combinator" />
+                    <input type="text" value={invName} onChange={e => setInvName(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Y Combinator" />
                   </div>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Capital a levantar (€)</label>
-                    <input type="number" value={invAmount} onChange={e => setInvAmount(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. 100000" />
+                    <input type="number" value={invAmount} onChange={e => setInvAmount(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. 100000" />
                   </div>
                 </>
               )}
@@ -151,15 +151,15 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
                 <>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Nombre de la Cuenta / Empresa</label>
-                    <input type="text" value={leadName} onChange={e => setLeadName(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Aena Group" />
+                    <input type="text" value={leadName} onChange={e => setLeadName(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Aena Group" />
                   </div>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Ubicación / Hub</label>
-                    <input type="text" value={leadHub} onChange={e => setLeadHub(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Madrid" />
+                    <input type="text" value={leadHub} onChange={e => setLeadHub(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Madrid" />
                   </div>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Valor Estimado (Deal Value €)</label>
-                    <input type="number" value={leadValue} onChange={e => setLeadValue(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. 150000" />
+                    <input type="number" value={leadValue} onChange={e => setLeadValue(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. 150000" />
                   </div>
                 </>
               )}
@@ -167,11 +167,11 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
                 <>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Título de Tarea</label>
-                    <input type="text" value={taskTitle} onChange={e => setTaskTitle(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Revisar Term Sheet" />
+                    <input type="text" value={taskTitle} onChange={e => setTaskTitle(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Revisar Term Sheet" />
                   </div>
                   <div>
                     <label className="block text-[12px] font-medium text-[#64748B] mb-1.5">Responsable</label>
-                    <input type="text" value={taskAssigned} onChange={e => setTaskAssigned(e.target.value)} className="w-full bg-[#eef2f6] border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Sebastian" />
+                    <input type="text" value={taskAssigned} onChange={e => setTaskAssigned(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] text-[13px] focus:outline-none focus:border-[#0E457F] transition-colors" placeholder="Ej. Sebastian" />
                   </div>
                 </>
               )}
@@ -201,7 +201,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           <button 
             type="button"
             onClick={onAddAction}
-            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
+            className="btn btn-primary px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium text-sm cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Nueva acción
           </button>
@@ -263,7 +263,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
         ].map((kpi) => (
           <div
             key={kpi.label}
-            className="group relative bg-white rounded-xl border border-[#e6eef4] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 pl-5 overflow-hidden"
+            className="group relative bg-white rounded-2xl border border-[#e6eef4] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-4 pl-5 overflow-hidden"
           >
             <div className="absolute left-0 top-0 bottom-0 w-[4px]" style={{ backgroundColor: kpi.accent }}></div>
             <div className="flex items-start justify-between gap-2">

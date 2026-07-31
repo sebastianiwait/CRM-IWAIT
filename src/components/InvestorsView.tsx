@@ -171,14 +171,14 @@ export default function InvestorsView({
           </button>
           <button
             onClick={() => triggerToast('Cap table exportado')}
-            className="px-3.5 py-2 bg-white hover:bg-[#eef6fa] rounded-lg border border-[#e6eef4] text-[#33475b] hover:text-[#0F1A2C] text-[13px] flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
+            className="px-3.5 py-2 bg-white hover:bg-[#eef6fa] rounded-xl border border-[#e6eef4] text-[#33475b] hover:text-[#0F1A2C] text-[13px] flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
           >
             <Download className="w-[15px] h-[15px]" /> Exportar
           </button>
           <button
             data-tour="inv-add"
             onClick={() => setIsModalOpen(true)}
-            className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
+            className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
           >
             <Plus className="w-[15px] h-[15px]" /> Añadir inversor
           </button>
@@ -249,7 +249,7 @@ export default function InvestorsView({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar inversor, fondo o ronda..."
-              className="bg-white border border-[#e6eef4] rounded-lg pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[240px] shadow-sm"
+              className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[240px] shadow-sm"
             />
           </div>
         )}
@@ -412,30 +412,30 @@ export default function InvestorsView({
             <form onSubmit={handleSubmit} className="p-5 space-y-4">
               <div>
                 <label className="block text-[12px] font-semibold text-[#64748B] uppercase tracking-wide mb-1.5">Inversor / Fondo</label>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej. Andes Ventures" className="w-full bg-white border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm" required />
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej. Andes Ventures" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm" required />
               </div>
               <div>
                 <label className="block text-[12px] font-semibold text-[#64748B] uppercase tracking-wide mb-1.5">Descripción</label>
-                <input type="text" value={firm} onChange={(e) => setFirm(e.target.value)} placeholder="Ej. Aviation-focused VC" className="w-full bg-white border border-[#e6eef4] rounded-lg px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm" />
+                <input type="text" value={firm} onChange={(e) => setFirm(e.target.value)} placeholder="Ej. Aviation-focused VC" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Contacto</label>
-                  <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Nombre" className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                  <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Nombre" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Monto (USD)</label>
-                  <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="150000" className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                  <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="150000" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Ronda</label>
-                  <select value={round} onChange={(e) => setRound(e.target.value)} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={round} onChange={(e) => setRound(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     <option>Pre-Seed</option><option>Semilla</option><option>Serie A</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Etapa</label>
-                  <select value={stage} onChange={(e) => setStage(e.target.value as InvestorStage)} className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                  <select value={stage} onChange={(e) => setStage(e.target.value as InvestorStage)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
                     {STAGES.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
                   </select>
                 </div>
@@ -443,16 +443,16 @@ export default function InvestorsView({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Email</label>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="contacto@fondo.com" className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="contacto@fondo.com" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
                 </div>
                 <div>
                   <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">LinkedIn</label>
-                  <input type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/..." className="w-full bg-white border border-[#e6eef4] rounded-lg px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                  <input type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} placeholder="https://linkedin.com/in/..." className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
                 </div>
               </div>
               <div className="border-t border-[#eef2f6] pt-4 flex justify-end gap-2.5">
                 <button type="button" onClick={closeModal} className="px-4 py-2 rounded-lg bg-white border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer">Cancelar</button>
-                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg font-medium text-sm cursor-pointer">{editingId ? 'Guardar cambios' : 'Añadir'}</button>
+                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer">{editingId ? 'Guardar cambios' : 'Añadir'}</button>
               </div>
             </form>
           </div>

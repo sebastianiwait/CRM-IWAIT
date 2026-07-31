@@ -169,7 +169,7 @@ export default function Tour({ steps, onClose }: TourProps) {
             {i > 0 && (
               <button
                 onClick={prev}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#e6eef4] text-[#33475b] hover:bg-[#f1f6fa] text-[12.5px] font-medium cursor-pointer"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#e6eef4] text-[#33475b] hover:bg-[#f1f6fa] text-[12.5px] font-medium cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" /> Atrás
               </button>
