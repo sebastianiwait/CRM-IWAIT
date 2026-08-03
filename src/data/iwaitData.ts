@@ -14,18 +14,34 @@ export interface Investor {
   linkedin?: string;
 }
 
+/** Qué es cada elemento del Data Room: archivo subido, página HTML o enlace externo */
+export type DataRoomKind = 'file' | 'html' | 'link';
+
 export interface DataRoomFile {
   id: string;
   name: string;
-  category: 'Legal' | 'Finanzas' | 'Producto' | 'Marketing';
+  /** Carpeta a la que pertenece (texto libre: se pueden crear carpetas nuevas) */
+  category: string;
   size: string;
   date: string;
   confidentiality: 'Público' | 'Confidencial' | 'Solo Directiva';
   description: string;
   detailedContent: string;
-  /** 'html' renderiza detailedContent como HTML en un iframe aislado */
+  /** 'html' renderiza detailedContent como HTML en un iframe aislado (legado) */
   contentType?: 'text' | 'html';
+  kind?: DataRoomKind;
+  /** URL externa cuando kind === 'link' (Google Docs, Canva, Figma…) */
+  url?: string;
+  /** data URL del archivo subido (solo si pesa poco), para previsualizarlo */
+  dataUrl?: string;
 }
+
+/** Tipo efectivo del elemento, tolerando datos guardados antes del campo `kind` */
+export const dataRoomKind = (f: DataRoomFile): DataRoomKind =>
+  f.kind ?? (f.contentType === 'html' ? 'html' : 'file');
+
+/** Carpetas sugeridas al crear contenido (la lista real sale de los archivos) */
+export const DATA_ROOM_FOLDERS = ['Finanzas', 'Legal', 'Producto', 'Marketing'];
 
 export interface KanbanTask {
   id: string;
@@ -128,6 +144,30 @@ export const INITIAL_DATA_ROOM: DataRoomFile[] = [
 • Exclusividad parcial en Terminal T4 para vuelos con demoras mayores a 60 minutos.
 • Compensación mínima parametrizada: $15 USD por pasajero (refrigerio); $45 USD (alimentación extendida).
 • Conciliación quincenal automática contra cuenta corriente corporativa.`
+  },
+  {
+    id: 'dr-6',
+    name: 'One-pager comercial (Google Docs)',
+    category: 'Marketing',
+    kind: 'link',
+    url: 'https://docs.google.com/document/d/EJEMPLO-cambia-este-enlace/edit',
+    size: '—',
+    date: '20 Jul 2026',
+    confidentiality: 'Público',
+    description: 'Documento vivo con el resumen comercial de IWAIT. Se edita directamente en Google Docs; este enlace siempre apunta a la última versión.',
+    detailedContent: 'Enlace externo a Google Docs.'
+  },
+  {
+    id: 'dr-7',
+    name: 'Plantillas de marca (Canva)',
+    category: 'Marketing',
+    kind: 'link',
+    url: 'https://www.canva.com/design/EJEMPLO-cambia-este-enlace/view',
+    size: '—',
+    date: '15 Jul 2026',
+    confidentiality: 'Público',
+    description: 'Carpeta de diseños en Canva con las plantillas oficiales: pitch deck, posts y one-pagers con la paleta IWAIT.',
+    detailedContent: 'Enlace externo a Canva.'
   }
 ];
 

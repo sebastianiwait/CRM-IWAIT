@@ -191,6 +191,10 @@ export default function App() {
     setDataRoomFiles(current => [file, ...current]);
   };
 
+  const handleDeleteFile = (id: string) => {
+    setDataRoomFiles(current => current.filter(f => f.id !== id));
+  };
+
   const handleAddTask = (newTask: Omit<KanbanTask, 'id'>) => {
     const t: KanbanTask = {
       ...newTask,
@@ -257,6 +261,7 @@ export default function App() {
           <DataRoomView 
             files={dataRoomFiles}
             onUploadFile={handleUploadFile}
+            onDeleteFile={handleDeleteFile}
             triggerToast={triggerToast}
           />
         );
