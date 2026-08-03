@@ -55,16 +55,6 @@ export const TUTORIALS: Record<string, Tutorial> = {
     ],
     tip: 'Trabaja desde el Backlog; el Progreso se actualiza solo. Un sprint bien definido tiene un objetivo claro.'
   },
-  compensaciones: {
-    title: 'Compensaciones & Progreso',
-    intro: 'La foto de equity, salarios e hitos financieros ligados al progreso de la compañía.',
-    steps: [
-      { title: 'Revisa hitos por fase', body: 'Cada fase tiene su financiación, fecha objetivo y % de avance.' },
-      { title: 'Consulta la estructura de equipo', body: 'Salarios, equity y vesting de cada integrante clave.' },
-      { title: 'Ajusta supuestos', body: 'Modifica los parámetros para ver cómo cambian runway y masa salarial.' }
-    ],
-    tip: 'Úsalo antes de una ronda: te dice cuánto runway compras con cuánta dilución.'
-  },
   tareas: {
     title: 'Tareas',
     intro: 'Tablero Kanban del equipo. Tareas comunes asignadas a Juan Diego o Sebastián, etiquetadas por área.',

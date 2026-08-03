@@ -53,6 +53,10 @@ export interface Deal {
   probability?: number;
   companyLinkedin?: string;
   notes?: string;
+  /** Siguiente paso concreto acordado con la cuenta */
+  nextAction?: string;
+  /** ISO 'yyyy-mm-dd' en que debe hacerse ese siguiente paso */
+  nextActionDate?: string;
   createdAt: string;
   updatedAt?: string;
   contacts: DealContact[];
@@ -130,6 +134,50 @@ export const newId = (prefix: string): string => {
 export const primaryContact = (deal: Deal): DealContact | undefined =>
   deal.contacts.find((c) => c.isPrimary) ?? deal.contacts[0];
 
+/* ------------------------ Alertas de seguimiento ------------------- */
+
+/** Días transcurridos desde una fecha ISO (negativo si es futura) */
+export const daysSince = (iso: string): number =>
+  Math.floor((new Date(`${todayISO()}T00:00:00`).getTime() - new Date(`${iso}T00:00:00`).getTime()) / 86400000);
+
+/** Días sin ninguna actividad registrada. null si nunca hubo. */
+export const daysInactive = (deal: Deal): number | null => {
+  const last = lastActivity(deal);
+  return last ? daysSince(last.date) : null;
+};
+
+/** Umbral a partir del cual un negocio abierto se considera enfriándose */
+export const STALE_DAYS = 10;
+
+export const isStale = (deal: Deal): boolean => {
+  if (!isOpen(deal)) return false;
+  const d = daysInactive(deal);
+  return d !== null && d >= STALE_DAYS;
+};
+
+/** La próxima acción venció y el negocio sigue abierto */
+export const isNextActionOverdue = (deal: Deal): boolean =>
+  isOpen(deal) && !!deal.nextActionDate && deal.nextActionDate < todayISO();
+
+/** Negocio abierto sin próxima acción definida: nadie sabe qué sigue */
+export const hasNoNextAction = (deal: Deal): boolean => isOpen(deal) && !deal.nextAction;
+
+export type DealAlert = 'overdue' | 'stale' | 'no-next-step';
+
+/** Alerta más urgente del negocio, o null si va bien */
+export const dealAlert = (deal: Deal): DealAlert | null => {
+  if (isNextActionOverdue(deal)) return 'overdue';
+  if (isStale(deal)) return 'stale';
+  if (hasNoNextAction(deal)) return 'no-next-step';
+  return null;
+};
+
+export const ALERT_META: Record<DealAlert, { label: string; color: string; short: string }> = {
+  overdue: { label: 'Próxima acción vencida', color: '#F05252', short: 'Vencida' },
+  stale: { label: `Sin actividad hace ${STALE_DAYS}+ días`, color: '#F5A623', short: 'Enfriándose' },
+  'no-next-step': { label: 'Sin próxima acción definida', color: '#94a3b8', short: 'Sin plan' }
+};
+
 /* ------------------------- Datos iniciales ------------------------ */
 
 export const INITIAL_DEALS: Deal[] = [
@@ -148,6 +196,8 @@ export const INITIAL_DEALS: Deal[] = [
     companyLinkedin: 'https://www.linkedin.com/company/jetsmart/',
     notes:
       'ULCC del grupo Indigo Partners con operación en Chile, Argentina y Perú. Interés en digitalizar los vouchers de contingencia (hoy en papel) en SCL y luego replicar en AEP y LIM.',
+    nextAction: 'Enviar propuesta con precio por pasajero compensado',
+    nextActionDate: '2026-08-05',
     createdAt: '2026-06-12',
     updatedAt: '2026-07-20',
     contacts: [

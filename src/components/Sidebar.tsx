@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   TrendingUp,
   FolderLock,
-  Award,
   CheckSquare,
   Rocket,
   Plane,
@@ -164,7 +163,6 @@ export default function Sidebar({
 
         {renderSection('producto', 'Producto', <>
           {renderItem('producto', 'Aerolíneas & Aeropuertos', <Rocket className="w-[17px] h-[17px]" />)}
-          {renderItem('compensaciones', 'Compensaciones & Progreso', <Award className="w-[17px] h-[17px]" />)}
         </>)}
 
         {renderSection('comercial', 'Comercial', <>

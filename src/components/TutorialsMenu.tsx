@@ -9,7 +9,7 @@ interface TutorialsMenuProps {
 }
 
 // Order shown in the picker
-const ORDER = ['inicio', 'inversionstas', 'dataroom', 'producto', 'compensaciones', 'tareas', 'negocios'];
+const ORDER = ['inicio', 'inversionstas', 'dataroom', 'producto', 'tareas', 'negocios'];
 
 export default function TutorialsMenu({ onClose, onSelect }: TutorialsMenuProps) {
   const items = ORDER.filter((k) => TUTORIALS[k]);

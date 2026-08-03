@@ -11,7 +11,8 @@ import {
   DEAL_OWNERS,
   money,
   isOpen,
-  weightedValue
+  weightedValue,
+  dealAlert
 } from '../../data/crmData';
 import { NewDealInput } from '../../hooks/useDeals';
 import DealPipeline from './DealPipeline';
@@ -94,6 +95,11 @@ export default function DealsView({
   const won = deals.filter((d) => d.stage === 'Cerrado ganado');
   const wonValue = won.reduce((a, d) => a + d.amount, 0);
   const avgTicket = openDeals.length > 0 ? Math.round(pipelineValue / openDeals.length) : 0;
+  // Negocios abiertos con próxima acción vencida o sin actividad reciente
+  const needAttention = openDeals.filter((d) => {
+    const a = dealAlert(d);
+    return a === 'overdue' || a === 'stale';
+  }).length;
 
   const handleSubmitForm = (values: NewDealInput | Partial<Omit<Deal, 'id'>>) => {
     if (form.mode === 'edit' && form.deal) {
@@ -134,7 +140,7 @@ export default function DealsView({
             { v: money(weighted), l: 'ponderado por etapa', c: '#0E457F' },
             { v: money(wonValue), l: 'cerrado ganado', c: '#10CC82' },
             { v: String(openDeals.length), l: 'negocios abiertos', c: '#0F1A2C' },
-            { v: money(avgTicket), l: 'ticket medio', c: '#0F1A2C' }
+            { v: String(needAttention), l: 'requieren atención', c: needAttention > 0 ? '#F05252' : '#0F1A2C' }
           ].map((k) => (
             <div key={k.l}>
               <div className="text-[19px] font-bold" style={{ color: k.c }}>{k.v}</div>
@@ -224,6 +230,7 @@ export default function DealsView({
           deal={selected}
           onClose={() => setSelectedDealId(null)}
           onMoveStage={onMoveStage}
+          onUpdateDeal={onUpdateDeal}
           onAddActivity={onAddActivity}
           onEditDeal={() => setForm({ open: true, mode: 'edit', deal: selected })}
           onUpsertContact={onUpsertContact}

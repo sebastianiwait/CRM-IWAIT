@@ -29,7 +29,6 @@ import InvestorsView from './components/InvestorsView';
 import DataRoomView from './components/DataRoomView';
 import TasksView from './components/TasksView';
 import AiAirportsView from './components/AiAirportsView';
-import CompensationsView from './components/CompensationsView';
 import ProductHubView from './components/ProductHubView';
 import DealsView from './components/commercial/DealsView';
 import Tour, { TourStep } from './components/Tour';
@@ -245,13 +244,6 @@ export default function App() {
         return (
           <AiAirportsView 
             triggerToast={triggerToast}
-          />
-        );
-      case 'compensaciones':
-        return (
-          <CompensationsView 
-            triggerToast={triggerToast}
-            tasks={tasks}
           />
         );
       default:

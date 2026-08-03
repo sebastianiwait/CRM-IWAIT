@@ -11,7 +11,9 @@ import {
   Star,
   Building2,
   ExternalLink,
-  Check
+  Check,
+  Target,
+  AlertTriangle
 } from 'lucide-react';
 import {
   Deal,
@@ -23,7 +25,12 @@ import {
   money,
   formatDate,
   todayISO,
-  dealProbability
+  dealProbability,
+  dealAlert,
+  isNextActionOverdue,
+  daysInactive,
+  daysSince,
+  ALERT_META
 } from '../../data/crmData';
 import ContactDetailCard from '../ContactDetailCard';
 import ContactFormModal from './ContactFormModal';
@@ -32,6 +39,7 @@ interface DealDetailPanelProps {
   deal: Deal;
   onClose: () => void;
   onMoveStage: (id: string, stage: DealStage) => void;
+  onUpdateDeal: (id: string, patch: Partial<Omit<Deal, 'id'>>) => void;
   onAddActivity: (dealId: string, input: { kind: ActivityKind; text: string; date?: string }) => void;
   onEditDeal: () => void;
   onUpsertContact: (dealId: string, contact: DealContact | Omit<DealContact, 'id'>) => void;
@@ -52,6 +60,7 @@ export default function DealDetailPanel({
   deal,
   onClose,
   onMoveStage,
+  onUpdateDeal,
   onAddActivity,
   onEditDeal,
   onUpsertContact,
@@ -63,6 +72,15 @@ export default function DealDetailPanel({
 
   const [contactDetail, setContactDetail] = useState<DealContact | null>(null);
   const [contactForm, setContactForm] = useState<{ open: boolean; contact?: DealContact }>({ open: false });
+
+  // Próxima acción
+  const [editingNext, setEditingNext] = useState(false);
+  const [nextText, setNextText] = useState(deal.nextAction ?? '');
+  const [nextDate, setNextDate] = useState(deal.nextActionDate ?? todayISO());
+
+  const alert = dealAlert(deal);
+  const overdueNext = isNextActionOverdue(deal);
+  const inactiveDays = daysInactive(deal);
 
   const submitActivity = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +156,108 @@ export default function DealDetailPanel({
             <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-5 items-start">
               {/* --- Columna izquierda --- */}
               <div className="space-y-5">
+                {/* Próxima acción */}
+                <div
+                  className="bg-white rounded-2xl border shadow-sm p-5"
+                  style={{ borderColor: alert ? `${ALERT_META[alert].color}55` : '#e6eef4' }}
+                >
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <h3 className="text-[13px] font-bold text-[#0F1A2C] flex items-center gap-1.5">
+                      <Target className="w-4 h-4 text-[#0E457F]" /> Próxima acción
+                    </h3>
+                    {!editingNext && (
+                      <button
+                        onClick={() => {
+                          setNextText(deal.nextAction ?? '');
+                          setNextDate(deal.nextActionDate ?? todayISO());
+                          setEditingNext(true);
+                        }}
+                        className="text-[12px] font-semibold text-[#0E457F] hover:text-[#0A365F] cursor-pointer"
+                      >
+                        {deal.nextAction ? 'Cambiar' : 'Definir'}
+                      </button>
+                    )}
+                  </div>
+
+                  {editingNext ? (
+                    <div className="space-y-2.5">
+                      <input
+                        value={nextText}
+                        onChange={(e) => setNextText(e.target.value)}
+                        placeholder="Ej. Enviar propuesta económica"
+                        className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6]"
+                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="date"
+                          value={nextDate}
+                          onChange={(e) => setNextDate(e.target.value)}
+                          className="flex-1 bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[12.5px] text-[#33475b] focus:outline-none focus:border-[#47B6E6]"
+                        />
+                        <button
+                          onClick={() => {
+                            onUpdateDeal(deal.id, {
+                              nextAction: nextText.trim() || undefined,
+                              nextActionDate: nextText.trim() ? nextDate : undefined
+                            });
+                            setEditingNext(false);
+                          }}
+                          className="px-3 py-1.5 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[12.5px] font-semibold cursor-pointer"
+                        >
+                          Guardar
+                        </button>
+                        <button
+                          onClick={() => setEditingNext(false)}
+                          className="px-3 py-1.5 rounded-xl border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-[12.5px] cursor-pointer"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  ) : deal.nextAction ? (
+                    <>
+                      <p className="text-[13.5px] text-[#0F1A2C] font-medium leading-snug">{deal.nextAction}</p>
+                      <div className="flex items-center gap-2 mt-2.5 flex-wrap">
+                        <span
+                          className="flex items-center gap-1.5 text-[11.5px] font-semibold px-2 py-1 rounded-lg"
+                          style={{
+                            backgroundColor: overdueNext ? '#F0525214' : '#eef2f6',
+                            color: overdueNext ? '#F05252' : '#64748B'
+                          }}
+                        >
+                          <CalendarDays className="w-3.5 h-3.5" />
+                          {formatDate(deal.nextActionDate!)}
+                          {overdueNext && ` · vencida hace ${daysSince(deal.nextActionDate!)}d`}
+                        </span>
+                        <button
+                          onClick={() => {
+                            onAddActivity(deal.id, { kind: 'Nota', text: `Completado: ${deal.nextAction}` });
+                            onUpdateDeal(deal.id, { nextAction: undefined, nextActionDate: undefined });
+                          }}
+                          className="flex items-center gap-1 text-[11.5px] font-semibold text-[#0f9c66] hover:text-[#0c7d52] cursor-pointer"
+                        >
+                          <Check className="w-3.5 h-3.5" /> Marcar hecha
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-[12.5px] text-[#94a3b8]">
+                      Sin próxima acción. Define el siguiente paso para que el negocio no se enfríe.
+                    </p>
+                  )}
+
+                  {alert && (
+                    <div
+                      className="flex items-center gap-2 mt-3.5 pt-3.5 border-t text-[12px] font-medium"
+                      style={{ borderColor: '#eef2f6', color: ALERT_META[alert].color }}
+                    >
+                      <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
+                      {ALERT_META[alert].label}
+                      {alert === 'stale' && inactiveDays !== null && ` (${inactiveDays} días)`}
+                    </div>
+                  )}
+                </div>
+
                 {/* Ficha */}
                 <div className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm p-5">
                   <h3 className="text-[13px] font-bold text-[#0F1A2C] mb-3.5">Acerca de este negocio</h3>

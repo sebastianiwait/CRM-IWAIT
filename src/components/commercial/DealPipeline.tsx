@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Clock, CalendarDays } from 'lucide-react';
+import { Users, Clock, CalendarDays, AlertTriangle } from 'lucide-react';
 import {
   Deal,
   DealStage,
@@ -8,7 +8,9 @@ import {
   formatDate,
   todayISO,
   lastActivity,
-  primaryContact
+  primaryContact,
+  dealAlert,
+  ALERT_META
 } from '../../data/crmData';
 
 interface DealPipelineProps {
@@ -75,6 +77,21 @@ export default function DealPipeline({ deals, onMoveStage, onOpenDeal }: DealPip
                   >
                     <div className="text-[13px] font-semibold text-[#0F1A2C] leading-snug">{deal.name}</div>
                     <div className="text-[11.5px] text-[#64748B] mt-0.5 truncate">{deal.company}</div>
+
+                    {(() => {
+                      const alert = dealAlert(deal);
+                      if (!alert) return null;
+                      const meta = ALERT_META[alert];
+                      return (
+                        <div
+                          className="flex items-center gap-1 mt-2 text-[10.5px] font-bold px-1.5 py-1 rounded-lg"
+                          style={{ backgroundColor: `${meta.color}14`, color: meta.color }}
+                          title={meta.label}
+                        >
+                          <AlertTriangle className="w-3 h-3 flex-shrink-0" /> {meta.short}
+                        </div>
+                      );
+                    })()}
 
                     <div className="flex items-center justify-between mt-2.5">
                       <span className="text-[13.5px] font-bold text-[#0E457F]">{money(deal.amount)}</span>
