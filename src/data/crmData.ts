@@ -13,6 +13,25 @@ export type DealStage =
 
 export type CompanyType = 'Aerolínea' | 'Aeropuerto' | 'Comercio' | 'Handling' | 'OTA / Agencia';
 
+/** Cada negocio vive en uno de los tres pipelines comerciales */
+export type PipelineKey = 'aeropuertos' | 'aerolineas' | 'merchants';
+
+export const PIPELINES: { key: PipelineKey; label: string; accent: string; hint: string }[] = [
+  { key: 'aeropuertos', label: 'Aeropuertos', accent: '#0E457F', hint: 'Operadores y concesionarios aeroportuarios' },
+  { key: 'aerolineas', label: 'Aerolíneas', accent: '#47B6E6', hint: 'Compensaciones y experiencia del pasajero' },
+  { key: 'merchants', label: 'Merchants', accent: '#F5A623', hint: 'Comercios y restauración en terminal' }
+];
+
+export const pipelineMeta = (key: PipelineKey) =>
+  PIPELINES.find((p) => p.key === key) ?? PIPELINES[0];
+
+/** Pipeline por defecto según el tipo de empresa, para dar de alta sin fricción */
+export const pipelineForCompanyType = (t: CompanyType): PipelineKey => {
+  if (t === 'Aerolínea') return 'aerolineas';
+  if (t === 'Comercio') return 'merchants';
+  return 'aeropuertos';
+};
+
 export type ActivityKind = 'Nota' | 'Llamada' | 'Reunión' | 'Email';
 
 export interface DealContact {
@@ -41,6 +60,8 @@ export interface Deal {
   name: string;
   company: string;
   companyType: CompanyType;
+  /** Pipeline al que pertenece. Si falta, se deriva del tipo de empresa. */
+  pipeline?: PipelineKey;
   stage: DealStage;
   amount: number;
   /** ISO 'yyyy-mm-dd' */
@@ -131,6 +152,10 @@ export const newId = (prefix: string): string => {
   return `${prefix}-${rand}`;
 };
 
+/** Pipeline efectivo del negocio (tolera datos antiguos sin el campo) */
+export const dealPipeline = (deal: Deal): PipelineKey =>
+  deal.pipeline ?? pipelineForCompanyType(deal.companyType);
+
 export const primaryContact = (deal: Deal): DealContact | undefined =>
   deal.contacts.find((c) => c.isPrimary) ?? deal.contacts[0];
 
@@ -186,6 +211,7 @@ export const INITIAL_DEALS: Deal[] = [
     name: 'JetSMART — Piloto de compensaciones SCL',
     company: 'JetSMART Airlines',
     companyType: 'Aerolínea',
+    pipeline: 'aerolineas',
     stage: 'Demo / Piloto',
     amount: 80000,
     closeDate: '2026-10-15',
@@ -256,3 +282,8 @@ export const INITIAL_DEALS: Deal[] = [
     ]
   }
 ];
+
+/**
+ * Los pipelines de Aeropuertos y Merchants arrancan vacíos: se llenan con
+ * los negocios reales conforme se prospecten.
+ */

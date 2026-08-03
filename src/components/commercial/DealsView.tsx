@@ -12,7 +12,10 @@ import {
   money,
   isOpen,
   weightedValue,
-  dealAlert
+  dealAlert,
+  PIPELINES,
+  PipelineKey,
+  dealPipeline
 } from '../../data/crmData';
 import { NewDealInput } from '../../hooks/useDeals';
 import DealPipeline from './DealPipeline';
@@ -49,6 +52,7 @@ export default function DealsView({
   onFocusHandled
 }: DealsViewProps) {
   const [view, setView] = useState<'pipeline' | 'table'>('pipeline');
+  const [activePipeline, setActivePipeline] = useState<PipelineKey>('aerolineas');
   const [search, setSearch] = useState('');
   const [stageFilter, setStageFilter] = useState<'Todas' | DealStage>('Todas');
   const [typeFilter, setTypeFilter] = useState<'Todos' | CompanyType>('Todos');
@@ -61,18 +65,25 @@ export default function DealsView({
     mode: 'create'
   });
 
-  // Apertura desde la búsqueda global
+  // Apertura desde la búsqueda global: cambia también al pipeline del negocio
   useEffect(() => {
-    if (focusDealId) {
-      setSelectedDealId(focusDealId);
-      onFocusHandled?.();
-    }
-  }, [focusDealId, onFocusHandled]);
+    if (!focusDealId) return;
+    const target = deals.find((d) => d.id === focusDealId);
+    if (target) setActivePipeline(dealPipeline(target));
+    setSelectedDealId(focusDealId);
+    onFocusHandled?.();
+  }, [focusDealId, deals, onFocusHandled]);
 
   const selected = selectedDealId ? deals.find((d) => d.id === selectedDealId) ?? null : null;
 
+  // Solo los negocios del pipeline activo
+  const pipelineDeals = useMemo(
+    () => deals.filter((d) => dealPipeline(d) === activePipeline),
+    [deals, activePipeline]
+  );
+
   const filtered = useMemo(() => {
-    return deals.filter((d) => {
+    return pipelineDeals.filter((d) => {
       if (stageFilter !== 'Todas' && d.stage !== stageFilter) return false;
       if (typeFilter !== 'Todos' && d.companyType !== typeFilter) return false;
       if (ownerFilter !== 'Todos' && d.owner !== ownerFilter) return false;
@@ -86,13 +97,13 @@ export default function DealsView({
       }
       return true;
     });
-  }, [deals, stageFilter, typeFilter, ownerFilter, search]);
+  }, [pipelineDeals, stageFilter, typeFilter, ownerFilter, search]);
 
-  // KPIs
-  const openDeals = deals.filter(isOpen);
+  // KPIs — siempre del pipeline activo
+  const openDeals = pipelineDeals.filter(isOpen);
   const pipelineValue = openDeals.reduce((a, d) => a + d.amount, 0);
   const weighted = openDeals.reduce((a, d) => a + weightedValue(d), 0);
-  const won = deals.filter((d) => d.stage === 'Cerrado ganado');
+  const won = pipelineDeals.filter((d) => d.stage === 'Cerrado ganado');
   const wonValue = won.reduce((a, d) => a + d.amount, 0);
   const avgTicket = openDeals.length > 0 ? Math.round(pipelineValue / openDeals.length) : 0;
   // Negocios abiertos con próxima acción vencida o sin actividad reciente
@@ -125,6 +136,43 @@ export default function DealsView({
         >
           <Plus className="w-[15px] h-[15px]" /> Nuevo negocio
         </button>
+      </div>
+
+      {/* Selector de pipeline */}
+      <div data-tour="deal-pipelines" className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {PIPELINES.map((p) => {
+          const its = deals.filter((d) => dealPipeline(d) === p.key);
+          const open = its.filter(isOpen);
+          const value = open.reduce((a, d) => a + d.amount, 0);
+          const active = activePipeline === p.key;
+          return (
+            <button
+              key={p.key}
+              onClick={() => setActivePipeline(p.key)}
+              className={`text-left rounded-2xl border p-4 transition-all cursor-pointer relative overflow-hidden ${
+                active
+                  ? 'bg-white border-transparent shadow-md ring-2'
+                  : 'bg-white/60 border-[#e6eef4] hover:bg-white hover:shadow-sm'
+              }`}
+              style={active ? { boxShadow: `0 0 0 2px ${p.accent}` } : undefined}
+            >
+              <div className="absolute left-0 top-0 bottom-0 w-[4px]" style={{ backgroundColor: p.accent }} />
+              <div className="flex items-center justify-between gap-2">
+                <span className={`text-[14px] font-bold ${active ? 'text-[#0F1A2C]' : 'text-[#33475b]'}`}>
+                  {p.label}
+                </span>
+                <span
+                  className="text-[10.5px] font-bold px-2 py-0.5 rounded-full"
+                  style={{ backgroundColor: `${p.accent}18`, color: p.accent }}
+                >
+                  {open.length}
+                </span>
+              </div>
+              <div className="text-[17px] font-bold text-[#0F1A2C] mt-1.5">{money(value)}</div>
+              <div className="text-[11px] text-[#64748B] mt-0.5 truncate">{p.hint}</div>
+            </button>
+          );
+        })}
       </div>
 
       {/* KPIs */}
@@ -243,6 +291,7 @@ export default function DealsView({
         <DealFormModal
           mode={form.mode}
           deal={form.deal}
+          defaultPipeline={activePipeline}
           onSubmit={handleSubmitForm}
           onClose={() => setForm({ open: false, mode: 'create' })}
         />

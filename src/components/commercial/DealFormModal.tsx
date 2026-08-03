@@ -8,13 +8,18 @@ import {
   COMPANY_TYPES,
   DEAL_OWNERS,
   todayISO,
-  newId
+  newId,
+  PIPELINES,
+  PipelineKey,
+  dealPipeline
 } from '../../data/crmData';
 import { NewDealInput } from '../../hooks/useDeals';
 
 interface DealFormModalProps {
   mode: 'create' | 'edit';
   deal?: Deal;
+  /** Pipeline preseleccionado al crear (el que está viendo el usuario) */
+  defaultPipeline?: PipelineKey;
   onSubmit: (values: NewDealInput | Partial<Omit<Deal, 'id'>>) => void;
   onClose: () => void;
 }
@@ -30,10 +35,13 @@ const defaultCloseDate = () => {
   return d.toISOString().slice(0, 10);
 };
 
-export default function DealFormModal({ mode, deal, onSubmit, onClose }: DealFormModalProps) {
+export default function DealFormModal({ mode, deal, defaultPipeline, onSubmit, onClose }: DealFormModalProps) {
   const [name, setName] = useState(deal?.name ?? '');
   const [company, setCompany] = useState(deal?.company ?? '');
   const [companyType, setCompanyType] = useState<CompanyType>(deal?.companyType ?? 'Aerolínea');
+  const [pipeline, setPipeline] = useState<PipelineKey>(
+    deal ? dealPipeline(deal) : defaultPipeline ?? 'aerolineas'
+  );
   const [stage, setStage] = useState<DealStage>(deal?.stage ?? 'Prospecto');
   const [amount, setAmount] = useState(deal?.amount ? String(deal.amount) : '');
   const [closeDate, setCloseDate] = useState(deal?.closeDate ?? defaultCloseDate());
@@ -57,6 +65,7 @@ export default function DealFormModal({ mode, deal, onSubmit, onClose }: DealFor
       name: name.trim(),
       company: company.trim(),
       companyType,
+      pipeline,
       stage,
       amount: Number(amount) || 0,
       closeDate: closeDate || todayISO(),
@@ -101,6 +110,25 @@ export default function DealFormModal({ mode, deal, onSubmit, onClose }: DealFor
           <div>
             <label className={label}>Nombre del negocio</label>
             <input className={input} value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej. JetSMART — Piloto de compensaciones SCL" required />
+          </div>
+
+          <div>
+            <label className={label}>Pipeline</label>
+            <div className="grid grid-cols-3 gap-2">
+              {PIPELINES.map((p) => (
+                <button
+                  key={p.key}
+                  type="button"
+                  onClick={() => setPipeline(p.key)}
+                  className={`py-2 rounded-xl text-[12.5px] font-semibold transition-all cursor-pointer border ${
+                    pipeline === p.key ? 'text-white border-transparent' : 'bg-[#f4fafc] text-[#64748B] border-[#dceaf2] hover:text-[#0F1A2C]'
+                  }`}
+                  style={pipeline === p.key ? { backgroundColor: p.accent } : undefined}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
