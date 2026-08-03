@@ -27,6 +27,10 @@ interface DashboardViewProps {
     activeAirports: number;
     clientsCount: number;
     tasksCount: number;
+    negotiatingCount: number;
+    wonCount: number;
+    dealsTotal: number;
+    overdueTasks: number;
   };
   onAddInvestor?: (inv: Omit<Investor, 'id'>) => void;
   onAddDeal?: (input: NewDealInput) => string;
@@ -249,14 +253,14 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           {
             label: 'Negocios en pipeline',
             value: metrics.clientsCount,
-            sub: '4 en negociación',
+            sub: `${metrics.negotiatingCount} en propuesta o negociación`,
             accent: '#47B6E6',
             icon: <Users className="w-[17px] h-[17px]" />
           },
           {
             label: 'Tareas pendientes',
             value: metrics.tasksCount,
-            sub: '2 vencidas',
+            sub: metrics.overdueTasks > 0 ? `${metrics.overdueTasks} vencida${metrics.overdueTasks > 1 ? 's' : ''}` : 'ninguna vencida',
             accent: '#F5A623',
             icon: <CheckSquare className="w-[17px] h-[17px]" />
           }
@@ -385,10 +389,15 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           <div className="p-5 space-y-5">
             {[
               { label: 'Ronda de inversión', pct: 78, color: '#0E457F', note: '$940K de $1.2M · Semilla' },
-              { label: 'Pipeline comercial', pct: 44, color: '#47B6E6', note: '4 de 9 clientes en negociación' },
+              {
+                label: 'Pipeline comercial',
+                pct: metrics.dealsTotal > 0 ? Math.round((metrics.negotiatingCount / metrics.dealsTotal) * 100) : 0,
+                color: '#47B6E6',
+                note: `${metrics.negotiatingCount} de ${metrics.dealsTotal} negocio${metrics.dealsTotal > 1 ? 's' : ''} en propuesta o negociación`
+              },
               { label: 'Producto — Aerolíneas', pct: 28, color: '#F5A623', note: 'Sprint 12 · 11/40 pts' },
               { label: 'Producto — AI Aeropuertos', pct: 40, color: '#00C9A7', note: 'Sprint 8 · en progreso' },
-              { label: 'Tareas del equipo', pct: 33, color: '#8B63F5', note: `${metrics.tasksCount} pendientes · 2 vencidas` }
+              { label: 'Tareas del equipo', pct: 33, color: '#8B63F5', note: `${metrics.tasksCount} pendientes · ${metrics.overdueTasks} vencida${metrics.overdueTasks === 1 ? '' : 's'}` }
             ].map((row) => (
               <div key={row.label}>
                 <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">

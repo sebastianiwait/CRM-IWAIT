@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrendingDown, Users, Gauge, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import { BacklogItem, Sprint } from '../data/productData';
+import { BacklogItem, Sprint, parseSprintRange } from '../data/productData';
 
 interface SprintMetricsProps {
   sprint: Sprint;
@@ -8,22 +8,6 @@ interface SprintMetricsProps {
   /** sprints ya cerrados del mismo producto, para la velocidad histórica */
   history: { sprint: Sprint; items: BacklogItem[] }[];
 }
-
-/** Parsea "19 Jun — 2 Jul 2026" a fechas aproximadas para el eje del burndown */
-const parseRange = (range: string): { start: Date; end: Date } | null => {
-  const MONTHS: Record<string, number> = {
-    ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5,
-    jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11
-  };
-  const m = range.match(/(\d{1,2})\s+(\w{3})\w*\s*—\s*(\d{1,2})\s+(\w{3})\w*\s+(\d{4})/i);
-  if (!m) return null;
-  const [, d1, mo1, d2, mo2, yr] = m;
-  const monthOf = (s: string) => MONTHS[s.toLowerCase().slice(0, 3)];
-  const y = Number(yr);
-  const start = new Date(y, monthOf(mo1) ?? 0, Number(d1));
-  const end = new Date(y, monthOf(mo2) ?? 0, Number(d2));
-  return { start, end };
-};
 
 const initialsOf = (n: string) =>
   n.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();
@@ -35,7 +19,7 @@ export default function SprintMetrics({ sprint, items, history }: SprintMetricsP
   const remaining = total - donePts;
 
   /* ---------------- Burndown ---------------- */
-  const range = parseRange(sprint.range);
+  const range = parseSprintRange(sprint.range);
   const totalDays = range
     ? Math.max(1, Math.round((range.end.getTime() - range.start.getTime()) / 86400000))
     : 14;

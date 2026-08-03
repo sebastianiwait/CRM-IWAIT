@@ -87,6 +87,8 @@ body {
 .dark .border-\[\#c3dae4\],
 .dark .border-\[\#eef2f6\],
 .dark .border-\[\#f1f5f9\] { border-color: #26405C; }
+/* Aro del badge de notificaciones: debe fundirse con la barra, no con el blanco */
+.dark .border-white { border-color: #14243A; }
 .dark .divide-\[\#f1f5f9\] > :not([hidden]) ~ :not([hidden]),
 .dark .divide-\[\#eef2f6\] > :not([hidden]) ~ :not([hidden]) { border-color: #22384F; }
 

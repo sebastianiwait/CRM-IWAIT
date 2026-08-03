@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { 
   Sparkles,
   Info,
@@ -19,7 +19,8 @@ import {
   KanbanTask
 } from './data/iwaitData';
 import { INITIAL_DEALS } from './data/crmData';
-import { INITIAL_BACKLOG, BacklogItem } from './data/productData';
+import { INITIAL_BACKLOG, INITIAL_SPRINTS, BacklogItem } from './data/productData';
+import { buildNotifications, AppNotification } from './lib/notifications';
 import { useDeals } from './hooks/useDeals';
 import { useAuth } from './hooks/useAuth';
 import { usePersistedState, clearPersistedData } from './hooks/usePersistedState';
@@ -36,6 +37,7 @@ import ProductHubView from './components/ProductHubView';
 import DealsView from './components/commercial/DealsView';
 import Tour, { TourStep } from './components/Tour';
 import TutorialsMenu from './components/TutorialsMenu';
+import NotificationCenter from './components/NotificationCenter';
 import { TOURS } from './data/tours';
 import { TUTORIALS } from './data/tutorials';
 
@@ -69,6 +71,8 @@ export default function App() {
   const [dataRoomFiles, setDataRoomFiles] = usePersistedState<DataRoomFile[]>('dataroom', INITIAL_DATA_ROOM);
   const [tasks, setTasks] = usePersistedState<KanbanTask[]>('tasks', INITIAL_TASKS);
   const [backlog, setBacklog] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG);
+  // Solo lectura aquí: los sprints se editan en Producto, esto alimenta las alertas de ritmo
+  const [sprints] = usePersistedState('sprints', INITIAL_SPRINTS);
 
   // Global search state
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
@@ -97,6 +101,18 @@ export default function App() {
     upsertContact,
     deleteContact
   } = useDeals(INITIAL_DEALS, triggerToast);
+
+  // Centro de notificaciones: se recalcula solo, no se guarda estado leído
+  const notifications = useMemo(
+    () => buildNotifications(deals, tasks, backlog, sprints),
+    [deals, tasks, backlog, sprints]
+  );
+
+  const openNotification = (n: AppNotification) => {
+    setActiveTab(n.source);
+    if (n.source === 'negocios' && n.targetId) setFocusDealId(n.targetId);
+    if (n.source === 'producto' && n.targetId) setFocusItemId(n.targetId);
+  };
 
   const handleGlobalSearch = (term: string) => {
     setGlobalSearchTerm(term);
@@ -212,7 +228,13 @@ export default function App() {
               totalCapital: investors.reduce((sum, item) => sum + item.committedAmount, 0),
               activeAirports: 3,
               clientsCount: deals.filter(d => !d.stage.startsWith('Cerrado')).length,
-              tasksCount: tasks.filter(t => t.column !== 'Hecho').length
+              tasksCount: tasks.filter(t => t.column !== 'Hecho').length,
+              negotiatingCount: deals.filter(d => d.stage === 'Negociación' || d.stage === 'Propuesta').length,
+              wonCount: deals.filter(d => d.stage === 'Cerrado ganado').length,
+              dealsTotal: deals.length,
+              overdueTasks: tasks.filter(
+                t => t.column !== 'Hecho' && !!t.dueDate && t.dueDate < new Date().toISOString().slice(0, 10)
+              ).length
             }}
             onAddInvestor={handleAddInvestor}
             onAddDeal={addDeal}
@@ -520,6 +542,8 @@ export default function App() {
               </div>
             )}
           </div>
+
+          <NotificationCenter notifications={notifications} onOpen={openNotification} />
         </div>
         <div className="px-4 md:px-8 py-5 md:py-7 w-full mx-auto flex-1 min-w-0">
           {renderActiveView()}

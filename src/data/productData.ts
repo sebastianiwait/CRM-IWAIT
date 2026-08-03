@@ -4,6 +4,14 @@ export type BacklogStatus = 'Backlog' | 'Por hacer' | 'En progreso' | 'Review' |
 export type BacklogType = 'Historia' | 'Bug' | 'Spike' | 'Tarea';
 export type BacklogPriority = 'Crítica' | 'Alta' | 'Media' | 'Baja';
 
+export interface BacklogComment {
+  id: string;
+  author: string;
+  text: string;
+  /** ISO 'yyyy-mm-dd' */
+  date: string;
+}
+
 export interface BacklogItem {
   id: string;
   product: ProductKey;
@@ -17,6 +25,8 @@ export interface BacklogItem {
   /** Sprint id, or null when still in the raw backlog */
   sprintId: string | null;
   assignee: string;
+  /** Hilo de comentarios del equipo. Ausente en ítems creados antes de la función. */
+  comments?: BacklogComment[];
 }
 
 export interface Sprint {
@@ -87,6 +97,23 @@ export const INITIAL_BACKLOG: BacklogItem[] = [
   { id: 'AP-208', product: 'aeropuertos', epic: 'Analytics', title: 'Exportador de métricas a BI', description: 'Conector para el módulo de analytics', type: 'Tarea', priority: 'Baja', points: 8, status: 'Backlog', sprintId: null, assignee: 'Sin asignar' },
   { id: 'AP-209', product: 'aeropuertos', epic: 'I+D', title: 'Spike: AI Baggage Tracking', description: 'Investigación de viabilidad de tracking de equipaje', type: 'Spike', priority: 'Baja', points: 5, status: 'Backlog', sprintId: null, assignee: 'Sin asignar' }
 ];
+
+/** Parsea "19 Jun — 2 Jul 2026" a fechas aproximadas (burndown y alertas de ritmo) */
+export const parseSprintRange = (range: string): { start: Date; end: Date } | null => {
+  const MONTHS: Record<string, number> = {
+    ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5,
+    jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11
+  };
+  const m = range.match(/(\d{1,2})\s+(\w{3})\w*\s*—\s*(\d{1,2})\s+(\w{3})\w*\s+(\d{4})/i);
+  if (!m) return null;
+  const [, d1, mo1, d2, mo2, yr] = m;
+  const monthOf = (s: string) => MONTHS[s.toLowerCase().slice(0, 3)];
+  const y = Number(yr);
+  return {
+    start: new Date(y, monthOf(mo1) ?? 0, Number(d1)),
+    end: new Date(y, monthOf(mo2) ?? 0, Number(d2))
+  };
+};
 
 export const BACKLOG_STATUSES: BacklogStatus[] = ['Backlog', 'Por hacer', 'En progreso', 'Review', 'Hecho'];
 

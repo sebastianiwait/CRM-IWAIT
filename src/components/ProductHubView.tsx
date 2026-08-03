@@ -10,7 +10,8 @@ import {
   X,
   Flame,
   CheckCircle2,
-  Search
+  Search,
+  MessageSquare
 } from 'lucide-react';
 import {
   PRODUCTS,
@@ -25,6 +26,7 @@ import {
   ProductKey
 } from '../data/productData';
 import SprintMetrics from './SprintMetrics';
+import BacklogItemPanel from './BacklogItemPanel';
 import { usePersistedState } from '../hooks/usePersistedState';
 
 interface ProductHubViewProps {
@@ -77,6 +79,8 @@ export default function ProductHubView({
   const [sprints] = usePersistedState('sprints', INITIAL_SPRINTS);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Se guarda el id, no el objeto: así el panel refleja los comentarios nuevos
+  const [openItemId, setOpenItemId] = useState<string | null>(null);
 
   // Al llegar desde la búsqueda global, abre el producto del ítem y lo resalta
   useEffect(() => {
@@ -132,6 +136,29 @@ export default function ProductHubView({
   const updateStatus = (id: string, status: BacklogStatus) => {
     setItems((cur) => cur.map((i) => (i.id === id ? { ...i, status } : i)));
     triggerToast(`${id} → ${status}`);
+  };
+
+  const openItem = openItemId ? items.find((i) => i.id === openItemId) ?? null : null;
+
+  const addComment = (itemId: string, text: string, author: string) => {
+    const comment = {
+      id: `cm-${Math.random().toString(36).slice(2, 10)}`,
+      author,
+      text,
+      date: new Date().toISOString().slice(0, 10)
+    };
+    setItems((cur) =>
+      cur.map((i) => (i.id === itemId ? { ...i, comments: [...(i.comments ?? []), comment] } : i))
+    );
+    triggerToast(`Comentario añadido a ${itemId}`);
+  };
+
+  const deleteComment = (itemId: string, commentId: string) => {
+    setItems((cur) =>
+      cur.map((i) =>
+        i.id === itemId ? { ...i, comments: (i.comments ?? []).filter((c) => c.id !== commentId) } : i
+      )
+    );
   };
 
   const sprintStats = (sid: string) => {
@@ -321,10 +348,22 @@ export default function ProductHubView({
                   <div key={item.id} className="px-5 py-3 hover:bg-[#fafcfe] transition-colors flex items-center gap-3 flex-wrap">
                     <span className="font-mono text-[11.5px] text-[#94a3b8] w-[62px] flex-shrink-0">{item.id}</span>
 
-                    <div className="min-w-[220px] flex-1">
-                      <div className="text-[13.5px] font-medium text-[#0F1A2C]">{item.title}</div>
+                    <button
+                      onClick={() => setOpenItemId(item.id)}
+                      className="min-w-[220px] flex-1 text-left cursor-pointer group"
+                      title="Ver detalle y comentarios"
+                    >
+                      <div className="text-[13.5px] font-medium text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors flex items-center gap-2">
+                        {item.title}
+                        {(item.comments?.length ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-[#64748B] bg-[#eef2f6] px-1.5 py-0.5 rounded-full">
+                            <MessageSquare className="w-3 h-3" />
+                            {item.comments!.length}
+                          </span>
+                        )}
+                      </div>
                       <div className="text-[11.5px] text-[#64748B] mt-0.5">{item.description}</div>
-                    </div>
+                    </button>
 
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${typeStyle(item.type)}`}>
                       {item.type}
@@ -434,7 +473,8 @@ export default function ProductHubView({
                     {st.items.map((i) => (
                       <div
                         key={i.id}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#fafcfe] border border-[#f1f5f9]"
+                        onClick={() => setOpenItemId(i.id)}
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#fafcfe] border border-[#f1f5f9] hover:border-[#dceaf2] cursor-pointer transition-colors"
                       >
                         <span className="font-mono text-[11px] text-[#94a3b8] w-[58px]">{i.id}</span>
                         <span
@@ -481,6 +521,17 @@ export default function ProductHubView({
             );
           })()}
         </div>
+      )}
+
+      {/* Detalle del ítem + comentarios */}
+      {openItem && (
+        <BacklogItemPanel
+          item={openItem}
+          onClose={() => setOpenItemId(null)}
+          onAddComment={addComment}
+          onDeleteComment={deleteComment}
+          onUpdateStatus={updateStatus}
+        />
       )}
 
       {/* New item modal */}
