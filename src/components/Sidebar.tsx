@@ -12,9 +12,12 @@ import {
   ChevronDown,
   GraduationCap,
   LogOut,
-  RotateCcw
+  RotateCcw,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { AppUser } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
 
 interface SidebarProps {
   activeTab: string;
@@ -47,6 +50,7 @@ export default function Sidebar({
     comercial: true
   });
   const [filter, setFilter] = useState('');
+  const { theme, toggleTheme } = useTheme();
 
   const toggleSection = (key: string) =>
     setOpenSections((cur) => ({ ...cur, [key]: !cur[key] }));
@@ -178,6 +182,18 @@ export default function Sidebar({
         >
           <GraduationCap className="w-[17px] h-[17px] text-[#0E457F]" />
           <span className="flex-1 font-medium">Tutoriales</span>
+        </button>
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-left cursor-pointer transition-all duration-200 text-[13.5px] text-[#33475b] hover:bg-[#0E457F]/8 hover:text-[#0F1A2C]"
+          title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-[17px] h-[17px] text-[#F5A623]" />
+          ) : (
+            <Moon className="w-[17px] h-[17px] text-[#0E457F]" />
+          )}
+          <span className="flex-1 font-medium">{theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}</span>
         </button>
         <button
           onClick={onResetData}

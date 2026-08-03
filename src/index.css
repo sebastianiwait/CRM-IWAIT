@@ -48,3 +48,76 @@ body {
 .animate-zoom-in { animation: iw-zoom-in 0.18s ease-out; }
 .animate-slide-up { animation: iw-slide-up 0.25s ease-out; }
 .animate-slide-in-right { animation: iw-slide-in-right 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* ------------------------------------------------------------------ */
+/*  MODO OSCURO                                                        */
+/*                                                                     */
+/*  Los colores están escritos como valores literales en los           */
+/*  componentes, así que en vez de tocar 20 archivos remapeamos aquí   */
+/*  las clases que Tailwind genera. `.dark .x` gana en especificidad   */
+/*  sobre `.x`, de modo que basta alternar la clase en <html>.         */
+/*  Los acentos de marca (navy, cyan, verde, ámbar, rojo) NO se        */
+/*  tocan: siguen funcionando sobre fondo oscuro.                      */
+/* ------------------------------------------------------------------ */
+
+.dark body { background-color: #0B1524; color: #EAF3F9; }
+
+/* --- Superficies: tarjetas y paneles --- */
+.dark .bg-white { background-color: #14243A; }
+.dark .bg-white\/70 { background-color: rgb(20 36 58 / 0.7); }
+.dark .bg-white\/80 { background-color: rgb(20 36 58 / 0.85); }
+
+/* --- Fondos de app y zonas sutiles --- */
+.dark .bg-\[\#f1f8fb\] { background-color: #0B1524; }
+.dark .bg-\[\#f7fafc\] { background-color: #0B1524; }
+.dark .bg-\[\#fbfdfe\],
+.dark .bg-\[\#fafcfe\] { background-color: #182B44; }
+.dark .bg-\[\#f4fafc\],
+.dark .bg-\[\#f5f9fc\] { background-color: #1B2F49; }
+.dark .bg-\[\#eef2f6\],
+.dark .bg-\[\#f1f6fa\],
+.dark .bg-\[\#eaf3f8\],
+.dark .bg-\[\#eef6fa\],
+.dark .bg-\[\#f1f5f9\] { background-color: #22384F; }
+
+/* --- Bordes --- */
+.dark .border-\[\#e6eef4\],
+.dark .border-\[\#dceaf2\],
+.dark .border-\[\#dbe9f0\],
+.dark .border-\[\#c3dae4\],
+.dark .border-\[\#eef2f6\],
+.dark .border-\[\#f1f5f9\] { border-color: #26405C; }
+.dark .divide-\[\#f1f5f9\] > :not([hidden]) ~ :not([hidden]),
+.dark .divide-\[\#eef2f6\] > :not([hidden]) ~ :not([hidden]) { border-color: #22384F; }
+
+/* --- Texto --- */
+.dark .text-\[\#0F1A2C\] { color: #EAF3F9; }
+.dark .text-\[\#33475b\] { color: #B7C7D6; }
+.dark .text-\[\#64748B\] { color: #8DA2B5; }
+.dark .text-\[\#94a3b8\] { color: #6E839A; }
+.dark .text-\[\#cbd5e1\] { color: #4A6076; }
+.dark .placeholder-\[\#94a3b8\]::placeholder { color: #6E839A; }
+.dark .placeholder-\[\#64748B\]::placeholder { color: #8DA2B5; }
+
+/* El navy de marca se aclara sobre fondo oscuro para mantener contraste */
+.dark .text-\[\#0E457F\] { color: #5FA8E0; }
+.dark .hover\:text-\[\#0F1A2C\]:hover { color: #EAF3F9; }
+.dark .hover\:bg-\[\#f1f6fa\]:hover,
+.dark .hover\:bg-\[\#eaf3f8\]:hover,
+.dark .hover\:bg-\[\#eef6fa\]:hover,
+.dark .hover\:bg-\[\#fafcfe\]:hover { background-color: #22384F; }
+.dark .hover\:bg-white:hover { background-color: #1B2F49; }
+
+/* Iconos y contornos sobre superficie oscura */
+.dark .text-\[\#EAF3F9\] { color: #EAF3F9; }
+
+/* Sombras más marcadas: sobre oscuro las suaves no se perciben */
+.dark .shadow-sm { box-shadow: 0 1px 3px rgb(0 0 0 / 0.35); }
+.dark .shadow-md { box-shadow: 0 4px 10px rgb(0 0 0 / 0.4); }
+.dark .shadow-lg { box-shadow: 0 10px 22px rgb(0 0 0 / 0.45); }
+.dark .shadow-2xl { box-shadow: 0 24px 50px rgb(0 0 0 / 0.6); }
+
+/* Transición suave al alternar el tema */
+body, body * {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
