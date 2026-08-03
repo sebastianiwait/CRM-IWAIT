@@ -100,18 +100,18 @@ export default function DealDetailPanel({
 
         <aside className="relative w-full max-w-[920px] h-full bg-[#f7fafc] shadow-2xl flex flex-col animate-slide-in-right">
           {/* Header */}
-          <div className="px-6 py-5 bg-gradient-to-br from-[#0E457F] to-[#47B6E6] text-white relative overflow-hidden flex-shrink-0">
+          <div className="px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-br from-[#0E457F] to-[#47B6E6] text-white relative overflow-hidden flex-shrink-0">
             <div className="absolute -right-10 -bottom-12 w-40 h-40 rounded-full bg-white/10 blur-2xl"></div>
-            <div className="flex items-start justify-between gap-4 relative z-10">
+            <div className="flex items-start justify-between gap-3 relative z-10">
               <div className="min-w-0">
-                <div className="flex items-center gap-2 text-[12px] text-white/75">
-                  <Building2 className="w-3.5 h-3.5" /> {deal.company} · {deal.companyType}
+                <div className="flex items-center gap-2 text-[11.5px] sm:text-[12px] text-white/75 truncate">
+                  <Building2 className="w-3.5 h-3.5 flex-shrink-0" /> {deal.company} · {deal.companyType}
                 </div>
-                <h2 className="text-[21px] font-bold mt-1 leading-tight">{deal.name}</h2>
-                <div className="flex items-center gap-4 mt-2.5 text-[13px]">
-                  <span className="text-[22px] font-extrabold">{money(deal.amount)}</span>
-                  <span className="text-white/85">Cierre {formatDate(deal.closeDate)}</span>
-                  <span className="text-white/85">{dealProbability(deal)}% prob.</span>
+                <h2 className="text-[17px] sm:text-[21px] font-bold mt-1 leading-snug sm:leading-tight">{deal.name}</h2>
+                <div className="flex items-baseline gap-x-3 gap-y-1 mt-2 flex-wrap text-[12.5px]">
+                  <span className="text-[19px] sm:text-[22px] font-extrabold">{money(deal.amount)}</span>
+                  <span className="text-white/85 whitespace-nowrap">Cierre {formatDate(deal.closeDate)}</span>
+                  <span className="text-white/85 whitespace-nowrap">{dealProbability(deal)}% prob.</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
@@ -127,7 +127,7 @@ export default function DealDetailPanel({
           </div>
 
           {/* Stage stepper */}
-          <div className="bg-white border-b border-[#e6eef4] px-6 py-3 flex-shrink-0 overflow-x-auto">
+          <div className="bg-white border-b border-[#e6eef4] px-4 sm:px-6 py-3 flex-shrink-0 overflow-x-auto">
             <div className="flex items-center gap-1.5 min-w-max">
               {DEAL_STAGES.map((s) => {
                 const active = s.key === deal.stage;
@@ -152,7 +152,7 @@ export default function DealDetailPanel({
           </div>
 
           {/* Body */}
-          <div className="flex-1 overflow-y-auto p-6">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6">
             <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-5 items-start">
               {/* --- Columna izquierda --- */}
               <div className="space-y-5">
