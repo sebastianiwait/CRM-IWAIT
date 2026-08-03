@@ -6,7 +6,9 @@ import {
   Building2,
   Briefcase,
   CheckCircle2,
-  Menu
+  Menu,
+  ListTree,
+  FileText
 } from 'lucide-react';
 import {
   INITIAL_INVESTORS,
@@ -17,6 +19,7 @@ import {
   KanbanTask
 } from './data/iwaitData';
 import { INITIAL_DEALS } from './data/crmData';
+import { INITIAL_BACKLOG, BacklogItem } from './data/productData';
 import { useDeals } from './hooks/useDeals';
 import { useAuth } from './hooks/useAuth';
 import { usePersistedState, clearPersistedData } from './hooks/usePersistedState';
@@ -65,11 +68,13 @@ export default function App() {
   const [investors, setInvestors] = usePersistedState<Investor[]>('investors', INITIAL_INVESTORS);
   const [dataRoomFiles, setDataRoomFiles] = usePersistedState<DataRoomFile[]>('dataroom', INITIAL_DATA_ROOM);
   const [tasks, setTasks] = usePersistedState<KanbanTask[]>('tasks', INITIAL_TASKS);
+  const [backlog, setBacklog] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG);
 
   // Global search state
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [focusDealId, setFocusDealId] = useState<string | null>(null);
+  const [focusItemId, setFocusItemId] = useState<string | null>(null);
 
   // Simple Notification Toast State
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -109,12 +114,35 @@ export default function App() {
       d.contacts.some(c => c.name.toLowerCase().includes(term))
     );
     const matchedTasks = tasks.filter(t => t.title.toLowerCase().includes(term) || t.column.toLowerCase().includes(term) || t.assignedTo.toLowerCase().includes(term));
+    const matchedBacklog = backlog.filter(i =>
+      i.id.toLowerCase().includes(term) ||
+      i.title.toLowerCase().includes(term) ||
+      i.epic.toLowerCase().includes(term) ||
+      i.assignee.toLowerCase().includes(term)
+    );
+    const matchedDocs = dataRoomFiles.filter(f =>
+      f.name.toLowerCase().includes(term) ||
+      f.category.toLowerCase().includes(term) ||
+      f.description.toLowerCase().includes(term)
+    );
 
-    return { investors: matchedInvestors, deals: matchedDeals, tasks: matchedTasks };
+    return {
+      investors: matchedInvestors,
+      deals: matchedDeals,
+      tasks: matchedTasks,
+      backlog: matchedBacklog,
+      docs: matchedDocs
+    };
   };
 
   const searchResults = getSearchResults();
-  const hasResults = searchResults && (searchResults.investors.length > 0 || searchResults.deals.length > 0 || searchResults.tasks.length > 0);
+  const hasResults =
+    searchResults &&
+    (searchResults.investors.length > 0 ||
+      searchResults.deals.length > 0 ||
+      searchResults.tasks.length > 0 ||
+      searchResults.backlog.length > 0 ||
+      searchResults.docs.length > 0);
 
 
   // State handlers to bubble up modifications
@@ -223,7 +251,13 @@ export default function App() {
         );
       case 'producto':
         return (
-          <ProductHubView triggerToast={triggerToast} />
+          <ProductHubView
+            triggerToast={triggerToast}
+            items={backlog}
+            setItems={setBacklog}
+            focusItemId={focusItemId}
+            onFocusHandled={() => setFocusItemId(null)}
+          />
         );
       case 'negocios':
         return (
@@ -248,7 +282,7 @@ export default function App() {
         );
       default:
         return (
-          <div className="p-8 text-center bg-[#14243A] rounded-xl border border-[#22384F]">
+          <div className="p-8 text-center bg-white rounded-xl border border-[#e6eef4]">
             <Info className="w-8 h-8 text-[#0E457F] mx-auto mb-2" />
             <h3 className="text-lg font-bold">Sección en construcción</h3>
           </div>
@@ -326,7 +360,7 @@ export default function App() {
                     setGlobalSearchTerm('');
                     setIsSearchFocused(false);
                   }}
-                  className="absolute right-4 text-[#64748B] hover:text-[#EAF3F9] text-[12px] font-medium"
+                  className="absolute right-4 text-[#64748B] hover:text-[#0F1A2C] text-[12px] font-medium"
                 >
                   ESC
                 </button>
@@ -335,7 +369,7 @@ export default function App() {
 
             {/* Search Results Dropdown */}
             {isSearchFocused && globalSearchTerm && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-[#14243A] border border-[#22384F] rounded-xl shadow-2xl overflow-hidden z-50 max-h-[70vh] overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#e6eef4] rounded-xl shadow-2xl overflow-hidden z-50 max-h-[70vh] overflow-y-auto">
                 {hasResults ? (
                   <div className="py-2">
                     {searchResults.investors.length > 0 && (
@@ -348,18 +382,18 @@ export default function App() {
                               setActiveTab('inversionstas');
                               setGlobalSearchTerm('');
                             }}
-                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#1B2F49] group transition-colors"
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#f1f6fa] group transition-colors"
                           >
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full bg-[#47B6E6]/10 text-[#47B6E6] flex items-center justify-center">
                                 <Building2 className="w-4 h-4" />
                               </div>
                               <div>
-                                <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors">{inv.name}</div>
+                                <div className="text-[13px] font-semibold text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors">{inv.name}</div>
                                 <div className="text-[11px] text-[#64748B]">{inv.type}</div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5]">{inv.status}</span>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#eef2f6] text-[#64748B]">{inv.status}</span>
                           </button>
                         ))}
                       </div>
@@ -394,7 +428,7 @@ export default function App() {
                     )}
 
                     {searchResults.tasks.length > 0 && (
-                      <div className="px-3 py-2 border-t border-[#22384F]">
+                      <div className="px-3 py-2 border-t border-[#eef2f6]">
                         <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Tareas</h4>
                         {searchResults.tasks.map(task => (
                           <button
@@ -403,18 +437,75 @@ export default function App() {
                               setActiveTab('tareas');
                               setGlobalSearchTerm('');
                             }}
-                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#1B2F49] group transition-colors"
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#f1f6fa] group transition-colors"
                           >
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-[#0E457F]/10 text-[#0E457F] flex items-center justify-center">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-8 h-8 rounded-full bg-[#0E457F]/10 text-[#0E457F] flex items-center justify-center flex-shrink-0">
                                 <CheckCircle2 className="w-4 h-4" />
                               </div>
-                              <div>
-                                <div className="text-[13px] font-semibold text-[#EAF3F9] group-hover:text-[#0E457F] transition-colors line-clamp-1">{task.title}</div>
+                              <div className="min-w-0">
+                                <div className="text-[13px] font-semibold text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors truncate">{task.title}</div>
                                 <div className="text-[11px] text-[#64748B]">Asignado: {task.assignedTo}</div>
                               </div>
                             </div>
-                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#22384F] text-[#8DA2B5] whitespace-nowrap">{task.column}</span>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#eef2f6] text-[#64748B] whitespace-nowrap flex-shrink-0 ml-2">{task.column}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {searchResults.backlog.length > 0 && (
+                      <div className="px-3 py-2 border-t border-[#eef2f6]">
+                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Backlog de producto</h4>
+                        {searchResults.backlog.slice(0, 6).map(item => (
+                          <button
+                            key={item.id}
+                            onClick={() => {
+                              setActiveTab('producto');
+                              setFocusItemId(item.id);
+                              setGlobalSearchTerm('');
+                            }}
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#f1f6fa] group transition-colors"
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-8 h-8 rounded-full bg-[#8B63F5]/10 text-[#8B63F5] flex items-center justify-center flex-shrink-0">
+                                <ListTree className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0">
+                                <div className="text-[13px] font-semibold text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors truncate">
+                                  <span className="font-mono text-[#94a3b8] mr-1.5">{item.id}</span>{item.title}
+                                </div>
+                                <div className="text-[11px] text-[#64748B] truncate">{item.epic} · {item.assignee}</div>
+                              </div>
+                            </div>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#eef2f6] text-[#64748B] whitespace-nowrap flex-shrink-0 ml-2">{item.status}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    {searchResults.docs.length > 0 && (
+                      <div className="px-3 py-2 border-t border-[#eef2f6]">
+                        <h4 className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider mb-2 px-3">Data Room</h4>
+                        {searchResults.docs.slice(0, 5).map(doc => (
+                          <button
+                            key={doc.id}
+                            onClick={() => {
+                              setActiveTab('dataroom');
+                              setGlobalSearchTerm('');
+                            }}
+                            className="w-full text-left flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#f1f6fa] group transition-colors"
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-8 h-8 rounded-full bg-[#47B6E6]/12 text-[#0E7CB0] flex items-center justify-center flex-shrink-0">
+                                <FileText className="w-4 h-4" />
+                              </div>
+                              <div className="min-w-0">
+                                <div className="text-[13px] font-semibold text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors truncate">{doc.name}</div>
+                                <div className="text-[11px] text-[#64748B] truncate">{doc.description}</div>
+                              </div>
+                            </div>
+                            <span className="text-[11px] font-medium px-2 py-1 rounded bg-[#eef2f6] text-[#64748B] whitespace-nowrap flex-shrink-0 ml-2">{doc.category}</span>
                           </button>
                         ))}
                       </div>
@@ -422,7 +513,7 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="p-8 text-center">
-                    <Search className="w-8 h-8 text-[#22384F] mx-auto mb-3" />
+                    <Search className="w-8 h-8 text-[#cbd5e1] mx-auto mb-3" />
                     <p className="text-[13px] text-[#64748B]">No se encontraron resultados para "{globalSearchTerm}"</p>
                   </div>
                 )}

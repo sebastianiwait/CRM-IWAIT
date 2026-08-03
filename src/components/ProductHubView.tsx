@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Plane,
   Building2,
@@ -29,6 +29,12 @@ import { usePersistedState } from '../hooks/usePersistedState';
 
 interface ProductHubViewProps {
   triggerToast: (msg: string) => void;
+  /** El backlog vive en App para que la búsqueda global pueda leerlo */
+  items: BacklogItem[];
+  setItems: React.Dispatch<React.SetStateAction<BacklogItem[]>>;
+  /** id de ítem a enfocar desde la búsqueda global */
+  focusItemId?: string | null;
+  onFocusHandled?: () => void;
 }
 
 const typeStyle = (t: BacklogType) => {
@@ -59,13 +65,30 @@ const statusStyle = (s: BacklogStatus) => {
   }
 };
 
-export default function ProductHubView({ triggerToast }: ProductHubViewProps) {
+export default function ProductHubView({
+  triggerToast,
+  items,
+  setItems,
+  focusItemId,
+  onFocusHandled
+}: ProductHubViewProps) {
   const [selected, setSelected] = useState<ProductKey | null>(null);
   const [tab, setTab] = useState<'backlog' | 'progreso'>('backlog');
-  const [items, setItems] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG);
   const [sprints] = usePersistedState('sprints', INITIAL_SPRINTS);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Al llegar desde la búsqueda global, abre el producto del ítem y lo resalta
+  useEffect(() => {
+    if (!focusItemId) return;
+    const item = items.find((i) => i.id === focusItemId);
+    if (item) {
+      setSelected(item.product);
+      setTab('backlog');
+      setSearch(item.id);
+    }
+    onFocusHandled?.();
+  }, [focusItemId, items, onFocusHandled]);
 
   // New item form
   const [title, setTitle] = useState('');
