@@ -4,65 +4,96 @@ import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  signOut as fbSignOut
+  onAuthStateChanged,
+  signOut as fbSignOut,
+  User
 } from 'firebase/auth';
-import { auth } from '../lib/googleDrive';
+import { auth } from '../lib/firebase';
 
 export interface AppUser {
   name: string;
   email: string;
   photoURL?: string;
-  /** true cuando la sesión viene del modo demo (sin Google real) */
+  /** true cuando la sesión viene del modo demo (solo disponible en desarrollo) */
   demo?: boolean;
 }
 
-const STORAGE_KEY = 'iwait_session';
+/**
+ * Solo se admiten cuentas de este dominio. La validación en cliente es
+ * cosmética — la de verdad son las reglas de Firestore, que repiten esta
+ * misma condición sobre el token.
+ */
+export const ALLOWED_DOMAIN =
+  (import.meta.env.VITE_ALLOWED_EMAIL_DOMAIN as string | undefined) ?? 'iwait.io';
 
-const readStored = (): AppUser | null => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as AppUser) : null;
-  } catch {
-    return null;
-  }
-};
+export const isAllowedEmail = (email?: string | null): boolean =>
+  !!email && email.toLowerCase().endsWith(`@${ALLOWED_DOMAIN.toLowerCase()}`);
+
+/**
+ * El modo demo salta la autenticación por completo, así que solo existe en
+ * desarrollo. En un build de producción `import.meta.env.DEV` es false y Vite
+ * elimina el botón y esta rama del bundle.
+ */
+export const DEMO_ENABLED = import.meta.env.DEV;
+
+/**
+ * La sesión demo vive en sessionStorage (no localStorage) a propósito: dura lo
+ * que la pestaña. La sesión real NO se guarda aquí — Firebase ya la persiste en
+ * IndexedDB y es la única fuente de verdad.
+ */
+const DEMO_KEY = 'iwait_demo_session';
+
+const mapUser = (u: User): AppUser => ({
+  name: u.displayName || u.email?.split('@')[0] || 'Usuario',
+  email: u.email || '',
+  photoURL: u.photoURL || undefined
+});
 
 export function useAuth() {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Restaura la sesión guardada y recoge el resultado de un login por redirect
   useEffect(() => {
-    const stored = readStored();
-    if (stored) {
-      setUser(stored);
-      setLoading(false);
-      return;
-    }
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          const u = result.user;
-          const mapped: AppUser = {
-            name: u.displayName || u.email?.split('@')[0] || 'Usuario',
-            email: u.email || '',
-            photoURL: u.photoURL || undefined
-          };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(mapped));
-          setUser(mapped);
+    // Sesión demo de desarrollo: se resuelve antes y no consulta a Firebase
+    if (DEMO_ENABLED) {
+      try {
+        const raw = sessionStorage.getItem(DEMO_KEY);
+        if (raw) {
+          setUser(JSON.parse(raw) as AppUser);
+          setLoading(false);
+          return;
         }
-      })
-      .catch(() => {
-        /* sin redirect pendiente */
-      })
-      .finally(() => setLoading(false));
-  }, []);
+      } catch {
+        /* sessionStorage bloqueado: se ignora y sigue el flujo normal */
+      }
+    }
 
-  const persist = useCallback((u: AppUser | null) => {
-    setUser(u);
-    if (u) localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
-    else localStorage.removeItem(STORAGE_KEY);
+    // Recoge un login por redirect si lo hubo; no bloquea al listener
+    getRedirectResult(auth).catch(() => {
+      /* sin redirect pendiente */
+    });
+
+    // Firebase es la única fuente de verdad de la sesión real
+    const unsub = onAuthStateChanged(auth, async (fbUser) => {
+      if (!fbUser) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+      if (!isAllowedEmail(fbUser.email)) {
+        // Cuenta de fuera del dominio: se cierra la sesión inmediatamente
+        await fbSignOut(auth).catch(() => undefined);
+        setUser(null);
+        setError(`Solo se permite el acceso con cuentas @${ALLOWED_DOMAIN}.`);
+        setLoading(false);
+        return;
+      }
+      setUser(mapUser(fbUser));
+      setLoading(false);
+    });
+
+    return () => unsub();
   }, []);
 
   const signInWithGoogle = useCallback(async () => {
@@ -71,14 +102,19 @@ export function useAuth() {
     try {
       // Provider limpio: solo identidad, sin los scopes de Drive
       const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      const result = await signInWithPopup(auth, provider);
-      const u = result.user;
-      persist({
-        name: u.displayName || u.email?.split('@')[0] || 'Usuario',
-        email: u.email || '',
-        photoURL: u.photoURL || undefined
+      provider.setCustomParameters({
+        prompt: 'select_account',
+        // Sugiere el dominio en el selector de cuentas de Google
+        hd: ALLOWED_DOMAIN
       });
+      const result = await signInWithPopup(auth, provider);
+
+      if (!isAllowedEmail(result.user.email)) {
+        await fbSignOut(auth).catch(() => undefined);
+        setError(`Solo se permite el acceso con cuentas @${ALLOWED_DOMAIN}.`);
+        return;
+      }
+      // onAuthStateChanged se encarga de fijar el usuario
     } catch (e: any) {
       const code = e?.code ?? '';
 
@@ -88,6 +124,7 @@ export function useAuth() {
         // Bloqueador de popups o navegador embebido: reintenta por redirect
         try {
           const provider = new GoogleAuthProvider();
+          provider.setCustomParameters({ hd: ALLOWED_DOMAIN });
           await signInWithRedirect(auth, provider);
           return; // la página navega a Google; el resultado se recoge al volver
         } catch {
@@ -107,25 +144,38 @@ export function useAuth() {
     } finally {
       setLoading(false);
     }
-  }, [persist]);
+  }, []);
 
-  /** Acceso MVP mientras se termina de conectar Google */
+  /** Acceso sin autenticación para desarrollo local. No existe en producción. */
   const signInAsDemo = useCallback(() => {
-    persist({
+    if (!DEMO_ENABLED) return;
+    const demoUser: AppUser = {
       name: 'Sebastian M.',
-      email: 'sebastian@iwait.io',
+      email: `sebastian@${ALLOWED_DOMAIN}`,
       demo: true
-    });
-  }, [persist]);
+    };
+    try {
+      sessionStorage.setItem(DEMO_KEY, JSON.stringify(demoUser));
+    } catch {
+      /* sessionStorage bloqueado: la sesión dura hasta recargar */
+    }
+    setUser(demoUser);
+    setLoading(false);
+  }, []);
 
   const signOut = useCallback(async () => {
+    try {
+      sessionStorage.removeItem(DEMO_KEY);
+    } catch {
+      /* nada que limpiar */
+    }
     try {
       await fbSignOut(auth);
     } catch {
       /* la sesión demo no toca Firebase */
     }
-    persist(null);
-  }, [persist]);
+    setUser(null);
+  }, []);
 
-  return { user, loading, error, signInWithGoogle, signInAsDemo, signOut };
+  return { user, loading, error, signInWithGoogle, signInAsDemo, signOut, demoEnabled: DEMO_ENABLED };
 }

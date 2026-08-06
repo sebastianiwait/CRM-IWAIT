@@ -1,23 +1,24 @@
-import { initializeApp } from 'firebase/app';
-import { 
-  getAuth, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  onAuthStateChanged, 
-  User, 
-  signOut 
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  User,
+  signOut
 } from 'firebase/auth';
-import firebaseConfig from '../../firebase-applet-config.json';
+import { auth } from './firebase';
+import { GOOGLE_SCOPES } from './googleScopes';
 
-// Initialize Firebase App
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// Reexportado por compatibilidad: la instancia real vive en ./firebase
+export { auth };
 
-// Use Google Auth Provider configured with required scopes
+/**
+ * Scopes mínimos. Se evita a propósito `.../auth/drive` (acceso total al Drive
+ * del usuario, incluido borrar): obliga a pasar la verificación OAuth de Google
+ * y la pantalla de consentimiento asusta. drive.file cubre lo que la app crea y
+ * drive.readonly permite listar lo que ya existe.
+ */
 const provider = new GoogleAuthProvider();
-provider.addScope('https://www.googleapis.com/auth/drive');
-provider.addScope('https://www.googleapis.com/auth/drive.file');
-provider.addScope('https://www.googleapis.com/auth/drive.readonly');
+GOOGLE_SCOPES.forEach((s) => provider.addScope(s));
 
 let isSigningIn = false;
 let cachedAccessToken: string | null = null;

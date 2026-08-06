@@ -22,7 +22,7 @@ import { INITIAL_DEALS } from './data/crmData';
 import { INITIAL_BACKLOG, INITIAL_SPRINTS, BacklogItem } from './data/productData';
 import { buildNotifications, AppNotification } from './lib/notifications';
 import { useDeals } from './hooks/useDeals';
-import { useAuth } from './hooks/useAuth';
+import { useAuth, ALLOWED_DOMAIN } from './hooks/useAuth';
 import { usePersistedState, clearPersistedData } from './hooks/usePersistedState';
 import LoginScreen from './components/LoginScreen';
 
@@ -42,7 +42,7 @@ import { TOURS } from './data/tours';
 import { TUTORIALS } from './data/tutorials';
 
 export default function App() {
-  const { user, loading: authLoading, error: authError, signInWithGoogle, signInAsDemo, signOut } = useAuth();
+  const { user, loading: authLoading, error: authError, signInWithGoogle, signInAsDemo, signOut, demoEnabled } = useAuth();
   const [activeTab, setActiveTab] = useState<string>('inicio');
   const [tutorialsOpen, setTutorialsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -333,6 +333,8 @@ export default function App() {
         onDemo={signInAsDemo}
         loading={authLoading}
         error={authError}
+        demoEnabled={demoEnabled}
+        allowedDomain={ALLOWED_DOMAIN}
       />
     );
   }

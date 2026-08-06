@@ -6,6 +6,10 @@ interface LoginScreenProps {
   onDemo: () => void;
   loading: boolean;
   error: string | null;
+  /** false en producción: oculta el acceso sin autenticación */
+  demoEnabled: boolean;
+  /** dominio de correo permitido, para mostrarlo al usuario */
+  allowedDomain: string;
 }
 
 /** Logotipo oficial de Google para el botón de acceso */
@@ -18,7 +22,14 @@ const GoogleMark = () => (
   </svg>
 );
 
-export default function LoginScreen({ onGoogle, onDemo, loading, error }: LoginScreenProps) {
+export default function LoginScreen({
+  onGoogle,
+  onDemo,
+  loading,
+  error,
+  demoEnabled,
+  allowedDomain
+}: LoginScreenProps) {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-white">
       {/* --- Panel de marca --- */}
@@ -76,24 +87,35 @@ export default function LoginScreen({ onGoogle, onDemo, loading, error }: LoginS
             </div>
           )}
 
-          {/* Separador */}
-          <div className="flex items-center gap-3 my-6">
-            <span className="flex-1 h-px bg-[#e6eef4]" />
-            <span className="text-[11px] font-semibold uppercase tracking-wide text-[#94a3b8]">o</span>
-            <span className="flex-1 h-px bg-[#e6eef4]" />
-          </div>
+          {/* El acceso sin autenticación solo existe en desarrollo: en un build
+              de producción demoEnabled es false y Vite elimina este bloque. */}
+          {demoEnabled && (
+            <>
+              <div className="flex items-center gap-3 my-6">
+                <span className="flex-1 h-px bg-[#e6eef4]" />
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-[#94a3b8]">
+                  solo desarrollo
+                </span>
+                <span className="flex-1 h-px bg-[#e6eef4]" />
+              </div>
 
-          <button
-            onClick={onDemo}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0E457F] hover:bg-[#0A365F] text-white text-[14px] font-semibold transition-colors cursor-pointer"
-          >
-            Entrar en modo demo <ArrowRight className="w-4 h-4" />
-          </button>
-          <p className="text-[11.5px] text-[#94a3b8] mt-2.5 text-center leading-relaxed">
-            Acceso temporal mientras se termina de conectar Google Workspace.
+              <button
+                onClick={onDemo}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white border border-[#dceaf2] hover:border-[#0E457F] text-[#33475b] hover:text-[#0E457F] text-[14px] font-semibold transition-colors cursor-pointer"
+              >
+                Entrar en modo demo <ArrowRight className="w-4 h-4" />
+              </button>
+              <p className="text-[11.5px] text-[#94a3b8] mt-2.5 text-center leading-relaxed">
+                Salta la autenticación. No aparece en producción.
+              </p>
+            </>
+          )}
+
+          <p className="text-[11.5px] text-[#94a3b8] mt-7 text-center leading-relaxed">
+            Acceso restringido a cuentas <strong className="text-[#64748B]">@{allowedDomain}</strong>.
           </p>
 
-          <p className="text-[11px] text-[#94a3b8] mt-8 text-center">
+          <p className="text-[11px] text-[#94a3b8] mt-6 text-center">
             © 2026 iwait · Plataforma interna
           </p>
         </div>

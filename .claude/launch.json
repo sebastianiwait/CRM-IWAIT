@@ -5,7 +5,8 @@
       "name": "CRM-IWAIT",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "port": 3011,
+      "autoPort": true
     }
   ]
 }
