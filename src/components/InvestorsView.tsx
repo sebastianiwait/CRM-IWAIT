@@ -14,7 +14,15 @@ import {
   Linkedin,
   Pencil
 } from 'lucide-react';
-import { Investor, InvestorStage, ACTIVE_ROUND, ROUND_TARGET } from '../data/iwaitData';
+import {
+  Investor,
+  InvestorStage,
+  InvestorKind,
+  INVESTOR_KINDS,
+  byName,
+  ACTIVE_ROUND,
+  ROUND_TARGET
+} from '../data/iwaitData';
 import ContactDetailCard from './ContactDetailCard';
 import LinkedInImportModal from './LinkedInImportModal';
 
@@ -35,6 +43,11 @@ const STAGES: { key: InvestorStage; label: string; accent: string }[] = [
   { key: 'Cerrado', label: 'Cerrado', accent: '#10CC82' }
 ];
 
+const KIND_LABEL: Record<InvestorKind, string> = { VC: 'Fondo VC', 'Ángel': 'Ángel' };
+
+const kindBadge = (k: InvestorKind) =>
+  k === 'VC' ? 'bg-[#0E457F]/8 text-[#0E457F]' : 'bg-[#8B63F5]/12 text-[#6d43d6]';
+
 const money = (n: number) => {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1000) return `$${Math.round(n / 1000)}K`;
@@ -53,6 +66,7 @@ export default function InvestorsView({
   const [search, setSearch] = useState('');
   const [detail, setDetail] = useState<Investor | null>(null);
   const [importOpen, setImportOpen] = useState(false);
+  const [kindFilter, setKindFilter] = useState<InvestorKind | 'todos'>('todos');
 
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [overCol, setOverCol] = useState<InvestorStage | null>(null);
@@ -67,6 +81,7 @@ export default function InvestorsView({
   const [stage, setStage] = useState<InvestorStage>('Contactado');
   const [linkedin, setLinkedin] = useState('');
   const [email, setEmail] = useState('');
+  const [kind, setKind] = useState<InvestorKind>('VC');
 
   const stageOf = (inv: Investor): InvestorStage =>
     inv.stage ?? (inv.status === 'Firmado' ? 'Cerrado' : 'Contactado');
@@ -78,13 +93,32 @@ export default function InvestorsView({
   const roundPct = Math.min(100, Math.round((roundCommitted / ROUND_TARGET) * 100));
   const closedCount = investors.filter((i) => stageOf(i) === 'Cerrado').length;
 
+  /** Registros anteriores a la clasificación guardaban el tipo dentro de `firm` */
+  const kindOf = (inv: Investor): InvestorKind =>
+    inv.kind ?? (inv.firm === 'Ángel' ? 'Ángel' : 'VC');
+
+  const kindCounts = useMemo(
+    () => ({
+      VC: investors.filter((i) => kindOf(i) === 'VC').length,
+      'Ángel': investors.filter((i) => kindOf(i) === 'Ángel').length
+    }),
+    [investors]
+  );
+
   const filtered = useMemo(() => {
-    if (!search.trim()) return investors;
-    const t = search.toLowerCase();
-    return investors.filter(
-      (i) => i.name.toLowerCase().includes(t) || i.firm.toLowerCase().includes(t) || i.round.toLowerCase().includes(t)
-    );
-  }, [investors, search]);
+    const t = search.trim().toLowerCase();
+    return investors
+      .filter((i) => (kindFilter === 'todos' ? true : kindOf(i) === kindFilter))
+      .filter(
+        (i) =>
+          !t ||
+          i.name.toLowerCase().includes(t) ||
+          i.firm.toLowerCase().includes(t) ||
+          i.round.toLowerCase().includes(t) ||
+          (i.contact ?? '').toLowerCase().includes(t)
+      )
+      .sort(byName);
+  }, [investors, search, kindFilter]);
 
   const moveStage = (id: string, s: InvestorStage) => {
     const inv = investors.find((i) => i.id === id);
@@ -103,6 +137,7 @@ export default function InvestorsView({
     setStage(stageOf(inv));
     setLinkedin(inv.linkedin ?? '');
     setEmail(inv.email ?? '');
+    setKind(kindOf(inv));
     setIsModalOpen(true);
   };
 
@@ -111,6 +146,7 @@ export default function InvestorsView({
     setEditingId(null);
     setName(''); setFirm(''); setContact(''); setAmount(''); setLinkedin(''); setEmail('');
     setStage('Contactado');
+    setKind('VC');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -121,7 +157,8 @@ export default function InvestorsView({
     }
     const payload = {
       name,
-      firm: firm || 'Sin descripción',
+      kind,
+      firm,
       contact: contact || name,
       committedAmount: Number(amount) || 0,
       status: (stage === 'Cerrado' ? 'Firmado' : 'Negociando') as Investor['status'],
@@ -238,18 +275,45 @@ export default function InvestorsView({
             <KanbanSquare className="w-3.5 h-3.5" /> Pipeline
           </button>
         </div>
-        {view === 'db' && (
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94a3b8]" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar inversor, fondo o ronda..."
-              className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[240px] shadow-sm"
-            />
+        <div className="flex items-center gap-2.5 flex-wrap">
+            {/* Filtro por tipo — aplica igual a la tabla y al pipeline */}
+            <div className="inline-flex bg-white border border-[#e6eef4] rounded-xl p-1 shadow-sm">
+              {([
+                { key: 'todos' as const, label: 'Todos', count: investors.length },
+                ...INVESTOR_KINDS.map((k) => ({ key: k, label: KIND_LABEL[k], count: kindCounts[k] }))
+              ]).map((opt) => (
+                <button
+                  key={opt.key}
+                  onClick={() => setKindFilter(opt.key)}
+                  className={`px-3 py-1.5 rounded-lg text-[12.5px] font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    kindFilter === opt.key ? 'bg-[#0E457F] text-white shadow-sm' : 'text-[#64748B] hover:text-[#0F1A2C]'
+                  }`}
+                >
+                  {opt.label}
+                  <span
+                    className={`text-[10.5px] font-bold px-1.5 py-0.5 rounded-full ${
+                      kindFilter === opt.key ? 'bg-white/20 text-white' : 'bg-[#eef2f6] text-[#64748B]'
+                    }`}
+                  >
+                    {opt.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {view === 'db' && (
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94a3b8]" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Buscar inversor, contacto o ronda..."
+                  className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[240px] shadow-sm"
+                />
+              </div>
+            )}
           </div>
-        )}
       </div>
 
       {/* -------- BASE DE DATOS -------- */}
@@ -260,6 +324,7 @@ export default function InvestorsView({
               <thead>
                 <tr className="bg-[#fbfdfe] border-b border-[#eef2f6]">
                   <th className="px-5 py-3 text-[11px] font-bold text-[#64748B] uppercase tracking-wide">Inversor</th>
+                  <th className="px-5 py-3 text-[11px] font-bold text-[#64748B] uppercase tracking-wide">Tipo</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-[#64748B] uppercase tracking-wide">Contacto</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-[#64748B] uppercase tracking-wide">Ronda</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-[#64748B] uppercase tracking-wide">Monto</th>
@@ -274,9 +339,14 @@ export default function InvestorsView({
                   <tr key={inv.id} onClick={() => setDetail(inv)} className="hover:bg-[#fafcfe] transition-colors group cursor-pointer">
                     <td className="px-5 py-3.5">
                       <div className="text-[13.5px] font-semibold text-[#0F1A2C]">{inv.name}</div>
-                      <div className="text-[11.5px] text-[#64748B]">{inv.firm}</div>
+                      {inv.firm && <div className="text-[11.5px] text-[#64748B]">{inv.firm}</div>}
                     </td>
-                    <td className="px-5 py-3.5 text-[13px] text-[#33475b]">{inv.contact ?? '—'}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded whitespace-nowrap ${kindBadge(kindOf(inv))}`}>
+                        {KIND_LABEL[kindOf(inv)]}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-[13px] text-[#33475b]">{inv.contact || '—'}</td>
                     <td className="px-5 py-3.5">
                       <span className="text-[11px] font-semibold bg-[#0E457F]/8 text-[#0E457F] px-2 py-0.5 rounded">{inv.round}</span>
                     </td>
@@ -322,7 +392,7 @@ export default function InvestorsView({
                 ))}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="px-5 py-12 text-center text-[13px] text-[#94a3b8]">
+                    <td colSpan={9} className="px-5 py-12 text-center text-[13px] text-[#94a3b8]">
                       No hay inversores que coincidan.
                     </td>
                   </tr>
@@ -337,7 +407,10 @@ export default function InvestorsView({
       {view === 'pipeline' && (
         <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 items-start">
           {STAGES.map((col) => {
-            const cards = investors.filter((i) => stageOf(i) === col.key);
+            const cards = investors
+              .filter((i) => stageOf(i) === col.key)
+              .filter((i) => (kindFilter === 'todos' ? true : kindOf(i) === kindFilter))
+              .sort(byName);
             const sum = cards.reduce((a, c) => a + c.committedAmount, 0);
             return (
               <div
@@ -374,7 +447,12 @@ export default function InvestorsView({
                       }`}
                     >
                       <div className="text-[13px] font-semibold text-[#0F1A2C]">{inv.name}</div>
-                      <div className="text-[11px] text-[#64748B] mt-0.5">{inv.firm}</div>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span className={`text-[9.5px] font-bold px-1.5 py-0.5 rounded ${kindBadge(kindOf(inv))}`}>
+                          {KIND_LABEL[kindOf(inv)]}
+                        </span>
+                        {inv.firm && <span className="text-[11px] text-[#64748B] truncate">{inv.firm}</span>}
+                      </div>
                       <div className="flex items-center justify-between mt-2.5">
                         <span className="text-[12.5px] font-bold text-[#0E457F]">{money(inv.committedAmount)}</span>
                         <span className="text-[10.5px] font-semibold bg-[#0E457F]/8 text-[#0E457F] px-1.5 py-0.5 rounded">{inv.round}</span>
@@ -411,9 +489,17 @@ export default function InvestorsView({
                 <label className="block text-[12px] font-semibold text-[#64748B] uppercase tracking-wide mb-1.5">Inversor / Fondo</label>
                 <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej. Andes Ventures" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm" required />
               </div>
-              <div>
-                <label className="block text-[12px] font-semibold text-[#64748B] uppercase tracking-wide mb-1.5">Descripción</label>
-                <input type="text" value={firm} onChange={(e) => setFirm(e.target.value)} placeholder="Ej. Aviation-focused VC" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm" />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Tipo</label>
+                  <select value={kind} onChange={(e) => setKind(e.target.value as InvestorKind)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
+                    {INVESTOR_KINDS.map((k) => <option key={k} value={k}>{KIND_LABEL[k]}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Descripción</label>
+                  <input type="text" value={firm} onChange={(e) => setFirm(e.target.value)} placeholder="Opcional" className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]" />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
