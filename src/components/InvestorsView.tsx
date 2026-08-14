@@ -14,7 +14,7 @@ import {
   Linkedin,
   Pencil
 } from 'lucide-react';
-import { Investor, InvestorStage } from '../data/iwaitData';
+import { Investor, InvestorStage, ACTIVE_ROUND, ROUND_TARGET } from '../data/iwaitData';
 import ContactDetailCard from './ContactDetailCard';
 import LinkedInImportModal from './LinkedInImportModal';
 
@@ -27,16 +27,13 @@ interface InvestorsViewProps {
 }
 
 const STAGES: { key: InvestorStage; label: string; accent: string }[] = [
+  { key: 'Prospecto', label: 'Prospecto', accent: '#94a3b8' },
   { key: 'Contactado', label: 'Contactado', accent: '#64748B' },
   { key: 'Reunión', label: 'Reunión', accent: '#47B6E6' },
   { key: 'Due Diligence', label: 'Due Diligence', accent: '#8B63F5' },
   { key: 'Compromiso', label: 'Compromiso', accent: '#F5A623' },
   { key: 'Cerrado', label: 'Cerrado', accent: '#10CC82' }
 ];
-
-// Active round config
-const ACTIVE_ROUND = 'Semilla';
-const ROUND_TARGET = 1_200_000;
 
 const money = (n: number) => {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
@@ -338,7 +335,7 @@ export default function InvestorsView({
 
       {/* -------- PIPELINE -------- */}
       {view === 'pipeline' && (
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 items-start">
           {STAGES.map((col) => {
             const cards = investors.filter((i) => stageOf(i) === col.key);
             const sum = cards.reduce((a, c) => a + c.committedAmount, 0);

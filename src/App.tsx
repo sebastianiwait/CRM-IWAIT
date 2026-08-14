@@ -12,6 +12,9 @@ import {
 } from 'lucide-react';
 import {
   INITIAL_INVESTORS,
+  INVESTOR_SEED_VERSION,
+  ACTIVE_ROUND,
+  ROUND_TARGET,
   INITIAL_DATA_ROOM,
   INITIAL_TASKS,
   Investor,
@@ -19,7 +22,14 @@ import {
   KanbanTask
 } from './data/iwaitData';
 import { INITIAL_DEALS } from './data/crmData';
-import { INITIAL_BACKLOG, INITIAL_SPRINTS, BacklogItem } from './data/productData';
+import {
+  INITIAL_BACKLOG,
+  INITIAL_SPRINTS,
+  PRODUCT_SEED_VERSION,
+  PRODUCTS,
+  BacklogItem,
+  Sprint
+} from './data/productData';
 import { buildNotifications, AppNotification } from './lib/notifications';
 import { useDeals } from './hooks/useDeals';
 import { useAuth, ALLOWED_DOMAIN } from './hooks/useAuth';
@@ -67,12 +77,12 @@ export default function App() {
   };
   
   // State management (persistido en localStorage)
-  const [investors, setInvestors] = usePersistedState<Investor[]>('investors', INITIAL_INVESTORS);
+  const [investors, setInvestors] = usePersistedState<Investor[]>('investors', INITIAL_INVESTORS, INVESTOR_SEED_VERSION);
   const [dataRoomFiles, setDataRoomFiles] = usePersistedState<DataRoomFile[]>('dataroom', INITIAL_DATA_ROOM);
   const [tasks, setTasks] = usePersistedState<KanbanTask[]>('tasks', INITIAL_TASKS);
-  const [backlog, setBacklog] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG);
-  // Solo lectura aquí: los sprints se editan en Producto, esto alimenta las alertas de ritmo
-  const [sprints] = usePersistedState('sprints', INITIAL_SPRINTS);
+  // Backlog y sprints comparten versión de semilla: se reemplazan juntos o quedan descuadrados
+  const [backlog, setBacklog] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG, PRODUCT_SEED_VERSION);
+  const [sprints, setSprints] = usePersistedState<Sprint[]>('sprints', INITIAL_SPRINTS, PRODUCT_SEED_VERSION);
 
   // Global search state
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
@@ -106,6 +116,28 @@ export default function App() {
   const notifications = useMemo(
     () => buildNotifications(deals, tasks, backlog, sprints),
     [deals, tasks, backlog, sprints]
+  );
+
+  // Avance del sprint activo de cada producto, para el resumen del dashboard
+  const productSummary = useMemo(
+    () =>
+      PRODUCTS.map((p) => {
+        const active = sprints.find((s) => s.product === p.key && s.status === 'Activo');
+        const its = active ? backlog.filter((i) => i.sprintId === active.id) : [];
+        const total = its.reduce((a, i) => a + i.points, 0);
+        const done = its.filter((i) => i.status === 'Hecho').reduce((a, i) => a + i.points, 0);
+        return {
+          name: p.name,
+          pct: total > 0 ? Math.round((done / total) * 100) : 0,
+          note: active ? `${active.name} · ${done}/${total} pts` : 'Sin sprint activo'
+        };
+      }),
+    [backlog, sprints]
+  );
+
+  const roundCommitted = useMemo(
+    () => investors.filter((i) => i.round === ACTIVE_ROUND).reduce((a, i) => a + i.committedAmount, 0),
+    [investors]
   );
 
   const openNotification = (n: AppNotification) => {
@@ -238,7 +270,12 @@ export default function App() {
               dealsTotal: deals.length,
               overdueTasks: tasks.filter(
                 t => t.column !== 'Hecho' && !!t.dueDate && t.dueDate < new Date().toISOString().slice(0, 10)
-              ).length
+              ).length,
+              tasksTotal: tasks.length,
+              roundCommitted,
+              roundTarget: ROUND_TARGET,
+              roundName: ACTIVE_ROUND,
+              products: productSummary
             }}
             onAddInvestor={handleAddInvestor}
             onAddDeal={addDeal}
@@ -282,6 +319,8 @@ export default function App() {
             triggerToast={triggerToast}
             items={backlog}
             setItems={setBacklog}
+            sprints={sprints}
+            setSprints={setSprints}
             focusItemId={focusItemId}
             onFocusHandled={() => setFocusItemId(null)}
           />

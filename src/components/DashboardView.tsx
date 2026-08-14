@@ -31,12 +31,25 @@ interface DashboardViewProps {
     wonCount: number;
     dealsTotal: number;
     overdueTasks: number;
+    tasksTotal: number;
+    /** Ronda activa: lo comprometido frente al objetivo */
+    roundCommitted: number;
+    roundTarget: number;
+    roundName: string;
+    /** Avance del sprint activo de cada producto */
+    products: { name: string; pct: number; note: string }[];
   };
   onAddInvestor?: (inv: Omit<Investor, 'id'>) => void;
   onAddDeal?: (input: NewDealInput) => string;
   onAddTask?: (task: Omit<KanbanTask, 'id'>) => void;
   navigate?: (tab: string) => void;
 }
+
+const money = (n: number) => {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1000) return `$${Math.round(n / 1000)}K`;
+  return `$${n}`;
+};
 
 export default function DashboardView({ onAddAction, triggerToast, metrics, onAddInvestor, onAddDeal, onAddTask, navigate }: DashboardViewProps) {
   const [modalType, setModalType] = useState<'investor' | 'lead' | 'task' | null>(null);
@@ -238,8 +251,8 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
         {[
           {
             label: 'Capital levantado',
-            value: `$${(metrics.totalCapital / 1000000).toFixed(1)}M`,
-            sub: '+18% vs. mes anterior',
+            value: money(metrics.totalCapital),
+            sub: `${metrics.roundName} · ${money(metrics.roundCommitted)} de ${money(metrics.roundTarget)}`,
             accent: '#0E457F',
             icon: <Coins className="w-[17px] h-[17px]" />
           },
@@ -388,16 +401,30 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           </div>
           <div className="p-5 space-y-5">
             {[
-              { label: 'Ronda de inversión', pct: 78, color: '#0E457F', note: '$940K de $1.2M · Semilla' },
+              {
+                label: 'Ronda de inversión',
+                pct: metrics.roundTarget > 0 ? Math.min(100, Math.round((metrics.roundCommitted / metrics.roundTarget) * 100)) : 0,
+                color: '#0E457F',
+                note: `${money(metrics.roundCommitted)} de ${money(metrics.roundTarget)} · ${metrics.roundName}`
+              },
               {
                 label: 'Pipeline comercial',
                 pct: metrics.dealsTotal > 0 ? Math.round((metrics.negotiatingCount / metrics.dealsTotal) * 100) : 0,
                 color: '#47B6E6',
                 note: `${metrics.negotiatingCount} de ${metrics.dealsTotal} negocio${metrics.dealsTotal > 1 ? 's' : ''} en propuesta o negociación`
               },
-              { label: 'Producto — Aerolíneas', pct: 28, color: '#F5A623', note: 'Sprint 12 · 11/40 pts' },
-              { label: 'Producto — AI Aeropuertos', pct: 40, color: '#00C9A7', note: 'Sprint 8 · en progreso' },
-              { label: 'Tareas del equipo', pct: 33, color: '#8B63F5', note: `${metrics.tasksCount} pendientes · ${metrics.overdueTasks} vencida${metrics.overdueTasks === 1 ? '' : 's'}` }
+              ...metrics.products.map((p, i) => ({
+                label: `Producto — ${p.name}`,
+                pct: p.pct,
+                color: i === 0 ? '#F5A623' : '#00C9A7',
+                note: p.note
+              })),
+              {
+                label: 'Tareas del equipo',
+                pct: metrics.tasksTotal > 0 ? Math.round(((metrics.tasksTotal - metrics.tasksCount) / metrics.tasksTotal) * 100) : 0,
+                color: '#8B63F5',
+                note: `${metrics.tasksCount} pendientes · ${metrics.overdueTasks} vencida${metrics.overdueTasks === 1 ? '' : 's'}`
+              }
             ].map((row) => (
               <div key={row.label}>
                 <div className="flex justify-between items-center text-[12px] text-[#64748B] mb-1">

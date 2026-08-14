@@ -3,30 +3,41 @@ import {
   Plane,
   Building2,
   ChevronRight,
+  ChevronDown,
   ArrowLeft,
   ListTree,
   Activity,
   Plus,
-  X,
   Flame,
   CheckCircle2,
   Search,
-  MessageSquare
+  MessageSquare,
+  Pencil,
+  Trash2,
+  FolderPlus,
+  Check,
+  X,
+  ChevronsDownUp,
+  ChevronsUpDown
 } from 'lucide-react';
 import {
   PRODUCTS,
-  INITIAL_BACKLOG,
-  INITIAL_SPRINTS,
+  INITIAL_EPICS,
+  PRODUCT_SEED_VERSION,
   BACKLOG_STATUSES,
-  TEAM_MEMBERS,
   BacklogItem,
   BacklogStatus,
   BacklogType,
   BacklogPriority,
-  ProductKey
+  ProductKey,
+  Sprint,
+  nextItemId,
+  epicsOf
 } from '../data/productData';
 import SprintMetrics from './SprintMetrics';
 import BacklogItemPanel from './BacklogItemPanel';
+import BacklogItemModal from './product/BacklogItemModal';
+import SprintModal from './product/SprintModal';
 import { usePersistedState } from '../hooks/usePersistedState';
 
 interface ProductHubViewProps {
@@ -34,6 +45,9 @@ interface ProductHubViewProps {
   /** El backlog vive en App para que la búsqueda global pueda leerlo */
   items: BacklogItem[];
   setItems: React.Dispatch<React.SetStateAction<BacklogItem[]>>;
+  /** Los sprints también, porque alimentan las alertas del centro de notificaciones */
+  sprints: Sprint[];
+  setSprints: React.Dispatch<React.SetStateAction<Sprint[]>>;
   /** id de ítem a enfocar desde la búsqueda global */
   focusItemId?: string | null;
   onFocusHandled?: () => void;
@@ -67,42 +81,49 @@ const statusStyle = (s: BacklogStatus) => {
   }
 };
 
+const UNSORTED_EPIC = 'Sin épica';
+
 export default function ProductHubView({
   triggerToast,
   items,
   setItems,
+  sprints,
+  setSprints,
   focusItemId,
   onFocusHandled
 }: ProductHubViewProps) {
   const [selected, setSelected] = useState<ProductKey | null>(null);
   const [tab, setTab] = useState<'backlog' | 'progreso'>('backlog');
-  const [sprints] = usePersistedState('sprints', INITIAL_SPRINTS);
   const [search, setSearch] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   // Se guarda el id, no el objeto: así el panel refleja los comentarios nuevos
   const [openItemId, setOpenItemId] = useState<string | null>(null);
 
-  // Al llegar desde la búsqueda global, abre el producto del ítem y lo resalta
-  useEffect(() => {
-    if (!focusItemId) return;
-    const item = items.find((i) => i.id === focusItemId);
-    if (item) {
-      setSelected(item.product);
-      setTab('backlog');
-      setSearch(item.id);
-    }
-    onFocusHandled?.();
-  }, [focusItemId, items, onFocusHandled]);
+  /* Épicas: registro propio para poder crear una vacía y fijar el orden del roadmap */
+  const [epicRegistry, setEpicRegistry] = usePersistedState<Record<ProductKey, string[]>>(
+    'epics',
+    INITIAL_EPICS,
+    PRODUCT_SEED_VERSION
+  );
+  /** Épicas plegadas, con clave "producto::épica" para no mezclar productos */
+  const [collapsedEpics, setCollapsedEpics] = usePersistedState<string[]>('epicsCollapsed', []);
 
-  // New item form
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
-  const [epic, setEpic] = useState('');
-  const [type, setType] = useState<BacklogType>('Historia');
-  const [priority, setPriority] = useState<BacklogPriority>('Media');
-  const [points, setPoints] = useState(5);
-  const [assignee, setAssignee] = useState('Sin asignar');
-  const [sprintId, setSprintId] = useState<string>('');
+  /* Modales de alta/edición */
+  const [itemModal, setItemModal] = useState<{ item: BacklogItem | null; epic?: string } | null>(null);
+  const [sprintModal, setSprintModal] = useState<{ sprint: Sprint | null } | null>(null);
+
+  /* Edición del nombre de una épica, en línea sobre su cabecera */
+  const [editingEpic, setEditingEpic] = useState<string | null>(null);
+  const [epicDraft, setEpicDraft] = useState('');
+  const [newEpicOpen, setNewEpicOpen] = useState(false);
+  const [newEpicName, setNewEpicName] = useState('');
+
+  const epicKey = (name: string) => `${selected}::${name}`;
+  const isCollapsed = (name: string) => collapsedEpics.includes(epicKey(name));
+
+  const toggleEpic = (name: string) => {
+    const k = epicKey(name);
+    setCollapsedEpics((cur) => (cur.includes(k) ? cur.filter((x) => x !== k) : [...cur, k]));
+  };
 
   const productItems = useMemo(
     () => items.filter((i) => i.product === selected),
@@ -112,6 +133,20 @@ export default function ProductHubView({
     () => sprints.filter((s) => s.product === selected),
     [sprints, selected]
   );
+
+  // Al llegar desde la búsqueda global, abre el producto del ítem, lo resalta
+  // y despliega su épica por si estaba plegada.
+  useEffect(() => {
+    if (!focusItemId) return;
+    const item = items.find((i) => i.id === focusItemId);
+    if (item) {
+      setSelected(item.product);
+      setTab('backlog');
+      setSearch(item.id);
+      setCollapsedEpics((cur) => cur.filter((k) => k !== `${item.product}::${item.epic}`));
+    }
+    onFocusHandled?.();
+  }, [focusItemId, items, onFocusHandled, setCollapsedEpics]);
 
   const filteredItems = useMemo(() => {
     if (!search.trim()) return productItems;
@@ -124,18 +159,55 @@ export default function ProductHubView({
     );
   }, [productItems, search]);
 
-  const epics = useMemo(() => {
-    const map = new Map<string, BacklogItem[]>();
+  /** Todas las épicas del producto, incluidas las vacías; al buscar solo las que tienen resultados */
+  const epics = useMemo<[string, BacklogItem[]][]>(() => {
+    if (!selected) return [];
+    const known = epicsOf(epicRegistry, items, selected);
+    const grouped = new Map<string, BacklogItem[]>(known.map((e) => [e, []]));
     filteredItems.forEach((i) => {
-      if (!map.has(i.epic)) map.set(i.epic, []);
-      map.get(i.epic)!.push(i);
+      if (!grouped.has(i.epic)) grouped.set(i.epic, []);
+      grouped.get(i.epic)!.push(i);
     });
-    return Array.from(map.entries());
-  }, [filteredItems]);
+    const entries = Array.from(grouped.entries());
+    return search.trim() ? entries.filter(([, its]) => its.length > 0) : entries;
+  }, [epicRegistry, items, filteredItems, selected, search]);
+
+  const epicNames = useMemo(
+    () => (selected ? epicsOf(epicRegistry, items, selected) : []),
+    [epicRegistry, items, selected]
+  );
+
+  /* ------------------------------ Ítems ------------------------------ */
 
   const updateStatus = (id: string, status: BacklogStatus) => {
     setItems((cur) => cur.map((i) => (i.id === id ? { ...i, status } : i)));
     triggerToast(`${id} → ${status}`);
+  };
+
+  const saveItem = (data: Omit<BacklogItem, 'id' | 'product' | 'comments'>) => {
+    if (!selected) return;
+    const editing = itemModal?.item ?? null;
+
+    if (editing) {
+      setItems((cur) => cur.map((i) => (i.id === editing.id ? { ...i, ...data } : i)));
+      triggerToast(`${editing.id} actualizado`);
+    } else {
+      const newItem: BacklogItem = { id: nextItemId(items, selected), product: selected, ...data };
+      setItems((cur) => [newItem, ...cur]);
+      triggerToast(`${newItem.id} añadido al backlog`);
+    }
+
+    // Una épica escrita a mano en el formulario pasa a formar parte del registro
+    if (data.epic && !epicNames.includes(data.epic)) registerEpic(data.epic);
+    setItemModal(null);
+  };
+
+  const deleteItem = (item: BacklogItem) => {
+    if (!window.confirm(`¿Eliminar ${item.id} — "${item.title}"? No se puede deshacer.`)) return;
+    setItems((cur) => cur.filter((i) => i.id !== item.id));
+    setItemModal(null);
+    setOpenItemId(null);
+    triggerToast(`${item.id} eliminado`);
   };
 
   const openItem = openItemId ? items.find((i) => i.id === openItemId) ?? null : null;
@@ -161,6 +233,101 @@ export default function ProductHubView({
     );
   };
 
+  /* ------------------------------ Épicas ----------------------------- */
+
+  const registerEpic = (name: string) => {
+    if (!selected) return;
+    setEpicRegistry((cur) => {
+      const list = cur[selected] ?? [];
+      if (list.includes(name)) return cur;
+      return { ...cur, [selected]: [...list, name] };
+    });
+  };
+
+  const createEpic = () => {
+    const name = newEpicName.trim();
+    if (!name || !selected) return;
+    if (epicNames.includes(name)) {
+      triggerToast(`La épica "${name}" ya existe`);
+    } else {
+      registerEpic(name);
+      triggerToast(`Épica "${name}" creada`);
+    }
+    setNewEpicName('');
+    setNewEpicOpen(false);
+  };
+
+  const renameEpic = (from: string, to: string) => {
+    const name = to.trim();
+    setEditingEpic(null);
+    if (!selected || !name || name === from) return;
+    setEpicRegistry((cur) => {
+      const list = (cur[selected] ?? []).map((e) => (e === from ? name : e));
+      // Si venía solo de los ítems, no estaba registrada: la añadimos ya renombrada
+      return { ...cur, [selected]: list.includes(name) ? list : [...list, name] };
+    });
+    setItems((cur) =>
+      cur.map((i) => (i.product === selected && i.epic === from ? { ...i, epic: name } : i))
+    );
+    setCollapsedEpics((cur) =>
+      cur.map((k) => (k === `${selected}::${from}` ? `${selected}::${name}` : k))
+    );
+    triggerToast(`Épica renombrada a "${name}"`);
+  };
+
+  const deleteEpic = (name: string, count: number) => {
+    if (!selected) return;
+    const msg =
+      count > 0
+        ? `¿Eliminar la épica "${name}"? Sus ${count} ítems no se borran: pasan a "${UNSORTED_EPIC}".`
+        : `¿Eliminar la épica vacía "${name}"?`;
+    if (!window.confirm(msg)) return;
+
+    setEpicRegistry((cur) => ({ ...cur, [selected]: (cur[selected] ?? []).filter((e) => e !== name) }));
+    if (count > 0) {
+      setItems((cur) =>
+        cur.map((i) => (i.product === selected && i.epic === name ? { ...i, epic: UNSORTED_EPIC } : i))
+      );
+    }
+    setCollapsedEpics((cur) => cur.filter((k) => k !== `${selected}::${name}`));
+    triggerToast(`Épica "${name}" eliminada`);
+  };
+
+  /* ------------------------------ Sprints ---------------------------- */
+
+  const saveSprint = (data: Omit<Sprint, 'id' | 'product'>) => {
+    if (!selected) return;
+    const editing = sprintModal?.sprint ?? null;
+
+    if (editing) {
+      setSprints((cur) => cur.map((s) => (s.id === editing.id ? { ...s, ...data } : s)));
+      triggerToast(`${data.name} actualizado`);
+    } else {
+      const sprint: Sprint = {
+        id: `sp-${selected.slice(0, 2)}-${Date.now().toString(36)}`,
+        product: selected,
+        ...data
+      };
+      setSprints((cur) => [...cur, sprint]);
+      triggerToast(`Sprint "${data.name}" creado`);
+    }
+    setSprintModal(null);
+  };
+
+  const deleteSprint = (sprint: Sprint) => {
+    const affected = items.filter((i) => i.sprintId === sprint.id).length;
+    const msg =
+      affected > 0
+        ? `¿Eliminar ${sprint.name}? Sus ${affected} ítems vuelven al backlog sin sprint.`
+        : `¿Eliminar ${sprint.name}?`;
+    if (!window.confirm(msg)) return;
+
+    setSprints((cur) => cur.filter((s) => s.id !== sprint.id));
+    setItems((cur) => cur.map((i) => (i.sprintId === sprint.id ? { ...i, sprintId: null } : i)));
+    setSprintModal(null);
+    triggerToast(`${sprint.name} eliminado`);
+  };
+
   const sprintStats = (sid: string) => {
     const its = productItems.filter((i) => i.sprintId === sid);
     const done = its.filter((i) => i.status === 'Hecho');
@@ -173,31 +340,6 @@ export default function ProductHubView({
       donePts,
       pct: total > 0 ? Math.round((donePts / total) * 100) : 0
     };
-  };
-
-  const handleCreate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim() || !selected) return;
-    const prefix = selected === 'aerolineas' ? 'AL' : 'AP';
-    const newItem: BacklogItem = {
-      id: `${prefix}-${Math.floor(Math.random() * 900 + 100)}`,
-      product: selected,
-      epic: epic.trim() || 'Sin épica',
-      title,
-      description: desc || 'Sin detalles.',
-      type,
-      priority,
-      points,
-      status: sprintId ? 'Por hacer' : 'Backlog',
-      sprintId: sprintId || null,
-      assignee
-    };
-    setItems((cur) => [newItem, ...cur]);
-    triggerToast(`${newItem.id} añadido al backlog`);
-    setTitle('');
-    setDesc('');
-    setEpic('');
-    setIsModalOpen(false);
   };
 
   /* ---------------- Product picker ---------------- */
@@ -257,6 +399,7 @@ export default function ProductHubView({
 
   /* ---------------- Product detail ---------------- */
   const product = PRODUCTS.find((p) => p.key === selected)!;
+  const allCollapsed = epics.length > 0 && epics.every(([name]) => isCollapsed(name));
 
   return (
     <div className="animate-fade-in space-y-6">
@@ -282,12 +425,31 @@ export default function ProductHubView({
           </div>
         </div>
 
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer self-start"
-        >
-          <Plus className="w-[15px] h-[15px]" /> Nuevo ítem
-        </button>
+        <div className="flex items-center gap-2 self-start">
+          {tab === 'backlog' ? (
+            <>
+              <button
+                onClick={() => { setNewEpicOpen(true); setNewEpicName(''); }}
+                className="px-3.5 py-2 bg-white border border-[#e6eef4] hover:border-[#47B6E6] text-[#33475b] rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
+              >
+                <FolderPlus className="w-[15px] h-[15px]" /> Nueva épica
+              </button>
+              <button
+                onClick={() => setItemModal({ item: null })}
+                className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
+              >
+                <Plus className="w-[15px] h-[15px]" /> Nuevo ítem
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setSprintModal({ sprint: null })}
+              className="px-3.5 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl text-[13px] flex items-center gap-1.5 transition-all font-medium cursor-pointer"
+            >
+              <Plus className="w-[15px] h-[15px]" /> Nuevo sprint
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Sub tabs */}
@@ -312,15 +474,30 @@ export default function ProductHubView({
         </div>
 
         {tab === 'backlog' && (
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94a3b8]" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar ítem, épica o ID..."
-              className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[220px] shadow-sm"
-            />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() =>
+                setCollapsedEpics((cur) => {
+                  const others = cur.filter((k) => !k.startsWith(`${selected}::`));
+                  return allCollapsed ? others : [...others, ...epics.map(([n]) => epicKey(n))];
+                })
+              }
+              className="px-3 py-2 bg-white border border-[#e6eef4] hover:border-[#47B6E6] text-[#64748B] hover:text-[#0F1A2C] rounded-xl text-[12.5px] flex items-center gap-1.5 transition-all cursor-pointer"
+              title={allCollapsed ? 'Desplegar todas las épicas' : 'Plegar todas las épicas'}
+            >
+              {allCollapsed ? <ChevronsUpDown className="w-[14px] h-[14px]" /> : <ChevronsDownUp className="w-[14px] h-[14px]" />}
+              {allCollapsed ? 'Desplegar' : 'Plegar'}
+            </button>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94a3b8]" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar ítem, épica o ID..."
+                className="bg-[#f4fafc] border border-[#dceaf2] rounded-xl pl-9 pr-4 py-2 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] w-[220px] shadow-sm"
+              />
+            </div>
           </div>
         )}
       </div>
@@ -328,76 +505,208 @@ export default function ProductHubView({
       {/* -------- BACKLOG -------- */}
       {tab === 'backlog' && (
         <div className="space-y-5">
-          {epics.map(([epicName, epicItems]) => (
-            <div key={epicName} className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm overflow-hidden">
-              <div className="px-5 py-3 border-b border-[#eef2f6] flex items-center justify-between bg-[#fbfdfe]">
-                <div className="flex items-center gap-2">
-                  <ListTree className="w-4 h-4 text-[#0E457F]" />
-                  <h3 className="text-[13.5px] font-bold text-[#0F1A2C]">{epicName}</h3>
-                  <span className="text-[11px] text-[#64748B] bg-[#eef2f6] px-2 py-0.5 rounded-full font-semibold">
-                    {epicItems.length}
-                  </span>
-                </div>
-                <span className="text-[11.5px] text-[#64748B] font-mono">
-                  {epicItems.reduce((s, i) => s + i.points, 0)} pts
-                </span>
-              </div>
+          {/* Alta de épica en línea */}
+          {newEpicOpen && (
+            <div className="bg-white rounded-2xl border border-dashed border-[#47B6E6] shadow-sm px-5 py-4 flex items-center gap-2.5">
+              <FolderPlus className="w-4 h-4 text-[#0E457F] flex-shrink-0" />
+              <input
+                autoFocus
+                value={newEpicName}
+                onChange={(e) => setNewEpicName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') createEpic();
+                  if (e.key === 'Escape') setNewEpicOpen(false);
+                }}
+                placeholder="Nombre de la épica — Enter para crear"
+                className="flex-1 bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-1.5 text-[13px] text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6]"
+              />
+              <button
+                onClick={createEpic}
+                className="px-3 py-1.5 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-lg text-[12.5px] font-medium cursor-pointer"
+              >
+                Crear
+              </button>
+              <button
+                onClick={() => setNewEpicOpen(false)}
+                className="text-[#94a3b8] hover:text-[#0F1A2C] p-1 cursor-pointer"
+                aria-label="Cancelar"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
 
-              <div className="divide-y divide-[#f1f5f9]">
-                {epicItems.map((item) => (
-                  <div key={item.id} className="px-5 py-3 hover:bg-[#fafcfe] transition-colors flex items-center gap-3 flex-wrap">
-                    <span className="font-mono text-[11.5px] text-[#94a3b8] w-[62px] flex-shrink-0">{item.id}</span>
-
+          {epics.map(([epicName, epicItems]) => {
+            const collapsed = isCollapsed(epicName);
+            const isEditing = editingEpic === epicName;
+            return (
+              <div key={epicName} className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm overflow-hidden">
+                <div className="px-5 py-3 border-b border-[#eef2f6] flex items-center justify-between gap-3 bg-[#fbfdfe] group/epic">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
                     <button
-                      onClick={() => setOpenItemId(item.id)}
-                      className="min-w-[220px] flex-1 text-left cursor-pointer group"
-                      title="Ver detalle y comentarios"
+                      onClick={() => toggleEpic(epicName)}
+                      className="text-[#64748B] hover:text-[#0E457F] transition-colors cursor-pointer flex-shrink-0"
+                      title={collapsed ? 'Desplegar' : 'Plegar'}
+                      aria-expanded={!collapsed}
                     >
-                      <div className="text-[13.5px] font-medium text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors flex items-center gap-2">
-                        {item.title}
-                        {(item.comments?.length ?? 0) > 0 && (
-                          <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-[#64748B] bg-[#eef2f6] px-1.5 py-0.5 rounded-full">
-                            <MessageSquare className="w-3 h-3" />
-                            {item.comments!.length}
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-[11.5px] text-[#64748B] mt-0.5">{item.description}</div>
+                      {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </button>
 
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${typeStyle(item.type)}`}>
-                      {item.type}
-                    </span>
+                    {isEditing ? (
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                        <input
+                          autoFocus
+                          value={epicDraft}
+                          onChange={(e) => setEpicDraft(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') renameEpic(epicName, epicDraft);
+                            if (e.key === 'Escape') setEditingEpic(null);
+                          }}
+                          className="flex-1 min-w-0 bg-white border border-[#47B6E6] rounded-lg px-2 py-1 text-[13.5px] font-semibold text-[#0F1A2C] focus:outline-none"
+                        />
+                        <button
+                          onClick={() => renameEpic(epicName, epicDraft)}
+                          className="text-[#10CC82] hover:text-[#0f9c66] p-1 cursor-pointer"
+                          title="Guardar"
+                        >
+                          <Check className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => setEditingEpic(null)}
+                          className="text-[#94a3b8] hover:text-[#0F1A2C] p-1 cursor-pointer"
+                          title="Cancelar"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => toggleEpic(epicName)}
+                          className="flex items-center gap-2 min-w-0 cursor-pointer"
+                        >
+                          <ListTree className="w-4 h-4 text-[#0E457F] flex-shrink-0" />
+                          <h3 className="text-[13.5px] font-bold text-[#0F1A2C] truncate">{epicName}</h3>
+                          <span className="text-[11px] text-[#64748B] bg-[#eef2f6] px-2 py-0.5 rounded-full font-semibold flex-shrink-0">
+                            {epicItems.length}
+                          </span>
+                        </button>
 
-                    <span className={`text-[11px] font-bold ${priorityStyle(item.priority)} w-[52px]`}>
-                      {item.priority}
-                    </span>
-
-                    <span className="text-[11px] font-mono font-bold text-[#0E457F] bg-[#0E457F]/8 px-1.5 py-0.5 rounded">
-                      {item.points}p
-                    </span>
-
-                    <span className="text-[11.5px] text-[#64748B] w-[86px] truncate">{item.assignee}</span>
-
-                    <select
-                      value={item.status}
-                      onChange={(e) => updateStatus(item.id, e.target.value as BacklogStatus)}
-                      className={`text-[10.5px] font-bold px-2 py-1 rounded border-none cursor-pointer focus:outline-none ${statusStyle(item.status)}`}
-                    >
-                      {BACKLOG_STATUSES.map((s) => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
+                        <div className="flex items-center gap-0.5 md:opacity-0 md:group-hover/epic:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => { setEditingEpic(epicName); setEpicDraft(epicName); }}
+                            className="text-[#94a3b8] hover:text-[#0E457F] p-1 cursor-pointer"
+                            title="Renombrar épica"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => setItemModal({ item: null, epic: epicName })}
+                            className="text-[#94a3b8] hover:text-[#0E457F] p-1 cursor-pointer"
+                            title="Añadir ítem a esta épica"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => deleteEpic(epicName, epicItems.length)}
+                            className="text-[#94a3b8] hover:text-[#F05252] p-1 cursor-pointer"
+                            title="Eliminar épica"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
-                ))}
+
+                  <span className="text-[11.5px] text-[#64748B] font-mono flex-shrink-0">
+                    {epicItems.reduce((s, i) => s + i.points, 0)} pts
+                  </span>
+                </div>
+
+                {!collapsed && (
+                  <div className="divide-y divide-[#f1f5f9]">
+                    {epicItems.map((item) => (
+                      <div key={item.id} className="px-5 py-3 hover:bg-[#fafcfe] transition-colors flex items-center gap-3 flex-wrap group/item">
+                        <span className="font-mono text-[11.5px] text-[#94a3b8] w-[62px] flex-shrink-0">{item.id}</span>
+
+                        <button
+                          onClick={() => setOpenItemId(item.id)}
+                          className="min-w-[220px] flex-1 text-left cursor-pointer group"
+                          title="Ver detalle y comentarios"
+                        >
+                          <div className="text-[13.5px] font-medium text-[#0F1A2C] group-hover:text-[#0E457F] transition-colors flex items-center gap-2">
+                            {item.title}
+                            {(item.comments?.length ?? 0) > 0 && (
+                              <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-[#64748B] bg-[#eef2f6] px-1.5 py-0.5 rounded-full">
+                                <MessageSquare className="w-3 h-3" />
+                                {item.comments!.length}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11.5px] text-[#64748B] mt-0.5">{item.description}</div>
+                        </button>
+
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${typeStyle(item.type)}`}>
+                          {item.type}
+                        </span>
+
+                        <span className={`text-[11px] font-bold ${priorityStyle(item.priority)} w-[52px]`}>
+                          {item.priority}
+                        </span>
+
+                        <span className="text-[11px] font-mono font-bold text-[#0E457F] bg-[#0E457F]/8 px-1.5 py-0.5 rounded">
+                          {item.points}p
+                        </span>
+
+                        <span className="text-[11.5px] text-[#64748B] w-[86px] truncate">{item.assignee}</span>
+
+                        <select
+                          value={item.status}
+                          onChange={(e) => updateStatus(item.id, e.target.value as BacklogStatus)}
+                          className={`text-[10.5px] font-bold px-2 py-1 rounded border-none cursor-pointer focus:outline-none ${statusStyle(item.status)}`}
+                        >
+                          {BACKLOG_STATUSES.map((s) => (
+                            <option key={s} value={s}>{s}</option>
+                          ))}
+                        </select>
+
+                        <button
+                          onClick={() => setItemModal({ item })}
+                          className="text-[#94a3b8] hover:text-[#0E457F] p-1 cursor-pointer md:opacity-0 md:group-hover/item:opacity-100 transition-opacity"
+                          title="Editar ítem"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+
+                    {epicItems.length === 0 && (
+                      <div className="px-5 py-6 text-center">
+                        <p className="text-[12.5px] text-[#94a3b8] italic">
+                          Épica vacía.{' '}
+                          <button
+                            onClick={() => setItemModal({ item: null, epic: epicName })}
+                            className="text-[#0E457F] font-medium not-italic hover:underline cursor-pointer"
+                          >
+                            Añade el primer ítem
+                          </button>
+                          .
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {epics.length === 0 && (
             <div className="bg-white rounded-xl border border-dashed border-[#dbe9f0] py-14 text-center">
               <ListTree className="w-8 h-8 text-[#cbd5e1] mx-auto mb-2" />
-              <p className="text-[13px] text-[#64748B]">No hay ítems que coincidan.</p>
+              <p className="text-[13px] text-[#64748B]">
+                {search.trim() ? 'No hay ítems que coincidan.' : 'Aún no hay épicas en este producto.'}
+              </p>
             </div>
           )}
         </div>
@@ -428,7 +737,7 @@ export default function ProductHubView({
             return (
               <div
                 key={sprint.id}
-                className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm overflow-hidden relative"
+                className="bg-white rounded-2xl border border-[#e6eef4] shadow-sm overflow-hidden relative group/sprint"
               >
                 {isActive && <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#F5A623]"></div>}
                 <div className="px-5 py-4 border-b border-[#eef2f6] flex flex-wrap items-center justify-between gap-3">
@@ -447,6 +756,13 @@ export default function ProductHubView({
                       {sprint.status}
                     </span>
                     <span className="text-[11px] text-[#94a3b8] font-mono ml-1">{sprint.range}</span>
+                    <button
+                      onClick={() => setSprintModal({ sprint })}
+                      className="text-[#94a3b8] hover:text-[#0E457F] p-1 cursor-pointer md:opacity-0 md:group-hover/sprint:opacity-100 transition-opacity"
+                      title="Editar sprint"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                   <span className="text-[12px] font-bold text-[#0E457F]">{st.pct}% completado</span>
                 </div>
@@ -499,6 +815,22 @@ export default function ProductHubView({
             );
           })}
 
+          {productSprints.length === 0 && (
+            <div className="bg-white rounded-xl border border-dashed border-[#dbe9f0] py-14 text-center">
+              <Activity className="w-8 h-8 text-[#cbd5e1] mx-auto mb-2" />
+              <p className="text-[13px] text-[#64748B]">
+                Este producto todavía no tiene sprints.{' '}
+                <button
+                  onClick={() => setSprintModal({ sprint: null })}
+                  className="text-[#0E457F] font-medium hover:underline cursor-pointer"
+                >
+                  Crea el primero
+                </button>
+                .
+              </p>
+            </div>
+          )}
+
           {/* Unassigned backlog reminder */}
           {(() => {
             const loose = productItems.filter((i) => !i.sprintId);
@@ -511,10 +843,15 @@ export default function ProductHubView({
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {loose.map((i) => (
-                    <span key={i.id} className="text-[11.5px] bg-[#f1f6fa] text-[#33475b] px-2.5 py-1 rounded-lg">
+                    <button
+                      key={i.id}
+                      onClick={() => setItemModal({ item: i })}
+                      className="text-[11.5px] bg-[#f1f6fa] hover:bg-[#e4eef6] text-[#33475b] px-2.5 py-1 rounded-lg cursor-pointer transition-colors"
+                      title="Editar y asignar a un sprint"
+                    >
                       <span className="font-mono text-[#94a3b8] mr-1">{i.id}</span>
                       {i.title}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -531,95 +868,34 @@ export default function ProductHubView({
           onAddComment={addComment}
           onDeleteComment={deleteComment}
           onUpdateStatus={updateStatus}
+          onEdit={() => { setItemModal({ item: openItem }); setOpenItemId(null); }}
         />
       )}
 
-      {/* New item modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0F1A2C]/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-zoom-in">
-            <div className="border-b border-[#eef2f6] px-5 py-4 flex items-center justify-between">
-              <h3 className="text-[15px] font-bold text-[#0F1A2C]">Nuevo ítem — {product.name}</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-[#94a3b8] hover:text-[#0F1A2C] transition-colors p-1">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      {/* Alta / edición de ítem */}
+      {itemModal && (
+        <BacklogItemModal
+          productName={product.name}
+          productKey={selected}
+          sprints={productSprints}
+          epics={epicNames}
+          item={itemModal.item}
+          defaultEpic={itemModal.epic}
+          onClose={() => setItemModal(null)}
+          onSave={saveItem}
+          onDelete={itemModal.item ? () => deleteItem(itemModal.item!) : undefined}
+        />
+      )}
 
-            <form onSubmit={handleCreate} className="p-5 space-y-4">
-              <div>
-                <label className="block text-[12px] font-semibold text-[#64748B] uppercase tracking-wide mb-1.5">Título</label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ej. Integrar webhook de incidencias"
-                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[12px] font-semibold text-[#64748B] uppercase tracking-wide mb-1.5">Descripción</label>
-                <textarea
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  rows={2}
-                  placeholder="Detalle técnico o criterio de aceptación"
-                  className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-3 py-2 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-sm resize-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Épica</label>
-                  <input
-                    type="text"
-                    value={epic}
-                    onChange={(e) => setEpic(e.target.value)}
-                    placeholder="Ej. Integraciones"
-                    className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] placeholder-[#94a3b8] focus:outline-none focus:border-[#47B6E6] text-[12.5px]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Tipo</label>
-                  <select value={type} onChange={(e: any) => setType(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
-                    <option>Historia</option><option>Bug</option><option>Spike</option><option>Tarea</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Prioridad</label>
-                  <select value={priority} onChange={(e: any) => setPriority(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
-                    <option>Crítica</option><option>Alta</option><option>Media</option><option>Baja</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Story points</label>
-                  <select value={points} onChange={(e: any) => setPoints(Number(e.target.value))} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
-                    {[1, 2, 3, 5, 8, 13].map((p) => <option key={p} value={p}>{p} pts</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Responsable</label>
-                  <select value={assignee} onChange={(e: any) => setAssignee(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
-                    {TEAM_MEMBERS.map((m) => <option key={m} value={m}>{m}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-[#64748B] uppercase mb-1">Sprint</label>
-                  <select value={sprintId} onChange={(e: any) => setSprintId(e.target.value)} className="w-full bg-[#f4fafc] border border-[#dceaf2] rounded-xl px-2.5 py-1.5 text-[#0F1A2C] focus:outline-none focus:border-[#47B6E6] text-[12.5px]">
-                    <option value="">Sin sprint (backlog)</option>
-                    {productSprints.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-                  </select>
-                </div>
-              </div>
-
-              <div className="border-t border-[#eef2f6] pt-4 flex justify-end gap-2.5">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg bg-white border border-[#e6eef4] text-[#64748B] hover:text-[#0F1A2C] text-sm cursor-pointer">Cancelar</button>
-                <button type="submit" className="px-4 py-2 bg-[#0E457F] hover:bg-[#0A365F] text-white rounded-xl font-medium text-sm cursor-pointer">Añadir al backlog</button>
-              </div>
-            </form>
-          </div>
-        </div>
+      {/* Alta / edición de sprint */}
+      {sprintModal && (
+        <SprintModal
+          productName={product.name}
+          sprint={sprintModal.sprint}
+          onClose={() => setSprintModal(null)}
+          onSave={saveSprint}
+          onDelete={sprintModal.sprint ? () => deleteSprint(sprintModal.sprint!) : undefined}
+        />
       )}
     </div>
   );

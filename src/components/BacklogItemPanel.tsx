@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MessageSquare, Send, Trash2 } from 'lucide-react';
+import { X, MessageSquare, Send, Trash2, Pencil } from 'lucide-react';
 import { BacklogItem, BacklogComment, BACKLOG_STATUSES, BacklogStatus, TEAM_MEMBERS } from '../data/productData';
 
 interface BacklogItemPanelProps {
@@ -8,6 +8,8 @@ interface BacklogItemPanelProps {
   onAddComment: (itemId: string, text: string, author: string) => void;
   onDeleteComment: (itemId: string, commentId: string) => void;
   onUpdateStatus: (itemId: string, status: BacklogStatus) => void;
+  /** Abre el formulario de edición del ítem */
+  onEdit?: () => void;
 }
 
 const statusStyle = (s: string) => {
@@ -34,7 +36,8 @@ export default function BacklogItemPanel({
   onClose,
   onAddComment,
   onDeleteComment,
-  onUpdateStatus
+  onUpdateStatus,
+  onEdit
 }: BacklogItemPanelProps) {
   const [text, setText] = useState('');
   // Autor por defecto: el dueño de la sesión
@@ -68,9 +71,20 @@ export default function BacklogItemPanel({
               <div className="font-mono text-[11px] text-white/70">{item.id} · {item.epic}</div>
               <h3 className="text-[16px] font-bold text-white mt-1 leading-snug">{item.title}</h3>
             </div>
-            <button onClick={onClose} className="text-white/70 hover:text-white p-1 flex-shrink-0 cursor-pointer">
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {onEdit && (
+                <button
+                  onClick={onEdit}
+                  className="text-white/70 hover:text-white p-1 cursor-pointer"
+                  title="Editar ítem"
+                >
+                  <Pencil className="w-[17px] h-[17px]" />
+                </button>
+              )}
+              <button onClick={onClose} className="text-white/70 hover:text-white p-1 cursor-pointer" aria-label="Cerrar">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
 
