@@ -17,9 +17,11 @@ import {
   ROUND_TARGET,
   INITIAL_DATA_ROOM,
   INITIAL_TASKS,
+  INITIAL_AIRPORTS,
   Investor,
   DataRoomFile,
-  KanbanTask
+  KanbanTask,
+  AirportMetric
 } from './data/iwaitData';
 import { INITIAL_DEALS } from './data/crmData';
 import {
@@ -80,6 +82,7 @@ export default function App() {
   const [investors, setInvestors] = usePersistedState<Investor[]>('investors', INITIAL_INVESTORS, INVESTOR_SEED_VERSION);
   const [dataRoomFiles, setDataRoomFiles] = usePersistedState<DataRoomFile[]>('dataroom', INITIAL_DATA_ROOM);
   const [tasks, setTasks] = usePersistedState<KanbanTask[]>('tasks', INITIAL_TASKS);
+  const [airports, setAirports] = usePersistedState<AirportMetric[]>('airports', INITIAL_AIRPORTS);
   // Backlog y sprints comparten versión de semilla: se reemplazan juntos o quedan descuadrados
   const [backlog, setBacklog] = usePersistedState<BacklogItem[]>('backlog', INITIAL_BACKLOG, PRODUCT_SEED_VERSION);
   const [sprints, setSprints] = usePersistedState<Sprint[]>('sprints', INITIAL_SPRINTS, PRODUCT_SEED_VERSION);
@@ -134,6 +137,38 @@ export default function App() {
       }),
     [backlog, sprints]
   );
+
+  /**
+   * Feed de actividad del dashboard, montado con lo que el equipo registra de
+   * verdad: notas y llamadas de los negocios, y comentarios del backlog.
+   */
+  const recentActivity = useMemo(() => {
+    const items: { title: string; meta: string; date: string; source: 'negocios' | 'producto' }[] = [];
+
+    deals.forEach((d) =>
+      d.activities.forEach((a) =>
+        items.push({
+          title: `${a.kind} — ${d.company}`,
+          meta: a.text,
+          date: a.date,
+          source: 'negocios'
+        })
+      )
+    );
+
+    backlog.forEach((i) =>
+      (i.comments ?? []).forEach((c) =>
+        items.push({
+          title: `Comentario en ${i.id} — ${i.title}`,
+          meta: `${c.author}: ${c.text}`,
+          date: c.date,
+          source: 'producto'
+        })
+      )
+    );
+
+    return items.sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
+  }, [deals, backlog]);
 
   const roundCommitted = useMemo(
     () => investors.filter((i) => i.round === ACTIVE_ROUND).reduce((a, i) => a + i.committedAmount, 0),
@@ -262,7 +297,9 @@ export default function App() {
             triggerToast={triggerToast}
             metrics={{
               totalCapital: investors.reduce((sum, item) => sum + item.committedAmount, 0),
-              activeAirports: 3,
+              activeAirports: airports.length,
+              airportsLive: airports.filter(a => a.status === 'Activo').length,
+              airportsPilot: airports.filter(a => a.status === 'Beta').length,
               clientsCount: deals.filter(d => !d.stage.startsWith('Cerrado')).length,
               tasksCount: tasks.filter(t => t.column !== 'Hecho').length,
               negotiatingCount: deals.filter(d => d.stage === 'Negociación' || d.stage === 'Propuesta').length,
@@ -275,7 +312,8 @@ export default function App() {
               roundCommitted,
               roundTarget: ROUND_TARGET,
               roundName: ACTIVE_ROUND,
-              products: productSummary
+              products: productSummary,
+              activity: recentActivity
             }}
             onAddInvestor={handleAddInvestor}
             onAddDeal={addDeal}
@@ -342,8 +380,10 @@ export default function App() {
         );
       case 'airports':
         return (
-          <AiAirportsView 
+          <AiAirportsView
             triggerToast={triggerToast}
+            airports={airports}
+            setAirports={setAirports}
           />
         );
       default:

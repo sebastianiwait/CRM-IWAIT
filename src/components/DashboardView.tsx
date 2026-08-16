@@ -32,6 +32,10 @@ interface DashboardViewProps {
     dealsTotal: number;
     overdueTasks: number;
     tasksTotal: number;
+    airportsLive: number;
+    airportsPilot: number;
+    /** Últimas actividades registradas por el equipo, la más reciente primero */
+    activity: { title: string; meta: string; date: string; source: 'negocios' | 'producto' }[];
     /** Ronda activa: lo comprometido frente al objetivo */
     roundCommitted: number;
     roundTarget: number;
@@ -66,15 +70,25 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
   const [taskTitle, setTaskTitle] = useState('');
   const [taskAssigned, setTaskAssigned] = useState('');
 
-  /** Actividad del feed. `daysAgo` permite filtrar por el periodo seleccionado. */
-  const ACTIVITY = [
-    { title: 'Nueva inversión confirmada — Punto Capital', meta: 'Hace 2 horas · $450K seed', daysAgo: 0, icon: Coins, color: '#F5A623' },
-    { title: 'Actividad registrada — JetSMART', meta: 'Hoy · Nota de seguimiento de la propuesta', daysAgo: 0, icon: Briefcase, color: '#0E457F' },
-    { title: 'Go-live completado — Aeropuerto El Prat (BCN)', meta: 'Ayer · Módulo AI Queues activo', daysAgo: 1, icon: Plane, color: '#00C9A7' },
-    { title: 'Sprint 12 actualizado — Aerolíneas', meta: 'Ayer · 2 historias movidas a Hecho', daysAgo: 1, icon: CheckSquare, color: '#8B63F5' },
-    { title: 'Documento cargado en Data Room — Term Sheet v3', meta: 'Hace 3 días', daysAgo: 3, icon: FileText, color: '#47B6E6' },
-    { title: 'Nuevo contacto potencial — Aena Group', meta: 'Hace 5 días · Demo programada', daysAgo: 5, icon: UserPlus, color: '#10CC82' }
-  ];
+  /** Días transcurridos desde una fecha ISO, para filtrar el feed por periodo */
+  const daysSince = (iso: string) => {
+    const d = new Date(`${iso}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return 99;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.max(0, Math.round((today.getTime() - d.getTime()) / 86400000));
+  };
+
+  const relativeDay = (n: number) =>
+    n === 0 ? 'Hoy' : n === 1 ? 'Ayer' : `Hace ${n} días`;
+
+  const ACTIVITY = metrics.activity.map((a) => ({
+    title: a.title,
+    meta: `${relativeDay(daysSince(a.date))} · ${a.meta}`,
+    daysAgo: daysSince(a.date),
+    icon: a.source === 'negocios' ? Briefcase : CheckSquare,
+    color: a.source === 'negocios' ? '#0E457F' : '#8B63F5'
+  }));
 
   const visibleActivity =
     periodTab === 'Actividad hoy'
@@ -259,7 +273,7 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
           {
             label: 'Aeropuertos activos',
             value: metrics.activeAirports,
-            sub: '+1 nuevo este mes',
+            sub: `${metrics.airportsLive} en producción · ${metrics.airportsPilot} en piloto`,
             accent: '#00C9A7',
             icon: <Plane className="w-[17px] h-[17px]" />
           },
@@ -368,15 +382,23 @@ export default function DashboardView({ onAddAction, triggerToast, metrics, onAd
             {visibleActivity.length === 0 ? (
               <div className="text-center py-10">
                 <Activity className="w-7 h-7 text-[#cbd5e1] mx-auto mb-2" />
-                <p className="text-[13px] text-[#64748B]">Sin actividad registrada {periodTab === 'Ayer' ? 'ayer' : 'hoy'}.</p>
-                <p className="text-[12px] text-[#94a3b8] mt-0.5">Cambia a "Resumen" para ver el histórico.</p>
+                <p className="text-[13px] text-[#64748B]">
+                  {periodTab === 'Resumen'
+                    ? 'Todavía no hay actividad registrada.'
+                    : `Sin actividad registrada ${periodTab === 'Ayer' ? 'ayer' : 'hoy'}.`}
+                </p>
+                <p className="text-[12px] text-[#94a3b8] mt-0.5">
+                  {periodTab === 'Resumen'
+                    ? 'Aparecerán aquí las notas de los negocios y los comentarios del backlog.'
+                    : 'Cambia a "Resumen" para ver el histórico.'}
+                </p>
               </div>
             ) : (
               visibleActivity.map((item, i) => {
                 const Icon = item.icon;
                 return (
                   <div
-                    key={item.title}
+                    key={`${item.title}-${i}`}
                     className={`flex gap-3.5 ${i < visibleActivity.length - 1 ? 'pb-5 border-b border-[#dbe9f0]/40' : ''}`}
                   >
                     <div className="w-[30px] h-[30px] rounded-full bg-[#eef6fa] border border-[#dbe9f0] flex items-center justify-center flex-shrink-0">

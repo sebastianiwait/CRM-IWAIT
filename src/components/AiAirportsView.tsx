@@ -10,18 +10,7 @@ import {
   RefreshCw,
   TrendingDown
 } from 'lucide-react';
-
-interface AirportMetric {
-  id: string;
-  iata: string;
-  name: string;
-  country: string;
-  status: 'Activo' | 'Beta' | 'Negociando';
-  precision: number;
-  passengers: string;
-  reduction: number;
-  modules: string;
-}
+import { AirportMetric } from '../data/iwaitData';
 
 interface AiModel {
   name: string;
@@ -34,17 +23,13 @@ interface AiModel {
 
 interface AiAirportsViewProps {
   triggerToast: (msg: string) => void;
+  /** Los aeropuertos viven en App: el dashboard cuenta los mismos y así persisten */
+  airports: AirportMetric[];
+  setAirports: React.Dispatch<React.SetStateAction<AirportMetric[]>>;
 }
 
-export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
+export default function AiAirportsView({ triggerToast, airports, setAirports }: AiAirportsViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  // Dynamic list of deployed airports
-  const [airports, setAirports] = useState<AirportMetric[]>([
-    { id: 'ap-1', iata: 'BCN', name: 'Aeropuerto El Prat', country: 'Barcelona · España', status: 'Activo', precision: 98.1, passengers: '52K', reduction: 41, modules: 'AI Queue Predictor · Live Dashboard' },
-    { id: 'ap-2', iata: 'MAD', name: 'Aeropuerto Barajas', country: 'Madrid · España', status: 'Activo', precision: 93.4, passengers: '74K', reduction: 35, modules: 'AI Queue Predictor' },
-    { id: 'ap-3', iata: 'LIS', name: 'Aeroporto de Lisboa', country: 'Lisboa · Portugal', status: 'Beta', precision: 91.2, passengers: '16K', reduction: 38, modules: 'AI Queue Predictor · en piloto' }
-  ]);
 
   const [models, setModels] = useState<AiModel[]>([
     { name: 'queue-predictor-v2', function: 'Predicción de colas (15-60 min)', airports: 'BCN, MAD, LIS', precision: '94.2%', latency: '<200ms', status: 'Producción' },
@@ -80,7 +65,7 @@ export default function AiAirportsView({ triggerToast }: AiAirportsViewProps) {
       modules: activeModules
     };
 
-    setAirports([...airports, newAp]);
+    setAirports((cur) => [...cur, newAp]);
 
     // Also update model coverage list
     setModels(models.map(m => {

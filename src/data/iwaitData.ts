@@ -35,6 +35,25 @@ export interface Investor {
   kind?: InvestorKind;
 }
 
+/** Aeropuerto con la plataforma desplegada */
+export interface AirportMetric {
+  id: string;
+  iata: string;
+  name: string;
+  country: string;
+  status: 'Activo' | 'Beta' | 'Negociando';
+  precision: number;
+  passengers: string;
+  reduction: number;
+  modules: string;
+}
+
+export const INITIAL_AIRPORTS: AirportMetric[] = [
+  { id: 'ap-1', iata: 'BCN', name: 'Aeropuerto El Prat', country: 'Barcelona · España', status: 'Activo', precision: 98.1, passengers: '52K', reduction: 41, modules: 'AI Queue Predictor · Live Dashboard' },
+  { id: 'ap-2', iata: 'MAD', name: 'Aeropuerto Barajas', country: 'Madrid · España', status: 'Activo', precision: 93.4, passengers: '74K', reduction: 35, modules: 'AI Queue Predictor' },
+  { id: 'ap-3', iata: 'LIS', name: 'Aeroporto de Lisboa', country: 'Lisboa · Portugal', status: 'Beta', precision: 91.2, passengers: '16K', reduction: 38, modules: 'AI Queue Predictor · en piloto' }
+];
+
 /** Qué es cada elemento del Data Room: archivo subido, página HTML o enlace externo */
 export type DataRoomKind = 'file' | 'html' | 'link';
 
