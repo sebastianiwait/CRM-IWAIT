@@ -12,6 +12,8 @@ export default defineConfig(() => {
       },
     },
     server: {
+      // 3011 y no 3000: el 3000 lo ocupa el portal PAX
+      port: 3011,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
