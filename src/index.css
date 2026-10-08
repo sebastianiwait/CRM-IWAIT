@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Inter: unificada con portal-merchants y pax-compensation-portal */
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  /* Geist: la misma familia que usa la landing de iwait */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* iwait brand palette — Deep Navy, Marine Blue, Sky Cyan */
   --color-iw-bg: #0F1A2C;
@@ -29,13 +29,13 @@
 
 /* Custom layout global resets just in case */
 body {
-  background-color: #f1f8fb;
-  color: #0F1A2C;
+  background-color: #F7F9FB;
+  color: #0B1A2B;
 }
 
 ::selection {
-  background: #47B6E6;
-  color: #0F1A2C;
+  background: #1D6FB8;
+  color: #ffffff;
 }
 
 /* ---- Animations ---- */
@@ -48,6 +48,80 @@ body {
 .animate-zoom-in { animation: iw-zoom-in 0.18s ease-out; }
 .animate-slide-up { animation: iw-slide-up 0.25s ease-out; }
 .animate-slide-in-right { animation: iw-slide-in-right 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* ------------------------------------------------------------------ */
+/*  ALINEACIÓN CON LA LANDING — iwait-landing.vercel.app               */
+/*                                                                     */
+/*  Mismo método que el modo oscuro de abajo: los colores están        */
+/*  escritos como literales en los componentes, así que en vez de      */
+/*  reescribir 22 archivos se remapean aquí las clases que Tailwind    */
+/*  genera. Al estar fuera de @layer, estas reglas ganan a las         */
+/*  utilidades aunque tengan la misma especificidad.                   */
+/*                                                                     */
+/*  Tokens leídos de la landing:                                       */
+/*    fondo #F7F9FB · panel #F8FBFE · campo #F3F7FA                    */
+/*    texto #0B1A2B · apagado #6B7787 · borde #E3E8EE                  */
+/*    azul de acento #1D6FB8 · oscuros #071C36 y #0B1A2B               */
+/*    tarjetas de 16–20px sin sombra · botones en píldora              */
+/*    titulares de peso 500 con tracking negativo, no en negrita       */
+/* ------------------------------------------------------------------ */
+
+/* --- Superficies --- */
+.bg-\[\#f1f8fb\],
+.bg-\[\#f7fafc\] { background-color: #F7F9FB; }
+.bg-\[\#fbfdfe\],
+.bg-\[\#fafcfe\] { background-color: #F8FBFE; }
+.bg-\[\#f4fafc\],
+.bg-\[\#f5f9fc\] { background-color: #F3F7FA; }
+.bg-\[\#eef2f6\],
+.bg-\[\#f1f6fa\],
+.bg-\[\#eaf3f8\],
+.bg-\[\#eef6fa\],
+.bg-\[\#f1f5f9\] { background-color: #EFF3F7; }
+
+/* --- Bordes: la landing usa un único gris azulado en todo --- */
+.border-\[\#e6eef4\],
+.border-\[\#dceaf2\],
+.border-\[\#dbe9f0\],
+.border-\[\#c3dae4\],
+.border-\[\#eef2f6\],
+.border-\[\#f1f5f9\] { border-color: #E3E8EE; }
+.divide-\[\#f1f5f9\] > :not([hidden]) ~ :not([hidden]),
+.divide-\[\#eef2f6\] > :not([hidden]) ~ :not([hidden]) { border-color: #E3E8EE; }
+
+/* --- Texto --- */
+.text-\[\#0F1A2C\] { color: #0B1A2B; }
+.text-\[\#33475b\] { color: #3A4756; }
+.text-\[\#64748B\] { color: #6B7787; }
+.text-\[\#94a3b8\] { color: #94A1B2; }
+
+/* --- Tarjetas: esquina más suave y sin sombra, solo el borde fino --- */
+.rounded-2xl { border-radius: 20px; }
+.rounded-xl { border-radius: 16px; }
+.shadow-sm { box-shadow: none; }
+
+/* --- Botones en píldora, como los de la landing (los campos no) --- */
+button.rounded-xl,
+button.rounded-lg,
+a.rounded-xl,
+a.rounded-lg { border-radius: 9999px; }
+
+/* El menú lateral se queda fuera: sus ítems son altos y de ancho completo,
+   así que en píldora parecían cápsulas gruesas. */
+[data-tour="sidebar"] button.rounded-xl,
+[data-tour="sidebar"] button.rounded-lg { border-radius: 10px; }
+
+/* --- Titulares: Geist se usa fino y apretado, nunca en negrita --- */
+h1, h2, h3 { letter-spacing: -0.035em; }
+h1.font-bold, h2.font-bold, h3.font-bold { font-weight: 500; }
+
+/* --- Etiquetas en versalita: mono y muy espaciadas, como los rótulos de la
+       landing. Solo alcanza a las cabeceras de tabla y al rótulo del logo. --- */
+.uppercase.tracking-wide,
+.uppercase.tracking-wider {
+  font-family: var(--font-mono);
+  letter-spacing: 0.16em;
+}
 
 /* ------------------------------------------------------------------ */
 /*  MODO OSCURO                                                        */

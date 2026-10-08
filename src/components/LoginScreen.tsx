@@ -33,27 +33,43 @@ export default function LoginScreen({
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-white">
       {/* --- Panel de marca --- */}
-      <div className="lg:w-[45%] bg-gradient-to-br from-[#0E457F] to-[#47B6E6] text-white p-8 sm:p-12 lg:p-14 flex flex-col justify-between relative overflow-hidden">
-        <div className="absolute -right-16 -bottom-24 w-96 h-96 rounded-full bg-white/10 blur-3xl"></div>
-        <div className="absolute -left-10 top-10 w-56 h-56 rounded-full bg-white/10 blur-2xl"></div>
+      {/* Navy profundo con halo radial: el mismo hero que la landing de iwait */}
+      <div
+        className="lg:w-[45%] text-white p-8 sm:p-12 lg:p-14 flex flex-col justify-between relative overflow-hidden"
+        style={{
+          backgroundColor: '#071C36',
+          backgroundImage:
+            'radial-gradient(55% 50% at 50% 88%, rgba(29,111,184,0.5), rgba(0,0,0,0) 70%)'
+        }}
+      >
+        {/* Retícula tenue, como la de la portada */}
+        <div
+          className="absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)',
+            backgroundSize: '64px 64px'
+          }}
+        ></div>
 
         <div className="relative z-10 flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-lg bg-white/15 backdrop-blur-sm flex items-center justify-center font-extrabold text-[14px]">
             iw
           </div>
           <div>
-            <div className="text-[17px] font-extrabold tracking-tight leading-tight">
-              iwait<span className="text-white/60">.</span>
+            <div className="text-[17px] font-semibold tracking-[-0.03em] leading-tight">
+              iwait<span className="text-white/50">.</span>
             </div>
-            <div className="text-[9.5px] tracking-wider uppercase font-mono font-bold text-white/70">Platform CRM</div>
+            <div className="text-[9.5px] uppercase font-mono text-white/50" style={{ letterSpacing: '0.16em' }}>Platform CRM</div>
           </div>
         </div>
 
         <div className="relative z-10 py-12 lg:py-0">
-          <h1 className="text-[30px] sm:text-[38px] font-extrabold leading-[1.1] tracking-tight">
+          {/* Peso 500 y tracking cerrado: así titula la landing, no en negrita */}
+          <h1 className="text-[32px] sm:text-[42px] font-medium leading-[1.02] tracking-[-0.035em]">
             El mejor socio digital<br className="hidden sm:block" /> en un aeropuerto.
           </h1>
-          <p className="text-[15px] text-white/85 mt-4 max-w-md leading-relaxed">
+          <p className="text-[15px] text-white/70 mt-5 max-w-md leading-relaxed">
             Inversionistas, pipeline comercial y el progreso del equipo de producto — todo en un mismo lugar.
           </p>
         </div>
